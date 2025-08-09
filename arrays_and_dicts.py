@@ -1,3 +1,5 @@
+# Lexerizing
+
 special_char_token_type = {
     " " : "space",
     "\\": "backslash",
@@ -21,10 +23,14 @@ combine_dict = {
     ("command"  , "letter"   ): "command",
     }
 
-pop_varifier = {
-    "End" : 0.1,
-    "closebrac" : 0.2,
-    }
+# Parsing
+
+#pop_varifier = {
+#    "End" : 0.1,
+#    "closebrac" : 0.2,
+#    }
+
+# Rendering
 
 bg_art = " "
 
