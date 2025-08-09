@@ -24,11 +24,26 @@ combine_dict = {
     }
 
 # Parsing
-
+single_arg_token_types = (
+    "script",
+    "openbrac",
+    "closebrac",
+        )
+atomic_token_types = (
+    "letter",
+    "symbol",
+    "number",
+    "space",
+    "nonbreakingspace",
+    "backslash",
+    )
 #pop_varifier = {
 #    "End" : 0.1,
 #    "closebrac" : 0.2,
 #    }
+
+
+
 
 # Rendering
 

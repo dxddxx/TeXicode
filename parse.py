@@ -55,36 +55,36 @@ def lexer_latex_expression(latex_expression: str) -> list:
 
 ### Parsing
 
-#def add_to_parent_stack(token: list, i: int) -> list:
-#    token_type = token["Type"]
-#    token_val = token["Val"]
-#    if token_type == "Start":
-#        return [i + 0.1]
-#    elif token_type not in ["command", "script", "openbrac", "linebreak"] \
-#        or token_val in ["pm"]:
-#        return []
-#    elif token_type == "script" or token_val in ["sqrt"]:
-#        return [i]
-#    elif token_type == "openbrac":
-#        return [i + 0.2]
-#    elif token_val == "frac":
-#        return [i, i]
-#    else:
-#        raise ValueError(f"Unexpected token type: {token_type} with value: {token_val}")
-#
-#def pop_from_parent_stack(parent_stack: list, token_type: str) -> tuple:
-#    poped_id = parent_stack[-1]
-#    poped_id_is_int = int(poped_id) == poped_id
-#    if poped_id_is_int and token_type == "closebrac":
-#        raise ValueError("Unexpected closing bracket")
-#    if poped_id_is_int or token_type == "closebrac":
-#        parent_stack = parent_stack[:-1]
-#
-#    return parent_stack, int(poped_id)
+def add_to_parent_stack(token: list, i: int) -> list:
+    token_type = token["Type"]
+    token_val = token["Val"]
+    #if token_type == "Start":
+    #    return [i + 0.1]
+    #elif token_type not in ["command", "script", "openbrac", "linebreak"] \
+    #    or token_val in ["pm"]:
+    #    return []
+    #elif token_type == "script" or token_val in ["sqrt"]:
+    #    return [i]
+    #elif token_type == "openbrac":
+    #    return [i + 0.2]
+    #elif token_val == "frac":
+    #    return [i, i]
+    #else:
+    #    raise ValueError(f"Unexpected token type: {token_type} with value: {token_val}")
+    if token_type in single_arg_token_types:
+
+def pop_from_parent_stack(parent_stack: list, token_type: str) -> tuple:
+    poped_id = parent_stack[-1]
+    poped_id_is_int = int(poped_id) == poped_id
+    if poped_id_is_int and token_type == "closebrac":
+        raise ValueError("Unexpected closing bracket")
+    if poped_id_is_int or token_type == "closebrac":
+        parent_stack = parent_stack[:-1]
+
+    return parent_stack, int(poped_id)
 
 def parse_tokens(tokens: list) -> list:
     parent_stack = []
-    parent_type_stack = []
     for i in range(len(tokens)):
         tokens[i]["Children"] = []
         token = tokens[i]
