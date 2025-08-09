@@ -321,12 +321,21 @@ quadratic_equation = r"{ {( \frac{a + b}{\sqrt{c}} )}^3}"
 #quadratic_equation = r"{psi = 1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + ...}}}} }"
 render_latex_expresison(quadratic_equation)
 eqlist = [
-    r"{\frac{1}{\sqrt{n^4 + \frac{1}{n^2}}} + e_{\frac{a^2}{b^3}}}",
-    r"{x^x^x^x^x}",
-    r"{x^{x^{x^{x^{x}}}}}",
-    r"{{{{x^x}^x}^x}^x}",
-    r"{}",
+    #r"{\frac{1}{\sqrt{n^4 + \frac{1}{n^2}}} + e_{\frac{a^2}{b^3}}}",
+    #r"{x^x^x^x^x}",
+    #r"{x^{x^{x^{x^{x}}}}}",
+    #r"{{{{x^x}^x}^x}^x}",
+    #r"{\sqrt[\frac{\frac12}{\frac34}+sum_\frac12^{abc}x^2]{2}}",
+    r"ab",
     ]
 for equation in eqlist:
     print("\n\n")
     render_latex_expresison(equation)
+
+# todo:
+# - start and end tokens
+# - subscript
+# - \left, \right
+# - \big
+# - \lim, \int, \sum
+# - \sqrt[n]{a}
