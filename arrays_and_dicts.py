@@ -56,16 +56,20 @@ atomic_token_types = (
     "symbolcmd",
     )
 
-atomic_commands = (
-    )
-
-
-
-
+#atomic_commands = (
+#    )
 
 # Rendering
 
 bg_art = " "
+
+self_replacement_token_types = (
+    "letter",
+    "number",
+    "symbol",
+    "symbolcmd",
+    "forcedspace",
+    )
 
 # from ../inspirations/tex2utf.pl
 self_replacement_commands = (
@@ -153,3 +157,91 @@ super_sub_script_art = {
     "α" : "ᵅ ", "β" : "ᵝᵦ", "γ" : "ᵞᵧ", "δ" : "ᵟ ", "ε" : "ᵋ ", "θ" : "ᶿ ", "ι" : "ᶥ ",
     "ϕ" : "ᶲ ", "φ" : "ᵠᵩ", "χ" : "ᵡᵪ", "ρ" : "ᵨ ",
     }
+
+left_right_art = {
+    "(":{"left": {"top": "⎛",
+                  "ctr": "⎜",
+                  "fil": "⎜",
+                  "btm": "⎝"},
+         "right":{"top": "⎞",
+                  "ctr": "⎟",
+                  "fil": "⎟",
+                  "btm": "⎠"}},
+    "[":{"left": {"top": "⎡",
+                  "ctr": "⎢",
+                  "fil": "⎢",
+                  "btm": "⎣"},
+         "right":{"top": "⎤",
+                  "ctr": "⎥",
+                  "fil": "⎥",
+                  "btm": "⎦"}},
+    "{":{"left": {"top": "⎧",
+                  "ctr": "⎨",
+                  "fil": "⎪",
+                  "btm": "⎩"},
+         "right":{"top": "⎫",
+                  "ctr": "⎬",
+                  "fil": "⎪",
+                  "btm": "⎭"}},
+    "|":{"left": {"top": "⎟",
+                  "ctr": "⎟",
+                  "fil": "⎟",
+                  "btm": "⎟"},
+         "right":{"top": "⎜",
+                  "ctr": "⎜",
+                  "fil": "⎜",
+                  "btm": "⎜"}},
+    }
+'''
+⎷⎸⎹ ⏐
+⎺⎻⎼⎽
+
+⏐ 🭽⎺🭶
+⎺ ⎸
+  🭰
+
+𜰰𜰱𜰲𜰳
+𜰴𜰵𜰶𜰷
+𜰸𜰹𜰺𜰻
+𜰼𜰽𜰾𜰿
+
+𜰰𜰱𜰲𜰳
+𜰴𜰵𜰶𜰷
+𜰸𜰹𜰺𜰻
+𜰼𜰽𜰾𜰿
+
+𜰰𜰱⎺⎺⎺𜰲𜰳
+𜰴𜰵⎺⎺⎺𜰶𜰷
+⎸⎸   ⎹⎹
+⎸⎸   ⎹⎹
+⎸⎸   ⎹⎹
+𜰸𜰹⎽⎽⎽𜰺𜰻
+𜰼𜰽⎽⎽⎽𜰾𜰿
+
+𜰰𜰱⎺⎺⎺𜰲𜰳
+𜰴𜰵⎺⎺⎺𜰶𜰷
+𜰸𜰹⎽⎽⎽𜰺𜰻
+𜰼𜰽⎽⎽⎽𜰾𜰿
+
+𜰰𜰱𜰲𜰳
+𜰴𜰵𜰶𜰷
+⎸⎸⎹⎹
+⎸⎸⎹⎹
+⎸⎸⎹⎹
+𜰸𜰹𜰺𜰻
+𜰼𜰽𜰾𜰿
+⎲-
+ >
+⎳_
+
+🭻
+🯟
+🭶🭶
+🭻🭻
+🯟
+🭶🭶
+🭻🭻
+🮥
+🭶🭶
+kk
+'''

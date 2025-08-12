@@ -34,6 +34,8 @@ def lexer_latex_expression(latex_expression: str) -> list:
         if not combined_token_type == "none":
             token_value += char
             token_type = combined_token_type
+            if i == len(latex_expression) - 1:
+                tokens.append({"Val": token_value, "Type": token_type})
             continue
         if token_value:
             tokens.append({"Val": token_value, "Type": token_type})
@@ -47,7 +49,7 @@ def lexer_latex_expression(latex_expression: str) -> list:
     for token in tokens:
         if token["Type"] == "space":
             continue
-        if token["Type"] in ("command", "symbolcmd"):
+        if token["Type"] in ("command", "symbolcmd", "forcedspace"):
             token["Val"] = token["Val"][1:]
         clean_tokens.append(token)
 
@@ -175,11 +177,14 @@ def render_atomic_token(token: dict) -> tuple:
     rendered = []
     center_line = -1
 
-    if token_type in ["letter", "number", "symbol"]:
+    if token_type in self_replacement_token_types:
         rendered.append(token_val)
         center_line = 0
-    elif token_type == "closebrac" or token_type == "End":
+    elif token_type in paired_token_types.values():
         rendered.append("")
+        center_line = 0
+    elif token_type == "nonbreakingspace":
+        rendered.append(" ")
         center_line = 0
     elif token_type == "command":
         if token_val in self_replacement_commands:
@@ -192,6 +197,8 @@ def render_atomic_token(token: dict) -> tuple:
             print(f"Unknown command: {token_val}, rendering as is")
             rendered.append(token_val)
             center_line = 0
+    else:
+        raise ValueError(f"Unknown atomic token {token}")
 
     return rendered, center_line
 
@@ -237,19 +244,17 @@ def render_lower(exponent: dict, rows_to_lower: int) -> tuple:
 def render_concatenate(children: list) -> tuple:
     rendered = []
 
-    # raise or lower child if it is a muiltiline script
-    # placed after a multiline token (calling it base in this case)
+    # raise or lower child if it is a script placed
+    # after a multiline token (calling it base in this case)
     for i in range(len(children)):
         child = children[i]
         if child["Type"] != "script":
             continue
         if i == 0:
             continue
-        #if len(child["Rendered"]) == 1:
-        #    continue
         if len(children[i-1]["Rendered"]) == 1:
             continue
-        # if a multi line script placed after a multi line base
+        # if a script placed after a multi line base
         if child["Val"] == "^":
             base_h_abv = children[i-1]["CenterLine"] # ahh yes, beauty of 0 indexing
             chiled_rendered, child_center_line = render_raise(child, base_h_abv)
@@ -317,22 +322,53 @@ def render_super_or_sub_script(exponent: dict, script_type: str) -> tuple:
         rendered[0] += super_sub_script_art[char][dict_id]
     center_line = 0
     return rendered, center_line
+
+def render_left(children: list) -> tuple:
+    rendered = []
+    inside, center_line = render_concatenate(children[1:-1])
+    height = len(inside)
+    left_rendered_before = children[0]["Rendered"][0]
+    right_rendered_before = children[-1]["Rendered"][0]
+    if height == 1:
+        return render_concatenate(children)
+    chosen_art_left = left_right_art[left_rendered_before]["left"]
+    chosen_art_right = left_right_art[left_rendered_before]["right"]
+    for row in inside:
+        left_fill = chosen_art_left["fil"]
+        right_fill = chosen_art_right["fil"]
+        rendered.append(left_fill + row + right_fill)
+    rendered[0] = chosen_art_left["top"] + rendered[0][1:-1] + chosen_art_right["top"]
+    rendered[-1] = chosen_art_left["btm"] + rendered[-1][1:-1] + chosen_art_right["btm"]
+    rendered[center_line] = chosen_art_left["ctr"] + rendered[center_line][1:-1] + chosen_art_right["ctr"]
+
+    return rendered, center_line
+
+def render_right(child: dict) -> tuple:
+    return child["Rendered"], 0
     
 def render_parent_token(token: dict, children: list) -> tuple:
     token_type = token["Type"]
     token_val = token["Val"]
     rendered = []
     center_line = -1
-    if token_val == "frac":
-        numerator = children[0]["Rendered"]
-        denominator = children[1]["Rendered"]
-        return render_frac(numerator, denominator)
-    if token_val == "sqrt":
-        return render_sqrt(children[0])
-    if token_type == "openbrac" or token_type == "Start":
-        return render_concatenate(children)
-    if token_type == "script":
-        return render_super_or_sub_script(children[0], token_val)
+    if token["Children"]:
+        if token_type == "openbrac" or token_type == "Start":
+            return render_concatenate(children)
+        if token_type == "script":
+            return render_super_or_sub_script(children[0], token_val)
+        if token_type == "command":
+            if token_val == "frac":
+                numerator = children[0]["Rendered"]
+                denominator = children[1]["Rendered"]
+                return render_frac(numerator, denominator)
+            if token_val == "sqrt":
+                return render_sqrt(children[0])
+            if token_val == "left":
+                return render_left(children)
+            if token_val == "right":
+                return render_right(children[0])
+        else:
+            raise ValueError(f"Unexpected parent token {token}")
     else:
         return render_atomic_token(token)
 
@@ -340,24 +376,28 @@ def render_parent_token(token: dict, children: list) -> tuple:
 def render_tokens(tokens: list) -> list:
     for i in range(len(tokens)-1, -1, -1):
         children_id_list = tokens[i]["Children"]
-        if not children_id_list:
-            rendered, center_line = render_atomic_token(tokens[i])
-        else:
+        if children_id_list:
             children_list = []
             for j in children_id_list:
                 children_list.append(tokens[j])
             rendered, center_line = render_parent_token(tokens[i], children_list)
+        else:
+            rendered, center_line = render_atomic_token(tokens[i])
         tokens[i]["Rendered"] = rendered
         tokens[i]["CenterLine"] = center_line
+        #for row in rendered:
+        #    print(row)
     return tokens
 
 ### Main
 
 def render_latex_expresison(latex_expression: str):
     lexerized = lexer_latex_expression(latex_expression)
+    #print("Lexerized")
     #for token in lexerized: print(token)
     parsed = parse_tokens(lexerized)
-    for token in parsed: print(token)
+    #print("Parsed")
+    #for token in parsed: print(token)
     rendered = render_tokens(parsed)
     #for token in rendered:
     #    print("...")
@@ -366,36 +406,23 @@ def render_latex_expresison(latex_expression: str):
     for i in range(len(rendered[0]["Rendered"])): print(rendered[0]["Rendered"][i])
 
 
-quadratic_equation = r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}"
-#quadratic_equation = r"\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}"
-#quadratic_equation = r"{f(x) = 1 + x^2 + x^3 + x^{(1+\frac12)}}"
-#quadratic_equation = r"{ \frac{\sqrt{a^2 + b^2}}{c^3} }"
-#quadratic_equation = r"{ \frac{\sqrt{x^4 + 4y^2}}{z^{1/2}} + \frac{y^3}{\sqrt{2x}} }"
-#quadratic_equation = r"{ \frac{1}{\sqrt{\frac{x^2}{y^2} + \frac{z^3}{w}}} }"
-#quadratic_equation = r"{ {( \frac{a + b}{\sqrt{c}} )}^3}"
-#quadratic_equation = r"{  }"
-#quadratic_equation = r"{\frac{{(y_{1}-y_{4}-r\,x_{1}+r\,x_{4}-r\,y_{1}+r\,y_{2}-r\,y_{3}+r\,y_{4}+r^2\,x_{1}-r^2\,x_{2}+r^2\,x_{3}-r^2\,x_{4})}^2}{4\,(x_{1}-x_{4}-r\,x_{1}+r\,x_{2}-r\,x_{3}+r\,x_{4})\,(r\,x_{1}-r\,x_{4}-x_{1}\,y_{4}+x_{4}\,y_{1}-r^2\,x_{1}+r^2\,x_{2}-r^2\,x_{3}+r^2\,x_{4}+r^2\,x_{1}\,y_{3}-r^2\,x_{3}\,y_{1}-r^2\,x_{1}\,y_{4}-r^2\,x_{2}\,y_{3}+r^2\,x_{3}\,y_{2}+r^2\,x_{4}\,y_{1}+r^2\,x_{2}\,y_{4}-r^2\,x_{4}\,y_{2}-r\,x_{1}\,y_{3}+r\,x_{3}\,y_{1}+2\,r\,x_{1}\,y_{4}-2\,r\,x_{4}\,y_{1}-r\,x_{2}\,y_{4}+r\,x_{4}\,y_{2})}}"
-#quadratic_equation = r"\sqrt{b^2 - 4ac}"
-#quadratic_equation = r"{b^2 - 4ac}"
-#quadratic_equation = r"{-4ac}"
-#quadratic_equation = r"{b^2}"
-#quadratic_equation = r"^2"
-#quadratic_equation = r"\frac1\frac21"
-#quadratic_equation = r"{\frac{dy}{dx}\sqrt{abc\frac{1}{2a\sqrt2}}}"
-#quadratic_equation = r"\frac12"
-#quadratic_equation = r"{f(x) = 1 + \frac{x}{1 + x} }"
-#quadratic_equation = r"{\sqrt{1 + \sqrt{1 + \frac{x}{2}}} }"
-#quadratic_equation = r"{psi = 1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + \frac{1}{1 + ...}}}} }"
-render_latex_expresison(quadratic_equation)
 eqlist = [
     #r"{\frac{1}{\sqrt{n^4 + \frac{1}{n^2}}} + e_{\frac{a^2}{b^3}}}",
+    #r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}"
     #r"{x^x^x^x^x}",
     #r"{x^{x^{x^{x^{x}}}}}",
     #r"{{{{x^x}^x}^x}^x}",
     #r"\sqrt[\frac{\frac12}{\frac34}+sum_\frac12^{abc}x^2]{2}",
     #r"ab + cd + \frac\sqrt{2_{4+4}}{3^{2(x-3)}}",
-    #r""
-    r"\left(a\right)"
+    r" \sqrt{\frac{1 + \frac{1}{x^2}}{\frac{y^3}{z^2}}} - \frac{m^2 + n^4}{\sqrt{p + q^2}} ",
+    r"\left(a+\frac12\right)",
+    r"\left(a+\sqrt{\frac12}\right)",
+    r"\left[a+\sqrt{\frac12}\right]",
+    r"\left\{a+\sqrt{\frac12}\right\}",
+    #r"\{\ a~\}",
+    #r"e^{i\theta} = \cos\theta + i\sin\theta",
+    #r"\left|a+\sqrt{\frac12}\right|",
+    r"\frac{{\left(y_{1}-y_{4}-r\,x_{1}+r\,x_{4}-r\,y_{1}+r\,y_{2}-r\,y_{3}+r\,y_{4}+r^2\,x_{1}-r^2\,x_{2}+r^2\,x_{3}-r^2\,x_{4}\right)}^2}{4\,\left(x_{1}-x_{4}-r\,x_{1}+r\,x_{2}-r\,x_{3}+r\,x_{4}\right)\,\left(r\,x_{1}-r\,x_{4}-x_{1}\,y_{4}+x_{4}\,y_{1}-r^2\,x_{1}+r^2\,x_{2}-r^2\,x_{3}+r^2\,x_{4}+r^2\,x_{1}\,y_{3}-r^2\,x_{3}\,y_{1}-r^2\,x_{1}\,y_{4}-r^2\,x_{2}\,y_{3}+r^2\,x_{3}\,y_{2}+r^2\,x_{4}\,y_{1}+r^2\,x_{2}\,y_{4}-r^2\,x_{4}\,y_{2}-r\,x_{1}\,y_{3}+r\,x_{3}\,y_{1}+2\,r\,x_{1}\,y_{4}-2\,r\,x_{4}\,y_{1}-r\,x_{2}\,y_{4}+r\,x_{4}\,y_{2}\right)}",
     ]
 for equation in eqlist:
     print("\n\n")
@@ -404,6 +431,8 @@ for equation in eqlist:
 # todo:
 # - start and end tokens - done
 # - \left, \right
+#    - parsing done
+#    - rendering done
 # - \big
 # - \lim, \int, \sum - handled by rendering
 # - \sqrt[n]{a} - change token_type of "[" after \sqrt during post lexing
