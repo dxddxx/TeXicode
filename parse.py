@@ -24,7 +24,7 @@ def combine(left_token_type: str , right_char_token_type: str) -> str:
 def lexer_latex_expression(latex_expression: str) -> list:
 
     tokens = []
-    #tokens.append({"Val": "root", "Type": "Start"})
+    tokens.append({"Val": "root", "Type": "Start"})
     token_value = ""
     token_type = "none"
     for i in range(len(latex_expression)):
@@ -41,7 +41,7 @@ def lexer_latex_expression(latex_expression: str) -> list:
         token_type = get_token_type(char)
         if i == len(latex_expression) - 1:
             tokens.append({"Val": token_value, "Type": token_type})
-    #tokens.append({"Val": "eof", "Type": "End"})
+    tokens.append({"Val": "eof", "Type": "End"})
 
     clean_tokens = []
     for token in tokens:
@@ -58,6 +58,24 @@ def lexer_latex_expression(latex_expression: str) -> list:
 def add_to_parent_stack(token: list, i: int) -> list:
     token_type = token["Type"]
     token_val = token["Val"]
+    amount_to_add = 0
+    added_list = []
+    if token_type == "command":
+        if token_val in double_arg_cmd_vals:
+            amount_to_add = 2
+        elif token_val in single_arg_cmd_vals:
+            amount_to_add = 1
+        else:
+            amount_to_add = 0
+    elif token_type in single_arg_token_types:
+        amount_to_add = 1
+    elif token_type in atomic_token_types:
+        amount_to_add = 0
+
+    for j in range(amount_to_add):
+        added_list.append(i)
+    return added_list
+
     #if token_type == "Start":
     #    return [i + 0.1]
     #elif token_type not in ["command", "script", "openbrac", "linebreak"] \
@@ -71,30 +89,71 @@ def add_to_parent_stack(token: list, i: int) -> list:
     #    return [i, i]
     #else:
     #    raise ValueError(f"Unexpected token type: {token_type} with value: {token_val}")
-    if token_type in single_arg_token_types:
 
-def pop_from_parent_stack(parent_stack: list, token_type: str) -> tuple:
-    poped_id = parent_stack[-1]
-    poped_id_is_int = int(poped_id) == poped_id
-    if poped_id_is_int and token_type == "closebrac":
-        raise ValueError("Unexpected closing bracket")
-    if poped_id_is_int or token_type == "closebrac":
-        parent_stack = parent_stack[:-1]
+def can_pop(token, parent) -> bool:
+    token_type, token_val = token["Type"], token["Val"]
+    parent_type, parent_val = parent["Type"], parent["Val"]
 
-    return parent_stack, int(poped_id)
+    #if parent_type != "Start" and token_type == "End":
+    #    raise ValueError("Unexpected end token")
+    #elif parent_type == "Start" and token_type == "End":
+    #    return True
+
+    #elif parent_type != "openbrac" and token_type == "closebrac":
+    #    raise ValueError(f"Unexpected closebrac token under parent {parent}")
+    #elif parent_type == "openbrac" and token_type == "closebrac":
+    #    return True
+    
+    if parent_type == "script":
+        if token_type == "script":
+            raise ValueError("Unexpcted - consecutive script tokens")
+        else:
+            return True
+
+    elif parent_type == "command":
+        if parent_val in single_arg_cmd_vals or parent_val in double_arg_cmd_vals:
+            return True
+        elif (parent_val, token_val) in paired_cmd_vals:
+            return True
+        elif any(pair[1] == token_val for pair in paired_cmd_vals):
+            raise ValueError(f"Unexpected command {token} under parent {parent}")
+
+    elif any(pair[1] == token_type for pair in paired_token_types):
+        if (parent_type, token_type) in paired_token_types:
+            return True
+        else:
+            raise ValueError(f"Unexpected token: {token} under parent {parent}")
+
+    else:
+        return False
+
+#def pop_from_parent_stack(parent_stack: list, token_type: str) -> tuple:
+#    poped_id = parent_stack[-1]
+#    poped_id_is_int = int(poped_id) == poped_id
+#    if poped_id_is_int and token_type == "closebrac":
+#        raise ValueError("Unexpected closing bracket")
+#    if poped_id_is_int or token_type == "closebrac":
+#        parent_stack = parent_stack[:-1]
+#
+#    return parent_stack, int(poped_id)
 
 def parse_tokens(tokens: list) -> list:
     parent_stack = []
     for i in range(len(tokens)):
         tokens[i]["Children"] = []
         token = tokens[i]
-
+        # print(i, token, parent_stack)
+        #if parent_stack:
+        #    parent_stack, parent_id = pop_from_parent_stack(parent_stack, token["Type"])
+        #    tokens[parent_id]["Children"].append(i)
         if parent_stack:
-            parent_stack, parent_id = pop_from_parent_stack(parent_stack, token["Type"])
+            parent_id = parent_stack[-1]
+            parent = tokens[parent_id]
+            if can_pop(token, parent):
+                parent_stack.pop()
             tokens[parent_id]["Children"].append(i)
-
-        parent_stack += add_to_parent_stack(token, i)[0]
-
+        parent_stack += add_to_parent_stack(token, i)
+        # print(i, token, parent_stack)
     # cleaning closebrac changes token indexes, messes up children list
     #clean_tokens = []
     #for token in tokens:
@@ -115,10 +174,10 @@ def render_atomic_token(token: dict) -> tuple:
     if token_type in ["letter", "number", "symbol"]:
         rendered.append(token_val)
         center_line = 0
-    if token_type == "closebrac":
+    elif token_type == "closebrac" or token_type == "End":
         rendered.append("")
         center_line = 0
-    if token_type == "command":
+    elif token_type == "command":
         if token_val in self_replacement_commands:
             rendered.append(token_val)
             center_line = 0
@@ -126,6 +185,7 @@ def render_atomic_token(token: dict) -> tuple:
             rendered.append(single_line_commands_art[token_val])
             center_line = 0
         else:
+            print(f"Unknown command: {token_val}, rendering as is")
             rendered.append(token_val)
             center_line = 0
 
@@ -265,7 +325,7 @@ def render_parent_token(token: dict, children: list) -> tuple:
         return render_frac(numerator, denominator)
     if token_val == "sqrt":
         return render_sqrt(children[0])
-    if token_type == "openbrac":
+    if token_type == "openbrac" or token_type == "Start":
         return render_concatenate(children)
     if token_type == "script":
         return render_super_or_sub_script(children[0], token_val)
@@ -291,8 +351,9 @@ def render_tokens(tokens: list) -> list:
 
 def render_latex_expresison(latex_expression: str):
     lexerized = lexer_latex_expression(latex_expression)
+    #for token in lexerized: print(token)
     parsed = parse_tokens(lexerized)
-    #for token in parsed: print(token)
+    for token in parsed: print(token)
     rendered = render_tokens(parsed)
     #for token in rendered:
     #    print("...")
@@ -301,12 +362,13 @@ def render_latex_expresison(latex_expression: str):
     for i in range(len(rendered[0]["Rendered"])): print(rendered[0]["Rendered"][i])
 
 
-quadratic_equation = r"{e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}}"
-quadratic_equation = r"{f(x) = 1 + x^2 + x^3 + x^{(1+\frac12)}}"
-quadratic_equation = r"{ \frac{\sqrt{a^2 + b^2}}{c^3} }"
-quadratic_equation = r"{ \frac{\sqrt{x^4 + 4y^2}}{z^{1/2}} + \frac{y^3}{\sqrt{2x}} }"
-quadratic_equation = r"{ \frac{1}{\sqrt{\frac{x^2}{y^2} + \frac{z^3}{w}}} }"
-quadratic_equation = r"{ {( \frac{a + b}{\sqrt{c}} )}^3}"
+quadratic_equation = r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}"
+#quadratic_equation = r"\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}"
+#quadratic_equation = r"{f(x) = 1 + x^2 + x^3 + x^{(1+\frac12)}}"
+#quadratic_equation = r"{ \frac{\sqrt{a^2 + b^2}}{c^3} }"
+#quadratic_equation = r"{ \frac{\sqrt{x^4 + 4y^2}}{z^{1/2}} + \frac{y^3}{\sqrt{2x}} }"
+#quadratic_equation = r"{ \frac{1}{\sqrt{\frac{x^2}{y^2} + \frac{z^3}{w}}} }"
+#quadratic_equation = r"{ {( \frac{a + b}{\sqrt{c}} )}^3}"
 #quadratic_equation = r"{  }"
 #quadratic_equation = r"{\frac{{(y_{1}-y_{4}-r\,x_{1}+r\,x_{4}-r\,y_{1}+r\,y_{2}-r\,y_{3}+r\,y_{4}+r^2\,x_{1}-r^2\,x_{2}+r^2\,x_{3}-r^2\,x_{4})}^2}{4\,(x_{1}-x_{4}-r\,x_{1}+r\,x_{2}-r\,x_{3}+r\,x_{4})\,(r\,x_{1}-r\,x_{4}-x_{1}\,y_{4}+x_{4}\,y_{1}-r^2\,x_{1}+r^2\,x_{2}-r^2\,x_{3}+r^2\,x_{4}+r^2\,x_{1}\,y_{3}-r^2\,x_{3}\,y_{1}-r^2\,x_{1}\,y_{4}-r^2\,x_{2}\,y_{3}+r^2\,x_{3}\,y_{2}+r^2\,x_{4}\,y_{1}+r^2\,x_{2}\,y_{4}-r^2\,x_{4}\,y_{2}-r\,x_{1}\,y_{3}+r\,x_{3}\,y_{1}+2\,r\,x_{1}\,y_{4}-2\,r\,x_{4}\,y_{1}-r\,x_{2}\,y_{4}+r\,x_{4}\,y_{2})}}"
 #quadratic_equation = r"\sqrt{b^2 - 4ac}"
@@ -326,17 +388,18 @@ eqlist = [
     #r"{x^x^x^x^x}",
     #r"{x^{x^{x^{x^{x}}}}}",
     #r"{{{{x^x}^x}^x}^x}",
-    #r"{\sqrt[\frac{\frac12}{\frac34}+sum_\frac12^{abc}x^2]{2}}",
-    r"ab",
+    #r"\sqrt[\frac{\frac12}{\frac34}+sum_\frac12^{abc}x^2]{2}",
+    #r"ab + cd + \frac\sqrt{2_{4+4}}{3^{2(x-3)}}",
+    #r""
+    r"\left(a\right)"
     ]
 for equation in eqlist:
     print("\n\n")
     render_latex_expresison(equation)
 
 # todo:
-# - start and end tokens
-# - subscript
+# - start and end tokens - done
 # - \left, \right
 # - \big
-# - \lim, \int, \sum
-# - \sqrt[n]{a}
+# - \lim, \int, \sum - handled by rendering
+# - \sqrt[n]{a} - change token_type of "[" after \sqrt during post lexing

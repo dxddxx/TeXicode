@@ -24,23 +24,39 @@ combine_dict = {
     }
 
 # Parsing
+paired_token_types = (
+    ("Start" , "End"),
+    ("openbrac", "closebrac"),
+    )
+paired_cmd_vals = (
+    ("left", "right"),
+    )
 single_arg_token_types = (
+    "Start",
     "script",
     "openbrac",
-    "closebrac",
-        )
-atomic_token_types = (
-    "letter",
-    "symbol",
-    "number",
-    "space",
-    "nonbreakingspace",
-    "backslash",
+    "left",
     )
-#pop_varifier = {
-#    "End" : 0.1,
-#    "closebrac" : 0.2,
-#    }
+single_arg_cmd_vals = (
+    "sqrt",
+    )
+double_arg_cmd_vals = (
+    "frac",
+    )
+atomic_token_types = (
+    "backslash",
+    "closebrac",
+    "nonbreakingspace",
+    "symbol",
+    "linebreak",
+    "forcedspace",
+    "letter",
+    "symbolcmd",
+    )
+
+atomic_commands = (
+    )
+
 
 
 
@@ -49,12 +65,23 @@ atomic_token_types = (
 
 bg_art = " "
 
-# from utftex.md
+# from ../inspirations/tex2utf.pl
 self_replacement_commands = (
     '@',"_","$","{","}","#","&","arccos","arcsin","arctan","arg","cos",
-    "cosh","cot","coth","csc","deg","det","dim","exp","gcd","hom",
-    "inf","ker","lg","lim","liminf","limsup","ln","log","max","min",
-    "mod","Pr","sec","sin","sinh","sup","tan","tanh", "%")
+    "cosh","cot","coth","csc","deg",
+    #"det",
+    "dim","exp",
+    #"gcd",
+    "hom",
+    #"inf",
+    "ker","lg","lim","liminf","limsup","ln","log",
+    #"max","min",
+    "mod",
+    #"Pr",
+    "sec","sin","sinh",
+    #"sup",
+    "tan","tanh", "%"
+    )
 
 # from utftex.md
 single_line_commands_art = {
