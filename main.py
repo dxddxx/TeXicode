@@ -111,15 +111,19 @@ def can_pop(token, parent) -> bool:
             return True
 
     elif parent_type == "command":
-        if parent_val in single_arg_cmd_vals or parent_val in double_arg_cmd_vals:
+        if token_val in paired_cmd_vals.values():
+            if paired_cmd_vals[parent_val] == token_val:
+                return True
+            else:
+                raise ValueError(f"Unexpected command {token} under parent {parent}")
+        elif parent_val in paired_cmd_vals.keys():
+            if paired_cmd_vals[parent_val] != token_val:
+                return False
+        elif parent_val in single_arg_cmd_vals or parent_val in double_arg_cmd_vals:
             return True
-        elif (parent_val, token_val) in paired_cmd_vals:
-            return True
-        elif any(pair[1] == token_val for pair in paired_cmd_vals):
-            raise ValueError(f"Unexpected command {token} under parent {parent}")
 
-    elif any(pair[1] == token_type for pair in paired_token_types):
-        if (parent_type, token_type) in paired_token_types:
+    elif token_type in paired_token_types.values():
+        if paired_token_types[parent_type] == token_type:
             return True
         else:
             raise ValueError(f"Unexpected token: {token} under parent {parent}")

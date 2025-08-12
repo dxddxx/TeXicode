@@ -24,13 +24,13 @@ combine_dict = {
     }
 
 # Parsing
-paired_token_types = (
-    ("Start" , "End"),
-    ("openbrac", "closebrac"),
-    )
-paired_cmd_vals = (
-    ("left", "right"),
-    )
+paired_token_types = {
+    "Start" : "End",
+    "openbrac" : "closebrac",
+    }
+paired_cmd_vals = {
+    "left" : "right",
+    }
 single_arg_token_types = (
     "Start",
     "script",
@@ -39,6 +39,8 @@ single_arg_token_types = (
     )
 single_arg_cmd_vals = (
     "sqrt",
+    "left",
+    "right",
     )
 double_arg_cmd_vals = (
     "frac",
