@@ -90,6 +90,10 @@ self_replacement_commands = (
 
 # from utftex.md
 single_line_commands_art = {
+    "LaTeX": "LᴬTₑX",
+    "TeXtR": "TₑXᵀR",
+
+
     "textit"   : " ", "oplus"    : "⊕", "otimes"   : "⊗", "ominus"   : "⊖",
     "leq"      : "≤", "equiv"    : "≡", "geq"      : "≥", "partial"  : "∂",
     "forall"   : "∀", "exists"   : "∃", "owns"     : "∋", "ni"       : "∌",
@@ -114,7 +118,7 @@ single_line_commands_art = {
     "mid"   : " | ",
     "smallsetminus" : " ⧵ ",
     "setminus"      : " ⧹ ",
-    "backslash"     : "\\" ,
+    #"backslash"     : "\\" ,
     "approx" : " ≅ "  , "simeq"  : " ≃ "  , "quad"   : "   "  , "qquad"  : "     ",
     #"Delta"  : "△"    , "Pi"     : "π"    , "alpha"  : "α"    , "to"     : " ──> ",
     #"from"   : " <── ", "wedge"  : "∧"    , "Lambda" : "∨"    , "lhd"    : " ⊲ "  ,
@@ -157,6 +161,14 @@ super_sub_script_art = {
     "ϕ" : "ᶲ ", "φ" : "ᵠᵩ", "χ" : "ᵡᵪ", "ρ" : "ᵨ ",
     }
 
+# not sure if this should be in this file or not
+switch_script_dict = dict()
+for key in super_sub_script_art.keys():
+    super_script = super_sub_script_art[key][0]
+    sub_script = super_sub_script_art[key][1]
+    switch_script_dict[super_script] = sub_script
+    switch_script_dict[sub_script] = super_script
+
 left_right_art = {
     "(":{"left": {"top": "⎛",
                   "ctr": "⎜",
@@ -191,10 +203,41 @@ left_right_art = {
                   "fil": "⎜",
                   "btm": "⎜"}},
     }
+
+sum_art = [
+    r"🭻🭻",
+    r"🯟 ",
+    r"🭶🭶",
+    ]
+
+sum_art = [
+    "__",
+    "🯟 ",
+    "‾‾",
+    ]
+
+sum_art = [
+    "┌──",
+    "🮥  ",
+    "└──",
+    ]
+
+
+
 '''
+
+big_sum_art = [
+    r"______",
+    r"🯒🯓    ",
+    r"  🯟   ",
+    r"🯐🯑    ",
+    r"‾‾‾‾‾‾",
+    ]
 ⎷⎸⎹ ⏐
 ⎺⎻⎼⎽
 
+⎰
+⎱
 ⏐ 🭽⎺🭶
 ⎺ ⎸
   🭰
@@ -230,17 +273,140 @@ left_right_art = {
 𜰸𜰹𜰺𜰻
 𜰼𜰽𜰾𜰿
 ⎲-
- >
+∑>
 ⎳_
 
-🭻
+⎲-
+⎳_
+
+🭻🭻
 🯟
 🭶🭶
 🭻🭻
-🯟
+𜰒
 🭶🭶
 🭻🭻
 🮥
 🭶🭶
-kk
+🯐🯑
+🯒🯓
+
+
+
+ k          k          k          k          k
+╭──        ╭─┒        ┌──        ┌─┒        ┌─╮
+🮥  x²      🮥  x²      🮥  x²      🮥  x²      🮥  x²
+╰──        ╰─┚        └──        └─┚        └─╯
+n=0        n=0        n=0        n=0        n=0  
+
+
+ k                      
+___         k        k  
+╲          __       🯕‾‾ 
+╱   x²     🯟  x²    🯖__ x²
+‾‾‾        ‾‾       n=0 
+n=0        n=0            
+
+----------------------------------------------
+
+ ₖ          ₖ          ₖ          ₖ          ₖ
+╭──        ╭─┒        ┌──        ┌─┐        ┌─╮
+🮥  x²      🮥  x²      🮥  x²      🮥  x²      🮥  x²
+╰──        ╰─┚        └──        └─┘        └─╯
+ⁿ⁼⁰        ⁿ⁼⁰        ⁿ⁼⁰        ⁿ⁼⁰        ⁿ⁼⁰  
+
+🯑🯒	🯓
+
+ ₖ                      
+___         ₖ        ₖ  
+╲          __       🯕‾‾ 
+╱   x²     🯟  x²    🯖__ x²
+‾‾‾        ‾‾       ⁿ⁼⁰ 
+ⁿ⁼⁰        ⁿ⁼⁰            
+
+
+
+ⁿ⁼⁰
+ₖ
+
+ ₖ   
+╭─╮  
+🮥  x²
+╰─╯  
+ⁿ⁼⁰  
+
+ k
+__
+🯟  x²
+‾‾
+n=0   
+
+ ₖ  
+🯕‾‾ 
+ 🯛  x²
+🯖__
+ⁿ⁼⁰ 
+
+ ₖ  
+╲‾‾ 
+ 🯛  x²
+╱__
+ⁿ⁼⁰ 
+      
+  k
+🯕‾‾  a+b
+🯖__ x
+n=0
+
+
+____
+🯒🯓
+🯐🯑
+‾‾‾‾
+
+🯒🯓‾‾
+🯐🯑__
+
+_
+╲‾‾
+╱__
+‾
+
+╲‾‾
+╱__
+
+
+🯔‾‾‾
+🯗___
+
+╲‾‾‾
+╱___
+
+🯕‾‾
+🯖__
+
+
+🮲🮳
+
+🮡‾‾
+🮣__
+
+🯔🯕🯖🯗
+┬──
+🮥
+┴──
+ⁿ⁼⁰
+ₖ
+┌├┬
+
+└├┴
+╭╮
+╰╯ 
+__
+ 
+‾‾
+⏋
+__
+🯟
+‾‾
 '''

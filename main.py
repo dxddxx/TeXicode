@@ -163,6 +163,8 @@ def render_atomic_token(token: dict) -> tuple:
         elif token_val in single_line_commands_art.keys():
             rendered.append(single_line_commands_art[token_val])
             center_line = 0
+        elif token_val in ("sum"):
+            return render_sum()
         else:
             print(f"Unknown command: {token_val}, rendering as is")
             rendered.append(token_val)
@@ -172,36 +174,32 @@ def render_atomic_token(token: dict) -> tuple:
 
     return rendered, center_line
 
-def render_vert_pile(top: list, bottom: list, sep_art) -> tuple:
+def render_vert_pile(top: list, bottom: list, sep_art: str, align: str) -> tuple:
     center_line = len(top)
     max_len = max(len(top[0]), len(bottom[0]))
     min_len = min(len(top[0]), len(bottom[0]))
-    left_pad_len = (max_len - min_len) // 2
-    right_pad_len = max_len - min_len - left_pad_len
+    if align == "left":
+        left_pad_len = 0
+        right_pad_len = (max_len - min_len)
+    elif align == "right":
+        left_pad_len = (max_len - min_len)
+        right_pad_len = 0
+    elif align == "center":
+        left_pad_len = (max_len - min_len) // 2
+        right_pad_len = max_len - min_len - left_pad_len
+    left_pad = bg_art * left_pad_len 
+    right_pad = bg_art * right_pad_len 
     if len(top[0]) == min_len:
         for i in range(len(top)):
-            top[i] = bg_art * left_pad_len + top[i] + bg_art * right_pad_len
+            top[i] = left_pad + top[i] + right_pad
     elif len(bottom[0]) == min_len:
         for i in range(len(bottom)):
-            bottom[i] = bg_art * left_pad_len + bottom[i] + bg_art * right_pad_len
+            bottom[i] = left_pad + bottom[i] + right_pad
     rendered = top + [sep_art * max_len] + bottom
     return rendered, center_line
 
 def render_frac(numerator: list, denominator: list) -> tuple:
-    return render_vert_pile(numerator, denominator, frac_art)
-    #center_line = len(numerator)
-    #max_len = max(len(numerator[0]), len(denominator[0]))
-    #min_len = min(len(numerator[0]), len(denominator[0]))
-    #left_pad_len = (max_len - min_len) // 2
-    #right_pad_len = max_len - min_len - left_pad_len
-    #if len(numerator[0]) == min_len:
-    #    for i in range(len(numerator)):
-    #        numerator[i] = bg_art * left_pad_len + numerator[i] + bg_art * right_pad_len
-    #elif len(denominator[0]) == min_len:
-    #    for i in range(len(denominator)):
-    #        denominator[i] = bg_art * left_pad_len + denominator[i] + bg_art * right_pad_len
-    #rendered = numerator + [frac_art * max_len] + denominator
-    #return rendered, center_line
+    return render_vert_pile(numerator, denominator, frac_art, "center")
 
 def render_sqrt(inside: dict) -> tuple:
     rendered = []
@@ -227,86 +225,94 @@ def render_lower(exponent: dict, rows_to_lower: int) -> tuple:
     center_line = 0
     return rendered, center_line
 
-def render_pile_scripts(super_script_rendered, sub_script_rendered):
+def render_switch_script(script_rendered: list) -> list:
+    script_switched_rendered = ""
+    for char in script_rendered[0]:
+        switched_char = switch_script_dict[char]
+        if switched_char == " ":
+            return script_rendered
+        script_switched_rendered += switched_char
+    return [script_switched_rendered]
+
+
+def render_pile_scripts(super_script_rendered: list, sub_script_rendered: list) -> tuple:
+    if len(sub_script_rendered) == 1:
+        sub_script_rendered = render_switch_script(sub_script_rendered)
+    if len(super_script_rendered) == 1:
+        super_script_rendered = render_switch_script(super_script_rendered)
 
     if len(sub_script_rendered) > 1:
         sub_script_rendered = sub_script_rendered[1:]
     if len(super_script_rendered) > 1:
         super_script_rendered = super_script_rendered[:-1]
-    return render_vert_pile(super_script_rendered, sub_script_rendered, bg_art)
+    return render_vert_pile(super_script_rendered, sub_script_rendered, bg_art, "left")
 
-def render_concatenate(children: list) -> tuple:
-    rendered = []
+def render_format_scripts(children: list) -> list:
 
-    # raise or lower child if it is a script placed
-    # after a multiline token (calling it base in this case)
     for i in range(len(children)):
         child = children[i]
         child_type = child["Type"]
         child_val = child["Val"]
-        if child_type != "script" or i == 0 or len(children[i-1]["Rendered"]) == 1:
+        if child_type != "script" or i == 0:
             continue
-        # if a script placed after a multi line base
-        if children[i-1]["Type"] == "script" and children[i-1]["Val"] == child_val:
-            raise ValueError(f"Double {child_val} script")
-        base = children[i-1]
-        if children[i-1]["Type"] == "script":
-            neighbor_script = children[i-1]
-            base = children[i-2]
-            is_pile_script_needed = True
-        if base["Type"] == "script":
-            raise ValueError(f"Triple script: {base["Val"], children[i-1]["Val"], child_val}")
+        base_id = i-1
+        base = children[base_id]
+        is_pile_script_needed = False
 
-        if child_val == "^":
+        if base["Type"] == "script":
+            if base["Val"] == child_val:
+                raise ValueError(f"Double {child_val} script")
+            is_pile_script_needed = True
+            neighbor_script = base
+            base_id = i-2
+            base = children[base_id]
+            if i == 1:
+                placeholder = {"Val": "none", "Type": "placeholder", "Rendered": [""], "CenterLine": 0}
+                base = placeholder
+            if base["Type"] == "script":
+                raise ValueError(f"Double {child_val} script")
+
+        if base["Type"] == "command" and base["Val"] in ("sum"):
+            is_pile_script_needed = False
+            if child_val == "^":
+                top = child["Rendered"]
+                bottom = base["Rendered"]
+                keep_center = "bottom"
+            elif child_val == "_":
+                top = base["Rendered"]
+                bottom = child["Rendered"]
+                keep_center = "top"
+            base["Rendered"], base["CenterLine"] = render_new_vert_pile(top, bottom, keep_center, base["CenterLine"], "center")
+            child["Rendered"] = [""]
+            child["CenterLine"] = 0
+
+        elif child_val == "^":
             base_h_abv = base["CenterLine"] # ahh yes, beauty of 0 indexing
-            child_rendered, child_center_line = render_raise(child, base_h_abv)
+            child["Rendered"], child["CenterLine"] = render_raise(child, base_h_abv)
             if is_pile_script_needed:
                 super_script = child
                 sub_script = neighbor_script
-
-            #sub_script_id = -1
-            #super_script_id = i
-            #if children[i-1]["Val"] == "_":
-            #    sub_script_id = i-1
-            #if sub_script_id != -1:
-            #    sub_script = children[sub_script_id]
-            #    sub_script_rendered = sub_script["Rendered"]
-            #    super_script_rendered = child_rendered
-
-
-            #    children[sub_script_id]["Rendered"] = [""]
             
-        if child_val == "_":
+        elif child_val == "_":
             base_h_blw = len(base["Rendered"]) - base["CenterLine"] - 1
-            child_rendered, child_center_line = render_lower(child, base_h_blw)
+            child["Rendered"], child["CenterLine"] = render_lower(child, base_h_blw)
             if is_pile_script_needed:
                 sub_script = child
                 super_script = neighbor_script
 
         if is_pile_script_needed:
-            child_rendered, child_center_line = render_pile_scripts(super_script["Rendered"], sub_script["Rendered"])
+            child["Rendered"], child["CenterLine"] = render_pile_scripts(super_script["Rendered"], sub_script["Rendered"])
             children[i-1]["Rendered"] = [""]
 
+        children[i]["Rendered"] = child["Rendered"]
+        children[i]["CenterLine"] = child["CenterLine"]
+    return children
 
 
-
-            #super_script_id = -1
-            #sub_script_id = i
-            #if children[i-1]["Val"] == "^":
-            #    super_script_id = i-1
-            #if super_script_id != -1:
-            #    super_script = children[super_script_id]
-            #    super_script_rendered = super_script["Rendered"]
-            #    sub_script_rendered = child_rendered
-
-            #    child_rendered, child_center_line = render_pile_scripts(super_script_rendered, sub_script_rendered)
-
-            #    children[super_script_id]["Rendered"] = [""]
-
-
-
-        children[i]["Rendered"] = child_rendered
-        children[i]["CenterLine"] = child_center_line
+def render_concatenate(children: list) -> tuple:
+    rendered = []
+    
+    children = render_format_scripts(children)
 
     max_h_abv_ctr = 0 # max height above center
     max_h_blw_ctr = 0
@@ -369,12 +375,18 @@ def render_left(children: list) -> tuple:
     rendered = []
     inside, center_line = render_concatenate(children[1:-1])
     height = len(inside)
-    left_rendered_before = children[0]["Rendered"][0]
-    right_rendered_before = children[-1]["Rendered"][0]
     if height == 1:
         return render_concatenate(children)
+    left_rendered_before = children[0]["Rendered"][0]
+    right_rendered_before = children[-1]["Rendered"][0]
     chosen_art_left = left_right_art[left_rendered_before]["left"]
     chosen_art_right = left_right_art[left_rendered_before]["right"]
+    # special case when curly brac around expression with height 2
+    if (left_rendered_before == "{" or right_rendered_before == "}") and height == 2:
+        if center_line == 0:
+            inside = [bg_art * len(inside[0])] + inside
+        elif center_line == 1:
+            inside = inside + [bg_art * len(inside[0])]
     for row in inside:
         left_fill = chosen_art_left["fil"]
         right_fill = chosen_art_right["fil"]
@@ -387,6 +399,58 @@ def render_left(children: list) -> tuple:
 
 def render_right(child: dict) -> tuple:
     return child["Rendered"], 0
+
+#def render_sandwich(top: list, middle: list, bottom: list, align) -> tuple:
+#    center_line = len(top) + len(center)//2
+#    rendered = []
+#    max_len = max(len(top[0]), len(middle[0]), len(bottom[0]))
+#    for element in [top, middle, bottom]:
+#        element_len = len(element[0])
+#        if element_len == max_len:
+#            continue
+#        if align == "left":
+#            left_pad_len = 0
+#            right_pad_len = max_len - element_len
+#        elif align == "right":
+#            left_pad_len = max_len - element_len
+#            right_pad_len = 0
+#        elif align == "center":
+#            left_pad_len = (max_len - element_len) // 2
+#            right_pad_len = max_len - element_len - left_pad_len
+#        left_pad = bg_art * left_pad_len 
+#        right_pad = bg_art * right_pad_len 
+#        for i in range(len(rendered)):
+#            element[i] = left_pad + element[i] + right_pad
+#            rendered.append(element)
+#
+#    return rendered, center_line
+
+def render_new_vert_pile(top: list, bottom: list, keep_center: str, kept_center_line: int, align: str) -> tuple:
+    rendered = []
+    max_len = max(len(top[0]), len(bottom[0]))
+    for element in [top, bottom]:
+        element_len = len(element[0])
+        if align == "left":
+            left_pad_len = 0
+            right_pad_len = max_len - element_len
+        elif align == "right":
+            left_pad_len = max_len - element_len
+            right_pad_len = 0
+        elif align == "center":
+            left_pad_len = (max_len - element_len) // 2
+            right_pad_len = max_len - element_len - left_pad_len
+        left_pad = bg_art * left_pad_len 
+        right_pad = bg_art * right_pad_len 
+        for row in element:
+            rendered.append(left_pad + row + right_pad)
+    if keep_center == "bottom":
+        kept_center_line += len(top)
+
+    return rendered, kept_center_line
+
+
+def render_sum() -> tuple:
+    return sum_art, len(sum_art) // 2
     
 def render_parent_token(token: dict, children: list) -> tuple:
     token_type = token["Type"]
@@ -454,7 +518,6 @@ eqlist = [
 
     #r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}",
 
-    #r"{x^x^x^x^x}",
     #r"{x^{x^{x^{x^{x}}}}}",
     #r"{{{{x^x}^x}^x}^x}",
 
@@ -466,19 +529,10 @@ eqlist = [
     #r"\phi = \frac{1+\sqrt5}2, \psi = \frac{1-\sqrt5}2",
     #r"F_n = \frac{1}{\sqrt5} \left[ \left( \frac{1+\sqrt5}2 \right) ^n - \left( \frac{1-\sqrt5}2 \right) ^n \right]",
 
-    r"e^x_y",
-    r"e_y^x",
-    #r"e^\left(x\right)_y",
-    #r"e\left(^x_y\right)",
-    r"e^\left(\frac{\sqrt2}2\right)_\left(\frac12\right)",
-    r"e_\left(\frac12\right)^\left(\frac{\sqrt2}2\right)",
-
-    r"e^x_\left(\frac12\right)",
-    r"e_x^\left(\frac{\sqrt2}2\right)",
-
-    r"e^\left(\frac{\sqrt2}2\right)_x",
-    r"e_\left(\frac12\right)^x",
-    #r"\frac{\sqrt2}2_y^x",
+    r"_\LaTeX^\TeXtR",
+    r"\sum^{n=0}_k x~-~\sqrt{x}-1",
+    r"\sum^{n=0} x~-~\sqrt{x}-1",
+    r"\left\{\sqrt2\right\}",
     ]
 for equation in eqlist:
     print("\n\n")
