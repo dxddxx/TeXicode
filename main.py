@@ -125,6 +125,7 @@ def can_pop(token, parent) -> bool:
             return True
 
     elif token_type in paired_token_types.values():
+        print(token)
         if paired_token_types[parent_type] == token_type:
             return True
         else:
@@ -186,7 +187,7 @@ def render_atomic_token(token: dict) -> tuple:
     elif token_type == "nonbreakingspace":
         rendered.append(" ")
         center_line = 0
-    elif token_type == "command":
+    elif token_type in ("command", "symbolcmd"):
         if token_val in self_replacement_commands:
             rendered.append(token_val)
             center_line = 0
@@ -397,10 +398,11 @@ def render_latex_expresison(latex_expression: str):
     #for token in lexerized: print(token)
     parsed = parse_tokens(lexerized)
     #print("Parsed")
-    #for token in parsed: print(token)
+    #for i in range(len(parsed)): print(i, parsed[i])
     rendered = render_tokens(parsed)
-    #for token in rendered:
-    #    print("...")
+    #for i in range(len(rendered)):
+    #    token = rendered[i]
+    #    print(f"...{i}...")
     #    for row in token["Rendered"]:
     #        print(row)
     for i in range(len(rendered[0]["Rendered"])): print(rendered[0]["Rendered"][i])
@@ -413,16 +415,15 @@ eqlist = [
     #r"{x^{x^{x^{x^{x}}}}}",
     #r"{{{{x^x}^x}^x}^x}",
     #r"\sqrt[\frac{\frac12}{\frac34}+sum_\frac12^{abc}x^2]{2}",
-    #r"ab + cd + \frac\sqrt{2_{4+4}}{3^{2(x-3)}}",
-    r" \sqrt{\frac{1 + \frac{1}{x^2}}{\frac{y^3}{z^2}}} - \frac{m^2 + n^4}{\sqrt{p + q^2}} ",
-    r"\left(a+\frac12\right)",
-    r"\left(a+\sqrt{\frac12}\right)",
-    r"\left[a+\sqrt{\frac12}\right]",
-    r"\left\{a+\sqrt{\frac12}\right\}",
+    #r"a(b + c)d + \frac\sqrt{2_{4+4}}{3^{2(x-3)}}",
     #r"\{\ a~\}",
     #r"e^{i\theta} = \cos\theta + i\sin\theta",
     #r"\left|a+\sqrt{\frac12}\right|",
-    r"\frac{{\left(y_{1}-y_{4}-r\,x_{1}+r\,x_{4}-r\,y_{1}+r\,y_{2}-r\,y_{3}+r\,y_{4}+r^2\,x_{1}-r^2\,x_{2}+r^2\,x_{3}-r^2\,x_{4}\right)}^2}{4\,\left(x_{1}-x_{4}-r\,x_{1}+r\,x_{2}-r\,x_{3}+r\,x_{4}\right)\,\left(r\,x_{1}-r\,x_{4}-x_{1}\,y_{4}+x_{4}\,y_{1}-r^2\,x_{1}+r^2\,x_{2}-r^2\,x_{3}+r^2\,x_{4}+r^2\,x_{1}\,y_{3}-r^2\,x_{3}\,y_{1}-r^2\,x_{1}\,y_{4}-r^2\,x_{2}\,y_{3}+r^2\,x_{3}\,y_{2}+r^2\,x_{4}\,y_{1}+r^2\,x_{2}\,y_{4}-r^2\,x_{4}\,y_{2}-r\,x_{1}\,y_{3}+r\,x_{3}\,y_{1}+2\,r\,x_{1}\,y_{4}-2\,r\,x_{4}\,y_{1}-r\,x_{2}\,y_{4}+r\,x_{4}\,y_{2}\right)}",
+    #r"\frac{{\left(y_{1}-y_{4}-r\,x_{1}+r\,x_{4}-r\,y_{1}+r\,y_{2}-r\,y_{3}+r\,y_{4}+r^2\,x_{1}-r^2\,x_{2}+r^2\,x_{3}-r^2\,x_{4}\right)}^2}{4\,\left(x_{1}-x_{4}-r\,x_{1}+r\,x_{2}-r\,x_{3}+r\,x_{4}\right)\,\left(r\,x_{1}-r\,x_{4}-x_{1}\,y_{4}+x_{4}\,y_{1}-r^2\,x_{1}+r^2\,x_{2}-r^2\,x_{3}+r^2\,x_{4}+r^2\,x_{1}\,y_{3}-r^2\,x_{3}\,y_{1}-r^2\,x_{1}\,y_{4}-r^2\,x_{2}\,y_{3}+r^2\,x_{3}\,y_{2}+r^2\,x_{4}\,y_{1}+r^2\,x_{2}\,y_{4}-r^2\,x_{4}\,y_{2}-r\,x_{1}\,y_{3}+r\,x_{3}\,y_{1}+2\,r\,x_{1}\,y_{4}-2\,r\,x_{4}\,y_{1}-r\,x_{2}\,y_{4}+r\,x_{4}\,y_{2}\right)}",
+    #r" \left\{ \frac{a + b}{\sqrt{c}} \right\}^3 ",
+    r"F_n = \frac{\phi^n - \psi^n}{\sqrt5}",
+    r"\phi = \frac{1+\sqrt5}2, \psi = \frac{1-\sqrt5}2",
+    r"F_n = \frac{1}{\sqrt5} \left[ \left( \frac{1+\sqrt5}2 \right) ^n - \left( \frac{1-\sqrt5}2} \right) ^n \right]",
     ]
 for equation in eqlist:
     print("\n\n")
@@ -433,6 +434,6 @@ for equation in eqlist:
 # - \left, \right
 #    - parsing done
 #    - rendering done
-# - \big
 # - \lim, \int, \sum - handled by rendering
 # - \sqrt[n]{a} - change token_type of "[" after \sqrt during post lexing
+# - \big

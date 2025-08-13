@@ -67,7 +67,6 @@ self_replacement_token_types = (
     "letter",
     "number",
     "symbol",
-    "symbolcmd",
     "forcedspace",
     )
 
