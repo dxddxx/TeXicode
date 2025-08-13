@@ -78,81 +78,50 @@ def add_to_parent_stack(token: list, i: int) -> list:
         added_list.append(i)
     return added_list
 
-    #if token_type == "Start":
-    #    return [i + 0.1]
-    #elif token_type not in ["command", "script", "openbrac", "linebreak"] \
-    #    or token_val in ["pm"]:
-    #    return []
-    #elif token_type == "script" or token_val in ["sqrt"]:
-    #    return [i]
-    #elif token_type == "openbrac":
-    #    return [i + 0.2]
-    #elif token_val == "frac":
-    #    return [i, i]
-    #else:
-    #    raise ValueError(f"Unexpected token type: {token_type} with value: {token_val}")
-
 def can_pop(token, parent) -> bool:
     token_type, token_val = token["Type"], token["Val"]
     parent_type, parent_val = parent["Type"], parent["Val"]
 
-    #if parent_type != "Start" and token_type == "End":
-    #    raise ValueError("Unexpected end token")
-    #elif parent_type == "Start" and token_type == "End":
-    #    return True
+    if token_type == "command" and token_val in paired_cmd_vals.values():
+        if parent_type != "command":
+            raise ValueError(f"Unexpected command {token} under parent {parent}")
+        if parent_val not in paired_cmd_vals.keys():
+            raise ValueError(f"Unexpected command {token} under parent {parent}")
+        if paired_cmd_vals[parent_val] == token_val:
+            return True
+        else:
+            raise ValueError(f"Unexpected command {token} under parent {parent}")
 
-    #elif parent_type != "openbrac" and token_type == "closebrac":
-    #    raise ValueError(f"Unexpected closebrac token under parent {parent}")
-    #elif parent_type == "openbrac" and token_type == "closebrac":
-    #    return True
-    
-    if parent_type == "script":
+    elif token_type in paired_token_types.values():
+        if parent_type not in paired_token_types.keys():
+            raise ValueError(f"Unexpected token: {token} under parent {parent}")
+        if paired_token_types[parent_type] == token_type:
+            return True
+        else:
+            raise ValueError(f"Unexpected token: {token} under parent {parent}")
+
+    elif parent_type == "script":
         if token_type == "script":
             raise ValueError("Unexpcted - consecutive script tokens")
         else:
             return True
 
     elif parent_type == "command":
-        if token_val in paired_cmd_vals.values():
-            if paired_cmd_vals[parent_val] == token_val:
-                return True
-            else:
-                raise ValueError(f"Unexpected command {token} under parent {parent}")
-        elif parent_val in paired_cmd_vals.keys():
+        if parent_val in paired_cmd_vals.keys():
             if paired_cmd_vals[parent_val] != token_val:
                 return False
         elif parent_val in single_arg_cmd_vals or parent_val in double_arg_cmd_vals:
             return True
 
-    elif token_type in paired_token_types.values():
-        print(token)
-        if paired_token_types[parent_type] == token_type:
-            return True
-        else:
-            raise ValueError(f"Unexpected token: {token} under parent {parent}")
-
     else:
         return False
 
-#def pop_from_parent_stack(parent_stack: list, token_type: str) -> tuple:
-#    poped_id = parent_stack[-1]
-#    poped_id_is_int = int(poped_id) == poped_id
-#    if poped_id_is_int and token_type == "closebrac":
-#        raise ValueError("Unexpected closing bracket")
-#    if poped_id_is_int or token_type == "closebrac":
-#        parent_stack = parent_stack[:-1]
-#
-#    return parent_stack, int(poped_id)
 
 def parse_tokens(tokens: list) -> list:
     parent_stack = []
     for i in range(len(tokens)):
         tokens[i]["Children"] = []
         token = tokens[i]
-        # print(i, token, parent_stack)
-        #if parent_stack:
-        #    parent_stack, parent_id = pop_from_parent_stack(parent_stack, token["Type"])
-        #    tokens[parent_id]["Children"].append(i)
         if parent_stack:
             parent_id = parent_stack[-1]
             parent = tokens[parent_id]
@@ -203,20 +172,36 @@ def render_atomic_token(token: dict) -> tuple:
 
     return rendered, center_line
 
-def render_frac(numerator: list, denominator: list) -> tuple:
-    center_line = len(numerator)
-    max_len = max(len(numerator[0]), len(denominator[0]))
-    min_len = min(len(numerator[0]), len(denominator[0]))
+def render_vert_pile(top: list, bottom: list, sep_art) -> tuple:
+    center_line = len(top)
+    max_len = max(len(top[0]), len(bottom[0]))
+    min_len = min(len(top[0]), len(bottom[0]))
     left_pad_len = (max_len - min_len) // 2
     right_pad_len = max_len - min_len - left_pad_len
-    if len(numerator[0]) == min_len:
-        for i in range(len(numerator)):
-            numerator[i] = bg_art * left_pad_len + numerator[i] + bg_art * right_pad_len
-    elif len(denominator[0]) == min_len:
-        for i in range(len(denominator)):
-            denominator[i] = bg_art * left_pad_len + denominator[i] + bg_art * right_pad_len
-    rendered = numerator + [frac_art * max_len] + denominator
+    if len(top[0]) == min_len:
+        for i in range(len(top)):
+            top[i] = bg_art * left_pad_len + top[i] + bg_art * right_pad_len
+    elif len(bottom[0]) == min_len:
+        for i in range(len(bottom)):
+            bottom[i] = bg_art * left_pad_len + bottom[i] + bg_art * right_pad_len
+    rendered = top + [sep_art * max_len] + bottom
     return rendered, center_line
+
+def render_frac(numerator: list, denominator: list) -> tuple:
+    return render_vert_pile(numerator, denominator, frac_art)
+    #center_line = len(numerator)
+    #max_len = max(len(numerator[0]), len(denominator[0]))
+    #min_len = min(len(numerator[0]), len(denominator[0]))
+    #left_pad_len = (max_len - min_len) // 2
+    #right_pad_len = max_len - min_len - left_pad_len
+    #if len(numerator[0]) == min_len:
+    #    for i in range(len(numerator)):
+    #        numerator[i] = bg_art * left_pad_len + numerator[i] + bg_art * right_pad_len
+    #elif len(denominator[0]) == min_len:
+    #    for i in range(len(denominator)):
+    #        denominator[i] = bg_art * left_pad_len + denominator[i] + bg_art * right_pad_len
+    #rendered = numerator + [frac_art * max_len] + denominator
+    #return rendered, center_line
 
 def render_sqrt(inside: dict) -> tuple:
     rendered = []
@@ -242,6 +227,14 @@ def render_lower(exponent: dict, rows_to_lower: int) -> tuple:
     center_line = 0
     return rendered, center_line
 
+def render_pile_scripts(super_script_rendered, sub_script_rendered):
+
+    if len(sub_script_rendered) > 1:
+        sub_script_rendered = sub_script_rendered[1:]
+    if len(super_script_rendered) > 1:
+        super_script_rendered = super_script_rendered[:-1]
+    return render_vert_pile(super_script_rendered, sub_script_rendered, bg_art)
+
 def render_concatenate(children: list) -> tuple:
     rendered = []
 
@@ -249,23 +242,71 @@ def render_concatenate(children: list) -> tuple:
     # after a multiline token (calling it base in this case)
     for i in range(len(children)):
         child = children[i]
-        if child["Type"] != "script":
-            continue
-        if i == 0:
-            continue
-        if len(children[i-1]["Rendered"]) == 1:
+        child_type = child["Type"]
+        child_val = child["Val"]
+        if child_type != "script" or i == 0 or len(children[i-1]["Rendered"]) == 1:
             continue
         # if a script placed after a multi line base
-        if child["Val"] == "^":
-            base_h_abv = children[i-1]["CenterLine"] # ahh yes, beauty of 0 indexing
-            chiled_rendered, child_center_line = render_raise(child, base_h_abv)
-            children[i]["Rendered"] = chiled_rendered
-            children[i]["CenterLine"] = child_center_line
-        if child["Val"] == "_":
-            base_h_blw = len(children[i-1]["Rendered"]) - children[i-1]["CenterLine"] - 1
-            chiled_rendered, child_center_line = render_lower(child, base_h_blw)
-            children[i]["Rendered"] = chiled_rendered
-            children[i]["CenterLine"] = child_center_line
+        if children[i-1]["Type"] == "script" and children[i-1]["Val"] == child_val:
+            raise ValueError(f"Double {child_val} script")
+        base = children[i-1]
+        if children[i-1]["Type"] == "script":
+            neighbor_script = children[i-1]
+            base = children[i-2]
+            is_pile_script_needed = True
+        if base["Type"] == "script":
+            raise ValueError(f"Triple script: {base["Val"], children[i-1]["Val"], child_val}")
+
+        if child_val == "^":
+            base_h_abv = base["CenterLine"] # ahh yes, beauty of 0 indexing
+            child_rendered, child_center_line = render_raise(child, base_h_abv)
+            if is_pile_script_needed:
+                super_script = child
+                sub_script = neighbor_script
+
+            #sub_script_id = -1
+            #super_script_id = i
+            #if children[i-1]["Val"] == "_":
+            #    sub_script_id = i-1
+            #if sub_script_id != -1:
+            #    sub_script = children[sub_script_id]
+            #    sub_script_rendered = sub_script["Rendered"]
+            #    super_script_rendered = child_rendered
+
+
+            #    children[sub_script_id]["Rendered"] = [""]
+            
+        if child_val == "_":
+            base_h_blw = len(base["Rendered"]) - base["CenterLine"] - 1
+            child_rendered, child_center_line = render_lower(child, base_h_blw)
+            if is_pile_script_needed:
+                sub_script = child
+                super_script = neighbor_script
+
+        if is_pile_script_needed:
+            child_rendered, child_center_line = render_pile_scripts(super_script["Rendered"], sub_script["Rendered"])
+            children[i-1]["Rendered"] = [""]
+
+
+
+
+            #super_script_id = -1
+            #sub_script_id = i
+            #if children[i-1]["Val"] == "^":
+            #    super_script_id = i-1
+            #if super_script_id != -1:
+            #    super_script = children[super_script_id]
+            #    super_script_rendered = super_script["Rendered"]
+            #    sub_script_rendered = child_rendered
+
+            #    child_rendered, child_center_line = render_pile_scripts(super_script_rendered, sub_script_rendered)
+
+            #    children[super_script_id]["Rendered"] = [""]
+
+
+
+        children[i]["Rendered"] = child_rendered
+        children[i]["CenterLine"] = child_center_line
 
     max_h_abv_ctr = 0 # max height above center
     max_h_blw_ctr = 0
@@ -410,20 +451,34 @@ def render_latex_expresison(latex_expression: str):
 
 eqlist = [
     #r"{\frac{1}{\sqrt{n^4 + \frac{1}{n^2}}} + e_{\frac{a^2}{b^3}}}",
-    #r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}"
+
+    #r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}",
+
     #r"{x^x^x^x^x}",
     #r"{x^{x^{x^{x^{x}}}}}",
     #r"{{{{x^x}^x}^x}^x}",
-    #r"\sqrt[\frac{\frac12}{\frac34}+sum_\frac12^{abc}x^2]{2}",
-    #r"a(b + c)d + \frac\sqrt{2_{4+4}}{3^{2(x-3)}}",
-    #r"\{\ a~\}",
-    #r"e^{i\theta} = \cos\theta + i\sin\theta",
-    #r"\left|a+\sqrt{\frac12}\right|",
+
     #r"\frac{{\left(y_{1}-y_{4}-r\,x_{1}+r\,x_{4}-r\,y_{1}+r\,y_{2}-r\,y_{3}+r\,y_{4}+r^2\,x_{1}-r^2\,x_{2}+r^2\,x_{3}-r^2\,x_{4}\right)}^2}{4\,\left(x_{1}-x_{4}-r\,x_{1}+r\,x_{2}-r\,x_{3}+r\,x_{4}\right)\,\left(r\,x_{1}-r\,x_{4}-x_{1}\,y_{4}+x_{4}\,y_{1}-r^2\,x_{1}+r^2\,x_{2}-r^2\,x_{3}+r^2\,x_{4}+r^2\,x_{1}\,y_{3}-r^2\,x_{3}\,y_{1}-r^2\,x_{1}\,y_{4}-r^2\,x_{2}\,y_{3}+r^2\,x_{3}\,y_{2}+r^2\,x_{4}\,y_{1}+r^2\,x_{2}\,y_{4}-r^2\,x_{4}\,y_{2}-r\,x_{1}\,y_{3}+r\,x_{3}\,y_{1}+2\,r\,x_{1}\,y_{4}-2\,r\,x_{4}\,y_{1}-r\,x_{2}\,y_{4}+r\,x_{4}\,y_{2}\right)}",
-    #r" \left\{ \frac{a + b}{\sqrt{c}} \right\}^3 ",
-    r"F_n = \frac{\phi^n - \psi^n}{\sqrt5}",
-    r"\phi = \frac{1+\sqrt5}2, \psi = \frac{1-\sqrt5}2",
-    r"F_n = \frac{1}{\sqrt5} \left[ \left( \frac{1+\sqrt5}2 \right) ^n - \left( \frac{1-\sqrt5}2} \right) ^n \right]",
+
+    #r"e^{i\theta} = \cos\theta + i\sin\theta",
+
+    #r"F_n = \frac{\phi^n - \psi^n}{\sqrt5}",
+    #r"\phi = \frac{1+\sqrt5}2, \psi = \frac{1-\sqrt5}2",
+    #r"F_n = \frac{1}{\sqrt5} \left[ \left( \frac{1+\sqrt5}2 \right) ^n - \left( \frac{1-\sqrt5}2 \right) ^n \right]",
+
+    r"e^x_y",
+    r"e_y^x",
+    #r"e^\left(x\right)_y",
+    #r"e\left(^x_y\right)",
+    r"e^\left(\frac{\sqrt2}2\right)_\left(\frac12\right)",
+    r"e_\left(\frac12\right)^\left(\frac{\sqrt2}2\right)",
+
+    r"e^x_\left(\frac12\right)",
+    r"e_x^\left(\frac{\sqrt2}2\right)",
+
+    r"e^\left(\frac{\sqrt2}2\right)_x",
+    r"e_\left(\frac12\right)^x",
+    #r"\frac{\sqrt2}2_y^x",
     ]
 for equation in eqlist:
     print("\n\n")
