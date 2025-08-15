@@ -391,9 +391,9 @@ def render_left(children: list) -> tuple:
         left_fill = chosen_art_left["fil"]
         right_fill = chosen_art_right["fil"]
         rendered.append(left_fill + row + right_fill)
+    rendered[center_line] = chosen_art_left["ctr"] + rendered[center_line][1:-1] + chosen_art_right["ctr"]
     rendered[0] = chosen_art_left["top"] + rendered[0][1:-1] + chosen_art_right["top"]
     rendered[-1] = chosen_art_left["btm"] + rendered[-1][1:-1] + chosen_art_right["btm"]
-    rendered[center_line] = chosen_art_left["ctr"] + rendered[center_line][1:-1] + chosen_art_right["ctr"]
 
     return rendered, center_line
 
@@ -502,8 +502,8 @@ def render_latex_expresison(latex_expression: str):
     #print("Lexerized")
     #for token in lexerized: print(token)
     parsed = parse_tokens(lexerized)
-    #print("Parsed")
-    #for i in range(len(parsed)): print(i, parsed[i])
+    print("Parsed")
+    for i in range(len(parsed)): print(i, parsed[i])
     rendered = render_tokens(parsed)
     #for i in range(len(rendered)):
     #    token = rendered[i]
@@ -517,6 +517,7 @@ eqlist = [
     #r"{\frac{1}{\sqrt{n^4 + \frac{1}{n^2}}} + e_{\frac{a^2}{b^3}}}",
 
     #r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}",
+    r"\frac{-b \pm \sqrt{b^2- 4a c}}{2a}",
 
     #r"{x^{x^{x^{x^{x}}}}}",
     #r"{{{{x^x}^x}^x}^x}",
@@ -529,10 +530,12 @@ eqlist = [
     #r"\phi = \frac{1+\sqrt5}2, \psi = \frac{1-\sqrt5}2",
     #r"F_n = \frac{1}{\sqrt5} \left[ \left( \frac{1+\sqrt5}2 \right) ^n - \left( \frac{1-\sqrt5}2 \right) ^n \right]",
 
-    r"_\LaTeX^\TeXtR",
-    r"\sum^{n=0}_k x~-~\sqrt{x}-1",
-    r"\sum^{n=0} x~-~\sqrt{x}-1",
-    r"\left\{\sqrt2\right\}",
+    #r"_\LaTeX^\TeXtR",
+    #r"\sum^{n=0}_k x~-~\sqrt{x}-1",
+    #r"\sum^{n=0} x~-~\sqrt{x}-1",
+    #r"\left\{\sqrt2\right\}",
+    #r"\left( \sqrt2 \right)",
+    #r"\left\{ \sqrt2 \right\}",
     ]
 for equation in eqlist:
     print("\n\n")
