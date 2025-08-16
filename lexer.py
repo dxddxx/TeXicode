@@ -7,7 +7,7 @@ symbols = special_chars + symbol_chars
 
 def get_char_type(char: str) -> str:
     if char.isalpha():
-        return "lttr"
+        return "alph"
     elif char.isdigit():
         return "numb"
     elif char in symbols:
