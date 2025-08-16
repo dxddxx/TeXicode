@@ -1,45 +1,45 @@
 node_type_special_dict = {
-    ("sqrt",       ("[", "symbol")): "open_index",
-    ("ctr_base",   ("^", "symbol")): "top_script",
-    ("ctr_base",   ("_", "symbol")): "btm_script",
-    ("limits",     ("^", "symbol")): "top_script",
-    ("limits",     ("_", "symbol")): "btm_script",
-    ("btm_script", ("^", "symbol")): "top_script",
-    ("top_script", ("_", "symbol")): "btm_script",
+    ("sqrt",       ("symb", "[")): "open_index",
+    ("ctr_base",   ("symb", "^")): "top_script",
+    ("ctr_base",   ("symb", "_")): "btm_script",
+    ("limits",     ("symb", "^")): "top_script",
+    ("limits",     ("symb", "_")): "btm_script",
+    ("btm_script", ("symb", "^")): "top_script",
+    ("top_script", ("symb", "_")): "btm_script",
 }
 
 node_type_dict = {
-    ("start", "meta"):    "open_root",
-    ("end",   "meta"):    "close_root",
-    ("^",     "symbol"):  "sup_script",
-    ("_",     "symbol"):  "sub_script",
-    ("{",     "symbol"):  "open_brac",
-    ("}",     "symbol"):  "close_brac",
-    ("left",  "command"): "open_delim",
-    ("right", "command"): "close_delim",
-    ("sqrt",  "command"): "sqrt",
-    ("frac",  "command"): "frac",
-    ("sum",   "command"): "ctr_base",
-    ("prod",  "command"): "ctr_base",
-    ("lim",   "command"): "ctr_base",
-    ("limits",   "command"): "limits",
-    ("iint",     "command"): "ctr_base",
-    ("iiint",    "command"): "ctr_base",
-    ("iiiiint",  "command"): "ctr_base",
-    ("idotsint", "command"): "ctr_base",
+    ("meta", "start"): "open_root",
+    ("meta",   "end"): "close_root",
+    ("symb",     "^"): "sup_script",
+    ("symb",     "_"): "sub_script",
+    ("symb",     "{"): "open_brac",
+    ("symb",     "}"): "close_brac",
+    ("cmnd",  "left"): "open_delim",
+    ("cmnd", "right"): "close_delim",
+    ("cmnd",  "sqrt"): "sqrt",
+    ("cmnd",  "frac"): "frac",
+    ("cmnd",   "sum"): "ctr_base",
+    ("cmnd",  "prod"): "ctr_base",
+    ("cmnd",   "lim"): "ctr_base",
+    ("cmnd",   "limits"): "limits",
+    ("cmnd",     "iint"): "ctr_base",
+    ("cmnd",    "iiint"): "ctr_base",
+    ("cmnd",  "iiiiint"): "ctr_base",
+    ("cmnd", "idotsint"): "ctr_base",
 }
 
 
 def get_node_type(prev_node_type: str, token: dict) -> str:
     # gotta turn token into a tuple to hash it
     # maybe tokens should be tuples from the start?
-    token_tuple = (token["val"], token["typ"])
-    if (prev_node_type, token_tuple) in node_type_special_dict.keys():
+    # token_tuple = (token["val"], token["typ"])
+    if (prev_node_type, token) in node_type_special_dict.keys():
         return node_type_special_dict[(prev_node_type, token)]
-    elif token_tuple in node_type_dict.keys():
-        return node_type_dict[token_tuple]
+    elif token in node_type_dict.keys():
+        return node_type_dict[token]
     else:
-        return token["typ"]
+        return token[0]  # token type
 
 
 only_poppable_by = {
@@ -112,7 +112,7 @@ def parent_stack_add(node_type, node_id):
 
 
 def can_add(node_type):
-    return True # for now
+    return True  # for now
 
 
 def parse(tokens: list) -> list:
@@ -124,15 +124,15 @@ def parse(tokens: list) -> list:
         token = tokens[i]
 
         if nodes:
-            prev_node_type = nodes[-1]["typ"]
+            prev_node_type = nodes[-1][0]
         else:
             prev_node_type = "none"
         node_type = get_node_type(prev_node_type, token)
         if parent_stack:
             parent_node_id = parent_stack[-1]
             parent_node = nodes[parent_node_id]
-            parent_node_type = parent_node["typ"]
-            nodes[parent_node_id]["chdrn"].append(node_id)
+            parent_node_type = parent_node[0]
+            nodes[parent_node_id][2].append(node_id)
             if can_pop(parent_node_type, node_type):
                 parent_stack.pop()
 
@@ -140,7 +140,7 @@ def parse(tokens: list) -> list:
         if added_stack:
             parent_stack += added_stack
         if can_add(node_type):
-            node = {"tok": token, "typ": node_type, "chdrn": []}
+            node = (node_type, token, [])
             nodes.append(node)
             node_id += 1
     return nodes

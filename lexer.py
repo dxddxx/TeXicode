@@ -7,18 +7,18 @@ symbols = special_chars + symbol_chars
 
 def get_char_type(char: str) -> str:
     if char.isalpha():
-        return "letter"
+        return "lttr"
     elif char.isdigit():
-        return "number"
+        return "numb"
     elif char in symbols:
-        return "symbol"
+        return "symb"
     elif char == "\\":
         return "backslash"
 
 
 def lexer(tex: str) -> list:
     tokens = []
-    token_val, token_type = "", ""
+    token_type, token_val = "", ""
     for i in range(len(tex)):
         char = tex[i]
         char_type = get_char_type(char)
@@ -26,21 +26,20 @@ def lexer(tex: str) -> list:
         if len(token_val) > 1:
             if (i == len(tex)-1 or
                     char_type != get_char_type(tex[i+1]) or
-                    char_type == "symbol"):
+                    char_type == "symb"):
                 token_val = token_val[1:]
-                token_type = "command"
+                token_type = "cmnd"
         elif token_val != "\\":
             token_type = char_type
         else:
             token_type = ""
-        print(i, char, token_type)
 
         if token_type:
-            if token_type == "symbol" and token_val == " ":
+            if token_type == "symb" and token_val == " ":
                 token_val, token_type = "", ""
                 continue
-            tokens.append({"val": token_val, "typ": token_type})
-            token_val, token_type = "", ""
-    tokens.insert(0, {"val": "start", "typ": "meta"})
-    tokens.append({"val": "end", "typ": "meta"})
+            tokens.append((token_type, token_val))
+            token_type, token_val = "", ""
+    tokens.insert(0, ("meta", "start"))
+    tokens.append(("meta", "end"))
     return tokens
