@@ -118,8 +118,18 @@ def parent_stack_add(node_type: str, node_id: int) -> list:
     return add_stack
 
 
+cannot_add = {
+    "cls_root",
+    "cls_brac",
+    "cls_degr",
+    }
+
+
 def can_add(node_type: str) -> bool:
-    return True  # for now
+    if node_type in cannot_add:
+        return False
+    else:
+        return True
 
 
 def parse(tokens: list) -> list:
@@ -129,11 +139,8 @@ def parse(tokens: list) -> list:
 
     for i in range(len(tokens)):
         token = tokens[i]
+        print(i, token, node_id)
 
-        if nodes:
-            prev_node_type = nodes[-1][0]
-        else:
-            prev_node_type = "none"
         if parent_stack:
             parent_id = parent_stack[-1]
             parent = nodes[parent_id]
@@ -146,7 +153,8 @@ def parse(tokens: list) -> list:
             base_id = get_script_base(nodes, sibling_list)
             if node_type in {"sup_scrpt", "sub_scrpt"} and base_id != -1:
                 nodes[base_id][3].append(node_id)
-            nodes[parent_id][2].append(node_id)
+            if can_add(node_type):
+                nodes[parent_id][2].append(node_id)
             if can_pop(parent_type, node_type):
                 parent_stack.pop()
 
