@@ -1,4 +1,5 @@
 from arrays_and_dicts import *
+import time
 
 # Lexerizing
 
@@ -526,8 +527,9 @@ def render_tokens(tokens: list) -> list:
             rendered, center_line = render_atomic_token(tokens[i])
         tokens[i]["Rendered"] = rendered
         tokens[i]["CenterLine"] = center_line
+        # print(f"\n... {tokens[i]['Val']} ...\n")
         # for row in rendered:
-        #    print(row)
+        #     print(row)
     return tokens
 
 # Main
@@ -538,24 +540,26 @@ def render_latex_expresison(latex_expression: str):
     # print("Lexerized")
     # for token in lexerized: print(token)
     parsed = parse_tokens(lexerized)
-    print("Parsed")
-    for i in range(len(parsed)):
-        print(i, parsed[i])
+    # print("Parsed")
+    # for i in range(len(parsed)):
+    #     print(i, parsed[i])
     rendered = render_tokens(parsed)
-    # for i in range(len(rendered)):
-    #    token = rendered[i]
-    #    print(f"...{i}...")
-    #    for row in token["Rendered"]:
-    #        print(row)
-    for i in range(len(rendered[0]["Rendered"])):
-        print(rendered[0]["Rendered"][i])
+    for i in range(len(rendered)):
+        token = rendered[-1-i]
+        time.sleep(0.05)
+        print("\n" * 50)
+        for row in token["Rendered"]:
+            print("     "+row)
+        print("\n" * 10)
+    # for i in range(len(rendered[0]["Rendered"])):
+    #     print(rendered[0]["Rendered"][i])
 
 
 eqlist = [
     # r"{\frac{1}{\sqrt{n^4 + \frac{1}{n^2}}} + e_{\frac{a^2}{b^3}}}",
 
     # r"e^\frac{-b \pm \sqrt{b^{2a^4} - 4a c}}{2a}",
-    r"\frac{-b \pm \sqrt{b^2- 4a c}}{2a}",
+    # r"\frac{-b \pm \sqrt{b^2- 4a c}}{2a}",
 
     # r"{x^{x^{x^{x^{x}}}}}",
     # r"{{{{x^x}^x}^x}^x}",
@@ -564,9 +568,13 @@ eqlist = [
 
     # r"e^{i\theta} = \cos\theta + i\sin\theta",
 
+    # r"F_n = ",
+    # r"F_n = \frac{}{}",
+    # r"F_n = \frac{\phi^n - }{}",
+    # r"F_n = \frac{\phi^n - \psi^n}{}",
     # r"F_n = \frac{\phi^n - \psi^n}{\sqrt5}",
     # r"\phi = \frac{1+\sqrt5}2, \psi = \frac{1-\sqrt5}2",
-    # r"F_n = \frac{1}{\sqrt5} \left[ \left( \frac{1+\sqrt5}2 \right) ^n - \left( \frac{1-\sqrt5}2 \right) ^n \right]",
+    r"F_n =~ \frac{1}{\sqrt5} \ \left[\ \left( \frac{1+\sqrt5}2 \right) ^n -~ \left( \frac{1-\sqrt5}2 \right) ^n \right]",
 
     # r"_\LaTeX^\TeXtR",
     # r"\sum^{n=0}_k x~-~\sqrt{x}-1",
@@ -574,6 +582,7 @@ eqlist = [
     # r"\left\{\sqrt2\right\}",
     # r"\left( \sqrt2 \right)",
     # r"\left\{ \sqrt2 \right\}",
+    # r"F_n = \frac{1}{\sqrt5} \left[ \left( \frac{1+\sqrt5}2 \right) ^n - \left( \frac{1-\sqrt5}2 \right) ^n \right]"
 ]
 for equation in eqlist:
     print("\n\n")

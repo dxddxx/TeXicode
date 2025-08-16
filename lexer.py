@@ -24,15 +24,17 @@ def lexer(tex: str) -> list:
         char_type = get_char_type(char)
         token_val += char
         if len(token_val) > 1:
-            if (i == len(tex)-1 or
+            if (i == len(tex) - 1 or
                     char_type != get_char_type(tex[i+1]) or
                     char_type == "symb"):
                 token_val = token_val[1:]
                 token_type = "cmnd"
-        elif token_val != "\\":
-            token_type = char_type
-        else:
+        elif token_val == "\\":
             token_type = ""
+            if i == len(tex) - 1:
+                raise ValueError(f"lexer error: Unexpexted character {char}")
+        else:
+            token_type = char_type
 
         if token_type:
             if token_type == "symb" and token_val == " ":

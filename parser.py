@@ -39,12 +39,14 @@ def get_node_type(token: tuple, parent_type: str) -> str:
         return token[0]  # token type
 
 
-def get_script_base(nodes: list, sibling_list: list) -> int:
+def get_script_base(node_type, nodes: list, parent_stack: list) -> int:
+    if not (bool(parent_stack) and node_type in {"sup_scrpt", "sub_scrpt"}):
+        return -1
     base_id = -1
+    sibling_list = nodes[parent_stack[-1]][2]
     if len(sibling_list) >= 1:
         base_id = sibling_list[-1]
-    if nodes[base_id][0] in {"sup_scrpt", "sub_scrpt"} or \
-            nodes[base_id][0] in only_poppable_by.keys():
+    if nodes[base_id][0] in {"sup_scrpt", "sub_scrpt"}:
         if len(sibling_list) >= 2:
             base_id = sibling_list[-2]
         else:
@@ -53,7 +55,7 @@ def get_script_base(nodes: list, sibling_list: list) -> int:
 
 
 only_poppable_by = {
-    "opn_root":  "cls_root",
+    "opn_root": "cls_root",
     "opn_brac": "cls_brac",
     "opn_degr": "cls_degr",
     "opn_dlim": "cls_dlim",
@@ -72,7 +74,9 @@ always_poppable = {
 
 
 def can_pop(parent_node_type: str, node_type: str) -> bool:
-    if parent_node_type in only_poppable_by.keys():
+    if parent_node_type == "none":
+        return False
+    elif parent_node_type in only_poppable_by.keys():
         if only_poppable_by[parent_node_type] == node_type:
             return True
         else:
@@ -99,10 +103,9 @@ double_child_nodes = {
     "cmd_frac",
 }
 
-multi_child_nodes = only_poppable_by.keys()
-
 
 def parent_stack_add(node_type: str, node_id: int) -> list:
+    multi_child_nodes = only_poppable_by.keys()
     add_len = 0
     add_stack = []
     if node_type in single_child_nodes:
@@ -125,11 +128,25 @@ cannot_add = {
     }
 
 
-def can_add(node_type: str) -> bool:
-    if node_type in cannot_add:
+def can_add(node_type: str, parent: list) -> bool:
+    if parent[0] == "none":
+        if node_type == "opn_root":
+            return True
         return False
-    else:
-        return True
+    can_add = True
+    parent_type = parent[0]
+    if node_type in only_poppable_by.values():
+        if parent_type not in only_poppable_by.keys():
+            raise ValueError(f"parse error: Extra {node_type} under {parent_type}")
+        else:
+            expected = only_poppable_by[parent_type]
+        if expected == node_type:
+            can_add = True
+        else:
+            raise ValueError(f"parse error: Expected {expected}, got {node_type}")
+    if node_type in cannot_add:
+        can_add = False
+    return can_add
 
 
 def parse(tokens: list) -> list:
@@ -139,30 +156,29 @@ def parse(tokens: list) -> list:
 
     for i in range(len(tokens)):
         token = tokens[i]
-        print(i, token, node_id)
-
+        parent = ("none", (), [], [])
         if parent_stack:
             parent_id = parent_stack[-1]
             parent = nodes[parent_id]
-            parent_type = parent[0]
-        else:
-            parent_type = "none"
+        parent_type = parent[0]
         node_type = get_node_type(token, parent_type)
-        if parent_stack:
-            sibling_list = parent[2]
-            base_id = get_script_base(nodes, sibling_list)
-            if node_type in {"sup_scrpt", "sub_scrpt"} and base_id != -1:
-                nodes[base_id][3].append(node_id)
-            if can_add(node_type):
-                nodes[parent_id][2].append(node_id)
-            if can_pop(parent_type, node_type):
-                parent_stack.pop()
+        can_add_to_nodes = can_add(node_type, parent)
+        can_add_to_children_list = can_add_to_nodes and bool(parent_stack)
+        can_pop_parent = can_pop(parent_type, node_type)
+        base_id = get_script_base(node_type, nodes, parent_stack)
 
-        added_stack = parent_stack_add(node_type, node_id)
-        if added_stack:
-            parent_stack += added_stack
-        if can_add(node_type):
+        if base_id != -1:
+            nodes[base_id][3].append(node_id)
+            can_add_to_children_list = False
+            can_pop_parent = False
+        if can_pop_parent:
+            parent_stack.pop()
+        if can_add_to_children_list:
+            nodes[parent_id][2].append(node_id)
+        parent_stack += parent_stack_add(node_type, node_id)
+        if can_add_to_nodes:
             node = (node_type, token, [], [])
             nodes.append(node)
             node_id += 1
+        print(i, parent_stack)
     return nodes
