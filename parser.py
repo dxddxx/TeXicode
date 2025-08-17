@@ -79,17 +79,14 @@ def can_pop(parent_node_type: str, node_type: str) -> bool:
     elif parent_node_type in only_poppable_by.keys():
         if only_poppable_by[parent_node_type] == node_type:
             return True
-        else:
-            return False
     elif parent_node_type in only_unpoppable_by.keys():
-        if only_unpoppable_by[parent_node_type] == node_type:
-            return False
-        else:
+        if only_unpoppable_by[parent_node_type] != node_type:
             return True
     elif parent_node_type in always_poppable:
         return True
     else:
         raise ValueError(f"unknown parent {parent_node_type}")
+    return False
 
 
 single_child_nodes = {
@@ -128,22 +125,19 @@ cannot_add = {
     }
 
 
-def can_add(node_type: str, parent: list) -> bool:
-    if parent[0] == "none":
+def can_add(parent_type: str, node_type: str) -> bool:
+    if parent_type == "none":
         if node_type == "opn_root":
             return True
         return False
     can_add = True
-    parent_type = parent[0]
     if node_type in only_poppable_by.values():
         if parent_type not in only_poppable_by.keys():
             raise ValueError(f"parse error: Extra {node_type} under {parent_type}")
-        else:
-            expected = only_poppable_by[parent_type]
-        if expected == node_type:
-            can_add = True
-        else:
+        expected = only_poppable_by[parent_type]
+        if expected != node_type:
             raise ValueError(f"parse error: Expected {expected}, got {node_type}")
+        can_add = True
     if node_type in cannot_add:
         can_add = False
     return can_add
@@ -156,13 +150,12 @@ def parse(tokens: list) -> list:
 
     for i in range(len(tokens)):
         token = tokens[i]
-        parent = ("none", (), [], [])
+        parent_type = "none"
         if parent_stack:
             parent_id = parent_stack[-1]
-            parent = nodes[parent_id]
-        parent_type = parent[0]
+            parent_type = nodes[parent_id][0]
         node_type = get_node_type(token, parent_type)
-        can_add_to_nodes = can_add(node_type, parent)
+        can_add_to_nodes = can_add(parent_type, node_type)
         can_add_to_children_list = can_add_to_nodes and bool(parent_stack)
         can_pop_parent = can_pop(parent_type, node_type)
         base_id = get_script_base(node_type, nodes, parent_stack)
