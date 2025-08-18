@@ -8,7 +8,8 @@ TeX Terminal Renderer, a terminal TeX renderer in the terminal that renders TeX 
 1. run in terminal: `./textr "\prod_{i=0}^n\ x ~=~ x^n"`, replace your own TeX equation inside quotes
 1. Enjoy beautiful Unicode art
 
-[!omg] github can't even render in monospace and box glyphs don't even line up, go try yourself, all equations on this page look horrible
+> [!IMPORTANT]
+> omg github can't even render in monospace and box glyphs don't even line up, go try yourself, all equations on this page look horrible
 
 ```text
  ₙ        
