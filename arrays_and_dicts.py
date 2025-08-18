@@ -99,7 +99,7 @@ single_line_commands_art = {
     "forall": "∀", "exists": "∃", "owns": "∋", "ni": "∌",
     "in": "∈", "notin": "∉", "qed": "∎", "pm": "±",
     "mp": "∓", "cong": "≅", "neq": "≠", "nmid": "∤",
-    "subset": "⊂", "subseteq": "⊆", "subseteq": "⊇", "supset": "⊃",
+    "subset": "⊂", "subseteq": "⊆", "supseteq": "⊇", "supset": "⊃",
     # "sqrt" : "radical",
     # "buildrel" : "buildrel",
     # "frac" : "fraction",
@@ -141,7 +141,7 @@ frac_art = "─"
 sqrt_art = {
     "top_bar": "─",
     "top_left_angle": bg_art + "┌",
-    "left_bar": bg_art + "│",
+    "left_bar":       bg_art + "│",
     "btm_left_angle":         "🯓🯗",
 }
 

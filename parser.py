@@ -4,24 +4,21 @@ node_type_parent_dependent_dict = {
 }
 
 node_type_dict = {
-    ("meta", "start"): "opn_root",
-    ("meta",   "end"): "cls_root",
-    ("symb",     "^"): "sup_scrpt",
-    ("symb",     "_"): "sub_scrpt",
-    ("symb",     "{"): "opn_brac",
-    ("symb",     "}"): "cls_brac",
-    ("cmnd",  "left"): "opn_dlim",
-    ("cmnd", "right"): "cls_dlim",
-    ("cmnd",  "sqrt"): "cmd_sqrt",
-    ("cmnd",  "frac"): "cmd_frac",
-    ("cmnd",   "sum"): "ctr_base",
-    ("cmnd",  "prod"): "ctr_base",
-    ("cmnd",   "lim"): "ctr_base",
-    ("cmnd",   "limits"): "cmd_lmts",
-    ("cmnd",     "iint"): "ctr_base",
-    ("cmnd",    "iiint"): "ctr_base",
-    ("cmnd",  "iiiiint"): "ctr_base",
-    ("cmnd", "idotsint"): "ctr_base",
+    ("meta",  "start"): "opn_root",
+    ("meta",    "end"): "cls_root",
+    ("symb",      "^"): "sup_scrpt",
+    ("symb",      "_"): "sub_scrpt",
+    ("symb",      "{"): "opn_brac",
+    ("symb",      "}"): "cls_brac",
+    ("cmnd",   "left"): "opn_dlim",
+    ("cmnd",  "right"): "cls_dlim",
+    ("cmnd",   "sqrt"): "cmd_sqrt",
+    ("cmnd",   "frac"): "cmd_frac",
+    ("cmnd",  "binom"): "cmd_binom",
+    ("cmnd",    "sum"): "ctr_base",
+    ("cmnd",   "prod"): "ctr_base",
+    ("cmnd",    "lim"): "ctr_base",
+    ("cmnd", "limits"): "cmd_lmts",
 }
 
 
@@ -40,18 +37,30 @@ def get_node_type(token: tuple, parent_type: str) -> str:
 
 
 def get_script_base(node_type, nodes: list, parent_stack: list) -> int:
-    if not (bool(parent_stack) and node_type in {"sup_scrpt", "sub_scrpt"}):
+    script_types = {"sup_scrpt", "sub_scrpt", "top_scrpt", "btm_scrpt"}
+    if not (bool(parent_stack) and node_type in script_types):
         return -1
     base_id = -1
     sibling_list = nodes[parent_stack[-1]][2]
     if len(sibling_list) >= 1:
         base_id = sibling_list[-1]
-    if nodes[base_id][0] in {"sup_scrpt", "sub_scrpt"}:
+    else:
+        return base_id
+    if nodes[base_id][0] in script_types:
         if len(sibling_list) >= 2:
             base_id = sibling_list[-2]
         else:
             base_id = -1
     return base_id
+
+
+def update_node_type(base_node_type: str, script_node_type) -> str:
+    if base_node_type == "ctr_base":
+        return {"sup_scrpt": "top_scrpt",
+                "sub_scrpt": "btm_scrpt",
+                "cmd_lmts": "cmd_lmts"}[script_node_type]
+    else:
+        return script_node_type
 
 
 only_poppable_by = {
@@ -67,8 +76,11 @@ only_unpoppable_by = {
 
 always_poppable = {
     "cmd_frac",
+    "cmd_binom",
     "sup_scrpt",
     "sub_scrpt",
+    "top_scrpt",
+    "btm_scrpt",
     "cls_dlim",
 }
 
@@ -92,12 +104,15 @@ def can_pop(parent_node_type: str, node_type: str) -> bool:
 single_child_nodes = {
     "sup_scrpt",
     "sub_scrpt",
+    "top_scrpt",
+    "btm_scrpt",
     "cmd_sqrt",
     "cls_dlim",
 }
 
 double_child_nodes = {
     "cmd_frac",
+    "cmd_binom",
 }
 
 
@@ -161,7 +176,9 @@ def parse(tokens: list) -> list:
         base_id = get_script_base(node_type, nodes, parent_stack)
 
         if base_id != -1:
-            nodes[base_id][3].append(node_id)
+            base_node = nodes[base_id]
+            node_type = update_node_type(base_node[0], node_type)
+            base_node[3].append(node_id)
             can_add_to_children_list = False
             can_pop_parent = False
         if can_pop_parent:
@@ -173,5 +190,4 @@ def parse(tokens: list) -> list:
             node = (node_type, token, [], [])
             nodes.append(node)
             node_id += 1
-        print(i, parent_stack)
     return nodes
