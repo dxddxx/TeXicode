@@ -1,4 +1,4 @@
 scrap_paper.txt
-oldmain.py
-arrays_and_dicts.py
+src/oldmain.py
+src/arrays_and_dicts.py
 __pycache__
