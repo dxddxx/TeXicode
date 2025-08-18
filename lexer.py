@@ -32,7 +32,7 @@ def lexer(tex: str) -> list:
         elif token_val == "\\":
             token_type = ""
             if i == len(tex) - 1:
-                raise ValueError(f"lexer error: Unexpexted character {char}")
+                raise ValueError(f"Unexpexted character {char}")
         else:
             token_type = char_type
 

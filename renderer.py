@@ -161,6 +161,10 @@ def render_open_delimiter(children: list) -> tuple:
     if height == 1:
         return render_concat((left_delim, 0), (inside, 0), (right_delim, 0))
 
+    if left_delim not in arts.delimiter["left"]["sgl"]:
+        raise ValueError(f"Invalid delimiter type {left_delim}")
+    if right_delim not in arts.delimiter["right"]["sgl"]:
+        raise ValueError(f"Invalid delimiter type {right_delim}")
     left_art_col = arts.delimiter["left"]["sgl"].find(left_delim)
     right_art_col = arts.delimiter["right"]["sgl"].find(right_delim)
     left_art = dict()
@@ -181,8 +185,6 @@ def render_open_delimiter(children: list) -> tuple:
 
 
 def render_close_delimiter(children: list) -> tuple:
-    if len(children) != 1:
-        raise ValueError("too many delimiter")
     return children[0]
 
 

@@ -97,7 +97,7 @@ def can_pop(parent_node_type: str, node_type: str) -> bool:
     elif parent_node_type in always_poppable:
         return True
     else:
-        raise ValueError(f"unknown parent {parent_node_type}")
+        raise ValueError(f"Unknown parent {parent_node_type}")
     return False
 
 
@@ -148,10 +148,10 @@ def can_add(parent_type: str, node_type: str) -> bool:
     can_add = True
     if node_type in only_poppable_by.values():
         if parent_type not in only_poppable_by.keys():
-            raise ValueError(f"parse error: Extra {node_type} under {parent_type}")
+            raise ValueError(f"Extra {node_type} under {parent_type}")
         expected = only_poppable_by[parent_type]
         if expected != node_type:
-            raise ValueError(f"parse error: Expected {expected}, got {node_type}")
+            raise ValueError(f"Expected {expected}, got {node_type}")
         can_add = True
     if node_type in cannot_add:
         can_add = False
