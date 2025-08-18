@@ -18,14 +18,19 @@ def render_leaf(token: tuple) -> tuple:
     token_type = token[0]
     token_val = token[1]
     horizon = 0
-    if token_type in {"alph", "numb"}:
+    if token_type == "numb":
         return [token_val], horizon
     elif token_type == "symb":
         if token_val in simple_symbols:
             return [token_val], horizon
         elif token_val in arts.special_symbols.keys():
-            return arts.special_symbols[token_val], horizon
-
+            return [arts.special_symbols[token_val]], horizon
+    elif token_type == "alph":
+        if 'A' <= token_val <= 'Z':  # Uppercase
+            alpha_id = ord(token_val) - ord('A')
+        elif 'a' <= token_val <= 'z':  # Lowercase
+            alpha_id = ord(token_val) - ord('a') + 26
+        return [arts.default_alpha[alpha_id]], horizon
     elif token_type == "cmnd":
         if token_val in simple_leaf_commands:
             return [token_val], horizon
@@ -34,8 +39,8 @@ def render_leaf(token: tuple) -> tuple:
         elif token_val in arts.multi_line_leaf_commands.keys():
             return arts.multi_line_leaf_commands[token_val]
         else:
-            print(f"unknown command {token_val}, rendering as is")
-            return [token_val], 0
+            print(f"unknown command {token_val}, rendering as '?'")
+            return ["?"], 0
 
 
 def render_concat(children: list) -> tuple:
@@ -107,6 +112,8 @@ def render_script(children: list, script_type_id: int) -> tuple:
         return render_vert_pile(top, [" "], 0, btm, "left")
     shrinked_row = ""
     for char in sketch[0]:
+        if char in arts.default_alpha and arts.default_alpha != arts.regular_alpha:
+            char = arts.regular_alpha[arts.default_alpha.find(char)]
         if char not in arts.unicode_scripts.keys():
             return render_vert_pile(top, [" "], 0, btm, "left")
         shrinked_char = arts.unicode_scripts[char][script_type_id]
@@ -155,18 +162,18 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
 
 def render_open_delimiter(children: list) -> tuple:
     inside, horizon = render_concat(children[1:-1])
-    left_delim = children[0][0][0]
-    right_delim = children[-1][0][0]
+    left_delim = children[0][0]
+    right_delim = children[-1][0]
     height = len(inside)
     if height == 1:
-        return render_concat((left_delim, 0), (inside, 0), (right_delim, 0))
+        return render_concat([(left_delim, 0), (inside, 0), (right_delim, 0)])
 
-    if left_delim not in arts.delimiter["left"]["sgl"]:
+    left_art_col = arts.delimiter["left"]["sgl"].find(left_delim[0])
+    right_art_col = arts.delimiter["right"]["sgl"].find(right_delim[0])
+    if left_art_col == -1:
         raise ValueError(f"Invalid delimiter type {left_delim}")
-    if right_delim not in arts.delimiter["right"]["sgl"]:
+    if right_art_col == -1:
         raise ValueError(f"Invalid delimiter type {right_delim}")
-    left_art_col = arts.delimiter["left"]["sgl"].find(left_delim)
-    right_art_col = arts.delimiter["right"]["sgl"].find(right_delim)
     left_art = dict()
     right_art = dict()
     for pos in arts.delimiter["left"]:
@@ -197,7 +204,9 @@ def render_binomial(children: list) -> tuple:
 
 def render_fraction(children: list) -> tuple:
     numer, denom = children[0][0], children[1][0]
-    fraction_line = max(len(numer[0]), len(denom[0])) * arts.fraction
+    art = arts.fraction
+    fraction_line = max(len(numer[0]), len(denom[0])) * art[1]
+    fraction_line = art[0] + fraction_line + art[2]
     return render_vert_pile(numer, [fraction_line], 0, denom, "center")
 
 
@@ -205,12 +214,14 @@ def render_square_root(children: list) -> tuple:
     degree_sketch, degree_horizon = children[0]
     radicand_sketch, radicand_horizon = children[-1]
     # new math vocab learned: radicand
-    top_bar = arts.square_root["top_bar"] * len(radicand_sketch[0])
+    radicand_sketch = render_sup_script(children)[0]
+    art = arts.square_root
+    top_bar = art["top_bar"] * len(radicand_sketch[0])
     sqrted_sketch = [top_bar] + radicand_sketch
     for i in range(len(sqrted_sketch)):
-        sqrted_sketch[i] = arts.square_root["left_bar"] + sqrted_sketch[i]
-    sqrted_sketch[0] = arts.square_root["top_angle"] + sqrted_sketch[0][2:]
-    sqrted_sketch[-1] = arts.square_root["btm_angle"] + sqrted_sketch[-1][2:]
+        sqrted_sketch[i] = art["left_bar"] + sqrted_sketch[i] + arts.bg
+    sqrted_sketch[0] = art["top_angle"] + sqrted_sketch[0][2:-1] + art["top_bar_end"]
+    sqrted_sketch[-1] = art["btm_angle"] + sqrted_sketch[-1][2:]
     return sqrted_sketch, radicand_horizon + 1
 
 
