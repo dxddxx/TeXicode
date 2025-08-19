@@ -42,6 +42,8 @@ def lexer(tex: str) -> list:
                 continue
             tokens.append((token_type, token_val))
             token_type, token_val = "", ""
+    tokens.insert(0, ("meta", "startline"))
+    tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))
     tokens.append(("meta", "end"))
     return tokens

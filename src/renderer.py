@@ -1,17 +1,17 @@
 import arts
+import symbols_art
 
-# from ../inspirations/tex2utf.pl
+# from https://latexref.xyz/Math-functions.html
 simple_leaf_commands = {
-    " ",
-    # '@',  # \@ does not work
-    "_", "$", "{", "}", "#", "&", "arccos", "arcsin", "arctan", "arg", "cos",
-    "cosh", "cot", "coth", "csc", "deg", "det", "dim", "exp", "gcd", "hom",
-    "inf", "ker", "lg", "lim", "liminf", "limsup", "ln", "log", "max", "min",
+    " ", "_", "$", "{", "}", "#", "&",
+    "arccos", "arcsin", "arctan", "arg", "bmod", "cos", "cosh", "cot", "coth",
+    "csc", "deg", "det", "dim", "exp", "gcd", "hom", "inf", "ker", "lg", "lim",
+    "liminf", "limsup", "ln", "log", "max", "min", "pmod",
     # "mod",  # \mod creates leading spaces, not simple
     "Pr", "sec", "sin", "sinh", "sup", "tan", "tanh", "%",
 }
 
-simple_symbols = """`!@#$%&*()+-=[]|;:'",.<>/?"""
+simple_symbols = """`!@#$%*()+-=[]|;:'",.<>/?"""
 
 
 def render_leaf(token: tuple) -> tuple:
@@ -26,18 +26,14 @@ def render_leaf(token: tuple) -> tuple:
         elif token_val in arts.special_symbols.keys():
             return [arts.special_symbols[token_val]], horizon
     elif token_type == "alph":
-        if 'A' <= token_val <= 'Z':  # Uppercase
-            alpha_id = ord(token_val) - ord('A')
-        elif 'a' <= token_val <= 'z':  # Lowercase
-            alpha_id = ord(token_val) - ord('a') + 26
-        return [arts.default_alpha[alpha_id]], horizon
+        return render_font("mathnormal", [token_val])
     elif token_type == "cmnd":
         if token_val in simple_leaf_commands:
             return [token_val], horizon
-        elif token_val in arts.single_line_leaf_commands.keys():
-            return [arts.single_line_leaf_commands[token_val]], horizon
         elif token_val in arts.multi_line_leaf_commands.keys():
             return arts.multi_line_leaf_commands[token_val]
+        elif token_val in symbols_art.symbols.keys():
+            return [symbols_art.symbols[token_val]], horizon
         else:
             print(f"unknown command {token_val}, rendering as '?'")
             return ["?"], 0
@@ -112,8 +108,7 @@ def render_script(children: list, script_type_id: int) -> tuple:
         return render_vert_pile(top, [" "], 0, btm, "left")
     shrinked_row = ""
     for char in sketch[0]:
-        if char in arts.default_alpha and arts.default_alpha != arts.regular_alpha:
-            char = arts.regular_alpha[arts.default_alpha.find(char)]
+        char = revert_font(char)
         if char not in arts.unicode_scripts.keys():
             return render_vert_pile(top, [" "], 0, btm, "left")
         shrinked_char = arts.unicode_scripts[char][script_type_id]
@@ -210,6 +205,45 @@ def render_fraction(children: list) -> tuple:
     return render_vert_pile(numer, [fraction_line], 0, denom, "center")
 
 
+def render_accents(accent_val: str, children: list) -> tuple:
+    import unicodedata
+    u_hex = {"acute": "\u0302", "bar": "\u0304", "breve": "\u0306",
+             "check": "\u030C", "ddot": "\u0308", "dot": "\u0307",
+             "grave": "\u0300", "hat": "\u0302", "mathring": "\u030A",
+             "tilde": "\u0303", "vec": "\u20D7", "widehat": "\u0302",  # fix
+             "widetilde": "\u0360"}[accent_val]
+    sketch = children[0][0]
+    first_char = sketch[0][0] + u_hex
+    first_char = unicodedata.normalize("NFKC", first_char)
+    # pls fix this, pre composed font looks like ass
+    first_row = first_char + sketch[0][1:]
+    sketch = [first_row] + sketch[1:]
+    return sketch, children[0][1]
+
+
+def render_font(font_val: str, children: list) -> tuple:
+    alpha_val = children[0][0][0]
+    if alpha_val not in arts.font["mathrm"]:
+        return [alpha_val], 0
+    if 'A' <= alpha_val <= 'Z':  # Uppercase
+        alpha_id = ord(alpha_val) - ord('A')
+    elif 'a' <= alpha_val <= 'z':  # Lowercase
+        alpha_id = ord(alpha_val) - ord('a') + 26
+    return [arts.font[font_val][alpha_id]], 0
+
+
+def revert_font(char: str) -> str:
+    if char.isascii():
+        return char
+    for alphabet in arts.font.values():
+        if char not in alphabet:
+            continue
+        for alpha_id in range(26):
+            if alphabet[alpha_id] != char:
+                return arts.font["mathrm"][alpha_id]
+    return char
+
+
 def render_square_root(children: list) -> tuple:
     degree_sketch, degree_horizon = children[0]
     radicand_sketch, radicand_horizon = children[-1]
@@ -217,16 +251,28 @@ def render_square_root(children: list) -> tuple:
     radicand_sketch = render_sup_script(children)[0]
     art = arts.square_root
     top_bar = art["top_bar"] * len(radicand_sketch[0])
-    sqrted_sketch = [top_bar] + radicand_sketch
-    for i in range(len(sqrted_sketch)):
-        sqrted_sketch[i] = art["left_bar"] + sqrted_sketch[i] + arts.bg
-    sqrted_sketch[0] = art["top_angle"] + sqrted_sketch[0][2:-1] + art["top_bar_end"]
-    sqrted_sketch[-1] = art["btm_angle"] + sqrted_sketch[-1][2:]
-    return sqrted_sketch, radicand_horizon + 1
+    sqrt_sketch = [top_bar] + radicand_sketch
+    for i in range(len(sqrt_sketch)):
+        sqrt_sketch[i] = art["left_bar"] + sqrt_sketch[i] + arts.bg
+    sqrt_sketch[0] = art["top_angle"] + sqrt_sketch[0][2:-1] + art["top_tail"]
+    sqrt_sketch[-1] = art["btm_angle"] + sqrt_sketch[-1][2:]
+    return sqrt_sketch, radicand_horizon + 1
 
 
-def render_parent(node_type: str, children: list) -> tuple:
-    if node_type in {"opn_root", "opn_brac", "opn_degr"}:
+def render_root(children: list) -> tuple:
+    sketch = children.pop(0)[0]
+    horizon = 0
+    for child in children:
+        top = sketch
+        btm = child[0]
+        sketch, horizon = render_vert_pile(top, [" "], 0, btm, "center")
+    return sketch, horizon
+
+
+def render_parent(node_type: str, token_val: str, children: list) -> tuple:
+    if node_type == "opn_root":
+        return render_root(children)
+    if node_type in {"opn_line", "opn_brac", "opn_degr"}:
         return render_concat(children)
     elif node_type == "opn_dlim":
         return render_open_delimiter(children)
@@ -248,6 +294,12 @@ def render_parent(node_type: str, children: list) -> tuple:
         return render_fraction(children)
     elif node_type == "cmd_binom":
         return render_binomial(children)
+    elif node_type == "cmd_acnt":
+        return render_accents(token_val, children)
+    elif node_type == "cmd_font":
+        return render_font(token_val, children)
+    elif node_type == "cmd_lbrk":
+        return render_concat(children)
     else:
         raise ValueError(f"Undefined node {node_type}")
 
@@ -264,6 +316,11 @@ parent_node_types = {
     "cmd_sqrt",
     "cmd_frac",
     "cmd_binom",
+    "cmd_acnt",
+    "cmd_font",
+    "opn_line",
+    "cls_line",
+    "cmd_lbrk",
 }
 
 leaf_node_types = {
@@ -294,7 +351,7 @@ def render(nodes: list) -> list:
         if node_type in leaf_node_types:
             sketch, horizon = render_leaf(node_token)
         elif node_type in parent_node_types:
-            sketch, horizon = render_parent(node_type, children)
+            sketch, horizon = render_parent(node_type, node_token[1], children)
         else:
             raise ValueError(f"Undefined control sequence {node_token[1]}")
 
