@@ -90,8 +90,10 @@ arctan⎜-╶────╴⎟=╶─╴
     - makes long concatenated expression readable
     - space saving square roots kinda goes against this, might fix later
     - maybe add vertical horizon as well for &= aligning
-- Aesthetics first, clarity even more fist
+- Aesthetics first, clarity even more first (0th)
     - the square root tail is too long but it makes it clear
+    - all glyphs must connect, sums, square roots, etc
+- Fully utilize Unicode chars, expressions should look as good as the possibly can
 
 # TODO
 

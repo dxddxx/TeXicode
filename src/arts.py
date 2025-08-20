@@ -86,18 +86,18 @@ multi_line_leaf_commands = {
 
 square_root = {
     "top_bar": "─",
-    "top_bar_end": "╴",
+    "top_tail": "╴",
     "top_angle": " ┌",
     "left_bar":  " │",
     "btm_angle": "🯓🯗",
 }
-square_root = {
-    "top_bar": "─",
-    "top_tail": "╴",
-    "top_angle": " ┌",
-    "left_bar":  " │",
-    "btm_angle": "╰┘",
-}
+# square_root = {
+#     "top_bar": "─",
+#     "top_tail": "╴",
+#     "top_angle": " ┌",
+#     "left_bar":  " │",
+#     "btm_angle": "╰┘",
+# }
 
 unicode_scripts = {
     " ": "  ", "0": "⁰₀", "1": "¹₁", "2": "²₂", "3": "³₃", "4": "⁴₄",
