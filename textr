@@ -1,3 +1,8 @@
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PYTHON_SCRIPT="$SCRIPT_DIR/src/main.py"
-python3 "$PYTHON_SCRIPT" "$@"
+#!/usr/bin/env bash
+SCRIPT_DIR="$(dirname "$(readlink -f "$BASH_SOURCE")")"
+
+echo $BASH_SOURCE
+echo $SCRIPT_DIR
+
+
+
