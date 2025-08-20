@@ -90,13 +90,18 @@ arctan⎜-╶────╴⎟=╶─╴
     - makes long concatenated expression readable
     - space saving square roots kinda goes against this, might fix later
     - maybe add vertical horizon as well for &= aligning
-- Aesthetics first, clarity zeroth
+- Aesthetics first, clarity even more fist
     - the square root tail is too long but it makes it clear
 
 # TODO
 
 - handle scripts properly once and for all
+- square root with degree
 - align equation with &=
 - delimiters
     - tall angle brackets
     - `\middle`
+- proper errors
+    - this is a previewing tool
+    - people use previewing tools to check the validity of their latex
+    - wrong latex should wrong in here as well
