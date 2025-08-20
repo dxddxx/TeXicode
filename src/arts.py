@@ -49,12 +49,12 @@ multi_line_leaf_commands = {
      1),
     "int":
     (["⌠",
-      "┃",
+      "⎮",
       "⌡",],
      1),
     "iint":
     (["⌠⌠",
-      "┃┃",
+      "┃⎪",
       "⌡⌡",],
      1),
     "iiint":
@@ -91,13 +91,14 @@ square_root = {
     "left_bar":  " │",
     "btm_angle": "🯓🯗",
 }
-# square_root = {
-#     "top_bar": "─",
-#     "top_tail": "╴",
-#     "top_angle": " ┌",
-#     "left_bar":  " │",
-#     "btm_angle": "╰┘",
-# }
+
+square_root = {
+    "top_bar": "─",
+    "top_tail": "╴",
+    "top_angle": " ┌",
+    "left_bar":  " │",
+    "btm_angle": "╰┘",
+}
 
 unicode_scripts = {
     " ": "  ", "0": "⁰₀", "1": "¹₁", "2": "²₂", "3": "³₃", "4": "⁴₄",
