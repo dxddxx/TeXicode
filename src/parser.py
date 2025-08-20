@@ -14,6 +14,7 @@ node_type_dict = {
     ("cmnd",  "right"): "cls_dlim",
     ("cmnd",   "sqrt"): "cmd_sqrt",
     ("cmnd",   "frac"): "cmd_frac",
+    ("cmnd",  "tfrac"): "cmd_frac",
     ("cmnd",  "binom"): "cmd_binom",
     ("cmnd",    "sum"): "ctr_base",
     ("cmnd",   "prod"): "ctr_base",
@@ -43,6 +44,10 @@ node_type_dict = {
     ("cmnd",    "mathbb"): "cmd_font",
     ("meta", "startline"): "opn_line",
     ("meta",   "endline"): "cls_line",
+    ("cmnd",    "["): "opn_brak",
+    ("cmnd",    "]"): "cls_brak",
+    ("cmnd",    "("): "opn_pren",
+    ("cmnd",    ")"): "cls_pren",
     ("cmnd",    "\\"): "cmd_lbrk",
 }
 
@@ -117,8 +122,12 @@ node_type_info = {
     "cmd_acnt": ((False, []), (1,), (True, True, []), (True, False)),
     "cmd_font": ((False, []), (1,), (True, True, []), (True, False)),
     "opn_line": ((True, ["cls_line", "cmd_lbrk"]), (1,), (True, True, []), (True, False)),
+    "opn_brak": ((True, ["cls_brak", "cmd_lbrk"]), (1,), (True, True, []), (True, False)),
+    "opn_pren": ((True, ["cls_pren", "cmd_lbrk"]), (1,), (True, True, []), (True, False)),
     "cls_line": ((True, []), (0,), (False, False, ["opn_line", "cmd_lbrk"],), (False, False)),
-    "cmd_lbrk": ((True, ["cls_line", "cmd_lbrk"]), (1,), (True, False, ["cmd_lbrk", "opn_line"]), (True, True)),
+    "cls_brak": ((True, []), (0,), (False, False, ["opn_brak", "cmd_lbrk"],), (False, False)),
+    "cls_pren": ((True, []), (0,), (False, False, ["opn_pren", "cmd_lbrk"],), (False, False)),
+    "cmd_lbrk": ((True, ["cls_line", "cls_brak", "cls_pren", "cmd_lbrk"]), (1,), (True, False, ["cmd_lbrk", "opn_line", "opn_brak", "opn_pren"]), (True, True)),
 }
 
 

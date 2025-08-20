@@ -11,7 +11,7 @@ def render_tex(tex, debug):
     try:
         lexered = lexer(tex)
     except ValueError as e:
-        print("lexerizing error:", e)
+        print("TexTR lexerizing error:", e)
         return
     if debug:
         for token in lexered:
@@ -19,7 +19,7 @@ def render_tex(tex, debug):
     try:
         parsed = parse(lexered)
     except ValueError as e:
-        print("parsing error:", e)
+        print("TexTR parsing error:", e)
         return
     if debug:
         for i in range(len(parsed)):
@@ -27,7 +27,7 @@ def render_tex(tex, debug):
     try:
         rendered = render(parsed)
     except ValueError as e:
-        print("rendering error:", e)
+        print("TexTR rendering error:", e)
         return
     for i in range(len(rendered)):
         print(rendered[i])

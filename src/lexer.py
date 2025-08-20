@@ -19,6 +19,7 @@ def get_char_type(char: str) -> str:
 def lexer(tex: str) -> list:
     tokens = []
     token_type, token_val = "", ""
+    tex = tex.replace('\n', ' ').replace('\r', ' ')
     for i in range(len(tex)):
         char = tex[i]
         char_type = get_char_type(char)
@@ -42,8 +43,9 @@ def lexer(tex: str) -> list:
                 continue
             tokens.append((token_type, token_val))
             token_type, token_val = "", ""
-    tokens.insert(0, ("meta", "startline"))
-    tokens.append(("meta", "endline"))
+    if tokens[0] not in (("cmnd", "["), ("cmnd", "(")):
+        tokens.insert(0, ("meta", "startline"))
+        tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))
     tokens.append(("meta", "end"))
     return tokens

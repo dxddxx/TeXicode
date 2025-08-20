@@ -229,7 +229,8 @@ def render_font(font_val: str, children: list) -> tuple:
         alpha_id = ord(alpha_val) - ord('A')
     elif 'a' <= alpha_val <= 'z':  # Lowercase
         alpha_id = ord(alpha_val) - ord('a') + 26
-    return [arts.font[font_val][alpha_id]], 0
+    sketch = [arts.font[font_val][alpha_id]] 
+    return sketch, 0
 
 
 def revert_font(char: str) -> str:
@@ -238,8 +239,8 @@ def revert_font(char: str) -> str:
     for alphabet in arts.font.values():
         if char not in alphabet:
             continue
-        for alpha_id in range(26):
-            if alphabet[alpha_id] != char:
+        for alpha_id in range(26*2):
+            if alphabet[alpha_id] == char:
                 return arts.font["mathrm"][alpha_id]
     return char
 
@@ -272,7 +273,7 @@ def render_root(children: list) -> tuple:
 def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     if node_type == "opn_root":
         return render_root(children)
-    if node_type in {"opn_line", "opn_brac", "opn_degr"}:
+    if node_type in {"opn_line", "opn_brak", "opn_pren", "opn_brac", "opn_degr"}:
         return render_concat(children)
     elif node_type == "opn_dlim":
         return render_open_delimiter(children)
@@ -301,27 +302,31 @@ def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     elif node_type == "cmd_lbrk":
         return render_concat(children)
     else:
-        raise ValueError(f"Undefined node {node_type}")
+        raise ValueError(f"Undefined control sequence {token_val}")
 
 
-parent_node_types = {
-    "opn_root",
-    "opn_brac",
-    "opn_dlim",
-    "cls_dlim",
-    "sup_scrpt",
-    "sub_scrpt",
-    "top_scrpt",
-    "btm_scrpt",
-    "cmd_sqrt",
-    "cmd_frac",
-    "cmd_binom",
-    "cmd_acnt",
-    "cmd_font",
-    "opn_line",
-    "cls_line",
-    "cmd_lbrk",
-}
+# parent_node_types = {
+#     "opn_root",
+#     "opn_brac",
+#     "opn_dlim",
+#     "cls_dlim",
+#     "sup_scrpt",
+#     "sub_scrpt",
+#     "top_scrpt",
+#     "btm_scrpt",
+#     "cmd_sqrt",
+#     "cmd_frac",
+#     "cmd_binom",
+#     "cmd_acnt",
+#     "cmd_font",
+#     "opn_line",
+#     "opn_brak",
+#     "opn_pren",
+#     "cls_line",
+#     "cls_brak",
+#     "cls_pren",
+#     "cmd_lbrk",
+# }
 
 leaf_node_types = {
     "txt_leaf",
@@ -350,10 +355,9 @@ def render(nodes: list) -> list:
 
         if node_type in leaf_node_types:
             sketch, horizon = render_leaf(node_token)
-        elif node_type in parent_node_types:
-            sketch, horizon = render_parent(node_type, node_token[1], children)
+        # elif node_type in parent_node_types:
         else:
-            raise ValueError(f"Undefined control sequence {node_token[1]}")
+            sketch, horizon = render_parent(node_type, node_token[1], children)
 
         if scripts:
             sketch, horizon = render_apply_scripts(sketch, horizon, scripts)
