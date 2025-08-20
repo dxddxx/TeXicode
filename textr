@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 SCRIPT_DIR="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 
-echo $BASH_SOURCE
-echo $SCRIPT_DIR
-
-
-
+# if piped input is detected, use the whole input as a single argument
+# else use arg input as separate arguments
+[ ! -t 0 ] && piped_input="$(cat)"
+if [[ -n "$piped_input" ]]; then
+    python3 "$SCRIPT_DIR/src/main.py" "$piped_input"
+else
+    python3 "$SCRIPT_DIR/src/main.py" "$@"
+fi
