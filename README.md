@@ -7,6 +7,7 @@ TeX Terminal Renderer, a terminal TeX renderer in the terminal that renders TeX 
 1. Clone and `cd` into repo
 1. run in terminal: `./textr '\prod_{i=0}^n\ x ~=~ x^n'`, replace your own TeX equation inside quotes
     - use single quotes!
+    - `\[ \]` or `\( \)` is optional, `\begin` and `$` is not supported yet
 1. Enjoy beautiful Unicode art
 
 ```text
@@ -60,7 +61,7 @@ arctan⎜-╶────╴⎟=╶─╴
       ⎝  ╰┘³  ⎠    
 ```
 
-Notice the 3 under the square root is shrinked to save space, below is the same equation with full size 3
+Notice the 3 under the square root is shrunk to save space, below is the same equation with full size 3
 ```text
       ⎛   1   ⎞  π 
 arctan⎜-╶────╴⎟=╶─╴
@@ -79,11 +80,23 @@ arctan⎜-╶────╴⎟=╶─╴
 
 ```
 
+# Design Principles:
+
+- Use box drawing characters
+    - supported in most fonts
+    - consistent spacing between lines
+    - fine tune length with half length glyphs
+- Horizon (center line)
+    - makes long concatenated expression readable
+    - space saving square roots kinda goes against this, might fix later
+    - maybe add vertical horizon as well for &= aligning
+- Aesthetics first, clarity zeroth
+    - the square root tail is too long but it makes it clear
+
 # TODO
 
 - handle scripts properly once and for all
 - align equation with &=
 - delimiters
     - tall angle brackets
-    - `\big`
     - `\middle`

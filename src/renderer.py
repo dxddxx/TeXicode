@@ -26,7 +26,7 @@ def render_leaf(token: tuple) -> tuple:
         elif token_val in arts.special_symbols.keys():
             return [arts.special_symbols[token_val]], horizon
     elif token_type == "alph":
-        return render_font("mathnormal", [token_val])
+        return render_font("mathnormal", [([token_val], 0)])
     elif token_type == "cmnd":
         if token_val in simple_leaf_commands:
             return [token_val], horizon
@@ -155,6 +155,32 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
         return render_vert_pile(top, base_sketch, base_horizon, btm, "center")
 
 
+def render_big_delimiter(size: str, children: list) -> tuple:
+    delim = children[0][0][0]
+    art_col = arts.delimiter["sgl"].find(delim[0])
+    if art_col == -1:
+        raise ValueError(f"Invalid delimiter type {delim}")
+    delim_art = dict()
+    for pos in arts.delimiter:
+        art = arts.delimiter[pos]
+        delim_art[pos] = art[art_col]
+    height_dict = {"big": 1, "bigl": 1, "bigr": 1,
+                   "Big": 3, "Bigl": 3, "Bigr": 3,
+                   "bigg": 5, "biggl": 5, "biggr": 5,
+                   "Bigg": 7, "Biggl": 7, "Biggr": 7}
+    height = height_dict[size]
+    if height == 1:
+        return [delim], 0
+    horizon = height // 2
+    sketch = []
+    for _ in range(height):
+        sketch.append(delim_art["fil"])
+    sketch[horizon] = delim_art["ctr"]
+    sketch[0] = delim_art["top"]
+    sketch[-1] = delim_art["btm"]
+    return sketch, horizon
+
+
 def render_open_delimiter(children: list) -> tuple:
     inside, horizon = render_concat(children[1:-1])
     left_delim = children[0][0]
@@ -163,19 +189,19 @@ def render_open_delimiter(children: list) -> tuple:
     if height == 1:
         return render_concat([(left_delim, 0), (inside, 0), (right_delim, 0)])
 
-    left_art_col = arts.delimiter["left"]["sgl"].find(left_delim[0])
-    right_art_col = arts.delimiter["right"]["sgl"].find(right_delim[0])
+    left_art_col = arts.delimiter["sgl"].find(left_delim[0])
+    right_art_col = arts.delimiter["sgl"].find(right_delim[0])
     if left_art_col == -1:
         raise ValueError(f"Invalid delimiter type {left_delim}")
     if right_art_col == -1:
         raise ValueError(f"Invalid delimiter type {right_delim}")
     left_art = dict()
     right_art = dict()
-    for pos in arts.delimiter["left"]:
-        art = arts.delimiter["left"][pos]
+    for pos in arts.delimiter:
+        art = arts.delimiter[pos]
         left_art[pos] = art[left_art_col]
-    for pos in arts.delimiter["right"]:
-        art = arts.delimiter["right"][pos]
+    for pos in arts.delimiter:
+        art = arts.delimiter[pos]
         right_art[pos] = art[right_art_col]
     sketch = []
     for row in inside:
@@ -222,26 +248,33 @@ def render_accents(accent_val: str, children: list) -> tuple:
 
 
 def render_font(font_val: str, children: list) -> tuple:
-    alpha_val = children[0][0][0]
-    if alpha_val not in arts.font["mathrm"]:
-        return [alpha_val], 0
-    if 'A' <= alpha_val <= 'Z':  # Uppercase
-        alpha_id = ord(alpha_val) - ord('A')
-    elif 'a' <= alpha_val <= 'z':  # Lowercase
-        alpha_id = ord(alpha_val) - ord('a') + 26
-    sketch = [arts.font[font_val][alpha_id]] 
-    return sketch, 0
+    sketch, horizon = children[0]
+    new_sketch = []
+    for row in sketch:
+        new_row = ""
+        for char in row:
+            char = revert_font(char)
+            if char not in arts.alphabets["normal"]:
+                new_row += char
+                continue
+            if 'A' <= char <= 'Z':  # Uppercase
+                alpha_id = ord(char) - ord('A')
+            elif 'a' <= char <= 'z':  # Lowercase
+                alpha_id = ord(char) - ord('a') + 26
+            new_row += arts.font[font_val][alpha_id]
+        new_sketch.append(new_row)
+    return new_sketch, horizon
 
 
 def revert_font(char: str) -> str:
     if char.isascii():
         return char
-    for alphabet in arts.font.values():
+    for alphabet in arts.alphabets.values():
         if char not in alphabet:
             continue
         for alpha_id in range(26*2):
             if alphabet[alpha_id] == char:
-                return arts.font["mathrm"][alpha_id]
+                return arts.alphabets["normal"][alpha_id]
     return char
 
 
@@ -260,25 +293,36 @@ def render_square_root(children: list) -> tuple:
     return sqrt_sketch, radicand_horizon + 1
 
 
-def render_root(children: list) -> tuple:
+def render_vert_concat(children: list, sep: list, align: str) -> tuple:
     sketch = children.pop(0)[0]
     horizon = 0
     for child in children:
         top = sketch
         btm = child[0]
-        sketch, horizon = render_vert_pile(top, [" "], 0, btm, "center")
+        sketch, horizon = render_vert_pile(top, sep, 0, btm, align)
     return sketch, horizon
+
+
+def render_root(children: list) -> tuple:
+    return render_vert_concat(children, [" ", " "], "left")
+
+
+def render_substack(children: list) -> tuple:
+    return render_vert_concat(children, [""], "center")
 
 
 def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     if node_type == "opn_root":
         return render_root(children)
-    if node_type in {"opn_line", "opn_brak", "opn_pren", "opn_brac", "opn_degr"}:
+    if node_type in {"opn_line", "opn_brak", "opn_pren",
+                     "opn_brac", "opn_degr", "opn_stkln"}:
         return render_concat(children)
     elif node_type == "opn_dlim":
         return render_open_delimiter(children)
     elif node_type == "cls_dlim":
         return render_close_delimiter(children)
+    elif node_type == "big_dlim":
+        return render_big_delimiter(token_val, children)
     elif node_type == "sup_scrpt":
         return render_sup_script(children)
     elif node_type == "sub_scrpt":
@@ -301,6 +345,10 @@ def render_parent(node_type: str, token_val: str, children: list) -> tuple:
         return render_font(token_val, children)
     elif node_type == "cmd_lbrk":
         return render_concat(children)
+    elif node_type == "stk_lbrk":
+        return render_concat(children)
+    elif node_type == "cmd_sbstk":
+        return render_substack(children)
     else:
         raise ValueError(f"Undefined control sequence {token_val}")
 

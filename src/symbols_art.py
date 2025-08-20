@@ -12,6 +12,12 @@ symbols = {
     "LaTeX": "LᴬTₑX",
     "TeXtR": "TₑXᵀR",
     "mod": "  mod",
+    "boxtimes": "⊠",  # found in overleaf
+    "cdots": "⋯",
+    "dots": "…",
+    "ldots": "…",
+    "vdots": "⋮",
+    "ddots": "⋱",
     # from https://latexref.xyz/Math-symbols.html
     "|": "∥",
     "aleph": "ℵ",
