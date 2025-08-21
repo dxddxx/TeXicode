@@ -430,7 +430,7 @@ leaf_node_types = {
 }
 
 
-def render(nodes: list) -> list:
+def render(nodes: list, debug: bool) -> list:
     canvas = []
     for i in range(len(nodes)):
         canvas.append(())
@@ -457,4 +457,7 @@ def render(nodes: list) -> list:
         if scripts:
             sketch, horizon = render_apply_scripts(sketch, horizon, scripts)
         canvas[i] = (sketch, horizon)
+        if debug:
+            for i in range(len(sketch)):
+                print(i, sketch[i])
     return canvas[0][0]

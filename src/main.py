@@ -10,28 +10,21 @@ def render_tex(tex, debug):
     if debug:
         print(tex)
     try:
-        lexered = lexer(tex)
+        lexered = lexer(tex, debug)
     except ValueError as e:
         print("TexTR lexerizing error:", e)
         return
-    if debug:
-        for token in lexered:
-            print(token)
     try:
-        parsed = parse(lexered)
+        parsed = parse(lexered, debug)
     except ValueError as e:
         print("TexTR parsing error:", e)
         return
-    if debug:
-        for i in range(len(parsed)):
-            print(i, parsed[i])
     try:
-        rendered = render(parsed)
+        rendered = render(parsed, debug)
     except ValueError as e:
         print("TexTR rendering error:", e)
         return
     rendered_art = "\n".join(rendered)
-    # print(rendered_art)
     return rendered_art
 
 
@@ -39,21 +32,17 @@ def process_markdown(input_file):
     with open(input_file, 'r') as file:
         content = file.read()
 
-    # Regex to find LaTeX blocks: only $$...$$
-    latex_pattern = r'(\$\$.*?\$\$)'
+    # Regex to find LaTeX blocks: $...$ or $$...$$ or \[...\] or \[...\]
+    latex_pattern = r'(\$\$.*?\$\$|\\\[[^\]]*?\\\]|\\\([^\)]*?\\\))'
 
-    # Function to replace found LaTeX with ASCII art
     def replace_latex(match):
         latex_block = match.group(0)
         # Remove the $$ markers for rendering
         clean_latex = latex_block.strip('$')
-        ascii_art = render_tex(clean_latex, False)
-        return f"```\n{ascii_art}\n```"
+        tex_art = render_tex(clean_latex, False)
+        return f"\n```\n{tex_art}\n```\n"
 
-    # Replace LaTeX blocks with ASCII art
     modified_content = re.sub(latex_pattern, replace_latex, content, flags=re.DOTALL)
-
-    # Output modified content to standard output
     print(modified_content)
 
 

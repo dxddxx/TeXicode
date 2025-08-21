@@ -16,7 +16,7 @@ def get_char_type(char: str) -> str:
         return "backslash"
 
 
-def lexer(tex: str) -> list:
+def lexer(tex: str, debug: bool) -> list:
     tokens = []
     token_type, token_val = "", ""
     tex = tex.replace('\n', ' ').replace('\r', ' ')
@@ -43,6 +43,8 @@ def lexer(tex: str) -> list:
                 continue
             tokens.append((token_type, token_val))
             token_type, token_val = "", ""
+        if debug:
+            print(i, token_type, token_val)
     if tokens[0] not in (("cmnd", "["), ("cmnd", "(")):
         tokens.insert(0, ("meta", "startline"))
         tokens.append(("meta", "endline"))

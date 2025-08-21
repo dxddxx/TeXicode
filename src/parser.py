@@ -6,72 +6,57 @@ node_type_parent_dependent_dict = {
     ("stk_lbrk",  ("symb", "}")):  "cls_stkln",
     ("opn_stkln", ("cmnd", "\\")): "stk_lbrk",
     ("stk_lbrk",  ("cmnd", "\\")): "stk_lbrk",
+    ("opn_stkln", ("cmnd", "newline")): "stk_lbrk",
+    ("stk_lbrk",  ("cmnd", "newline")): "stk_lbrk",
 }
 
 node_type_dict = {
-    ("meta",  "start"): "opn_root",
-    ("meta",    "end"): "cls_root",
-    ("symb",      "^"): "sup_scrpt",
-    ("symb",      "_"): "sub_scrpt",
-    ("symb",      "{"): "opn_brac",
-    ("symb",      "}"): "cls_brac",
-    ("cmnd",   "left"): "opn_dlim",
-    ("cmnd",   "bigl"): "big_dlim",
-    ("cmnd",   "Bigl"): "big_dlim",
-    ("cmnd",  "biggl"): "big_dlim",
-    ("cmnd",  "Biggl"): "big_dlim",
-    ("cmnd",   "big"): "big_dlim",
-    ("cmnd",   "Big"): "big_dlim",
-    ("cmnd",  "bigg"): "big_dlim",
-    ("cmnd",  "Bigg"): "big_dlim",
-    ("cmnd",  "right"): "cls_dlim",
-    ("cmnd",   "bigr"): "big_dlim",
-    ("cmnd",   "Bigr"): "big_dlim",
-    ("cmnd",  "biggr"): "big_dlim",
-    ("cmnd",  "Biggr"): "big_dlim",
-    ("cmnd",   "sqrt"): "cmd_sqrt",
-    ("cmnd",   "frac"): "cmd_frac",
-    ("cmnd",  "tfrac"): "cmd_frac",
-    ("cmnd",  "dfrac"): "cmd_frac",
-    ("cmnd",  "cfrac"): "cmd_frac",
-    ("cmnd",  "binom"): "cmd_binom",
-    ("cmnd", "dbinom"): "cmd_binom",
-    ("cmnd",    "sum"): "ctr_base",
-    ("cmnd",   "prod"): "ctr_base",
-    ("cmnd",    "lim"): "ctr_base",
-    ("cmnd", "limits"): "cmd_lmts",
-    ("cmnd",     "acute"): "cmd_acnt",
-    ("cmnd",       "bar"): "cmd_acnt",
-    ("cmnd",     "breve"): "cmd_acnt",
-    ("cmnd",     "check"): "cmd_acnt",
-    ("cmnd",      "ddot"): "cmd_acnt",
-    ("cmnd",       "dot"): "cmd_acnt",
-    ("cmnd",     "grave"): "cmd_acnt",
-    ("cmnd",       "hat"): "cmd_acnt",
-    ("cmnd",  "mathring"): "cmd_acnt",
-    ("cmnd",     "tilde"): "cmd_acnt",
-    ("cmnd",       "vec"): "cmd_acnt",
-    ("cmnd",   "widehat"): "cmd_acnt",
-    ("cmnd", "widetilde"): "cmd_acnt",
-    ("cmnd",    "mathrm"): "cmd_font",
-    ("cmnd",    "mathbf"): "cmd_font",
-    ("cmnd",    "mathsf"): "cmd_font",
-    ("cmnd",    "mathtt"): "cmd_font",
-    ("cmnd",    "mathit"): "cmd_font",
-    ("cmnd", "mathnormal"): "cmd_font",
-    ("cmnd",   "mathcal"): "cmd_font",
-    ("cmnd",  "mathfrak"): "cmd_font",
-    ("cmnd",    "mathbb"): "cmd_font",
-    ("cmnd",      "text"): "cmd_font",
-    ("cmnd",   "mathscr"): "cmd_font",
+    ("meta", "start"): "opn_root", ("meta",   "end"): "cls_root",
+    ("symb",     "^"): "sup_scrpt", ("symb",    "_"): "sub_scrpt",
+    ("symb",     "{"): "opn_brac", ("symb",     "}"): "cls_brac",
+    ("cmnd",  "left"): "opn_dlim", ("cmnd", "right"): "cls_dlim",
+
+    ("cmnd",  "bigl"): "big_dlim", ("cmnd",   "big"): "big_dlim",
+    ("cmnd",  "bigr"): "big_dlim", ("cmnd",  "Bigl"): "big_dlim",
+    ("cmnd",   "Big"): "big_dlim", ("cmnd",  "Bigr"): "big_dlim",
+    ("cmnd", "biggl"): "big_dlim", ("cmnd",  "bigg"): "big_dlim",
+    ("cmnd", "biggr"): "big_dlim", ("cmnd", "Biggl"): "big_dlim",
+    ("cmnd",  "Bigg"): "big_dlim", ("cmnd", "Biggr"): "big_dlim",
+
+    ("cmnd",  "sqrt"): "cmd_sqrt",
+
+    ("cmnd",  "frac"): "cmd_frac", ("cmnd", "tfrac"): "cmd_frac",
+    ("cmnd", "dfrac"): "cmd_frac", ("cmnd", "cfrac"): "cmd_frac",
+
+    ("cmnd",   "sum"): "ctr_base", ("cmnd", "prod"): "ctr_base",
+    ("cmnd",   "lim"): "ctr_base",
+
+    ("cmnd", "binom"): "cmd_binom", ("cmnd", "dbinom"): "cmd_binom",
+
+    ("cmnd",  "limits"): "cmd_lmts", ("cmnd",     "acute"): "cmd_acnt",
+    ("cmnd",     "bar"): "cmd_acnt", ("cmnd",     "breve"): "cmd_acnt",
+    ("cmnd",   "check"): "cmd_acnt", ("cmnd",      "ddot"): "cmd_acnt",
+    ("cmnd",     "dot"): "cmd_acnt", ("cmnd",     "grave"): "cmd_acnt",
+    ("cmnd",     "hat"): "cmd_acnt", ("cmnd",  "mathring"): "cmd_acnt",
+    ("cmnd",   "tilde"): "cmd_acnt", ("cmnd",       "vec"): "cmd_acnt",
+    ("cmnd", "widehat"): "cmd_acnt", ("cmnd", "widetilde"): "cmd_acnt",
+
+    ("cmnd",  "mathrm"): "cmd_font", ("cmnd",     "mathbf"): "cmd_font",
+    ("cmnd",  "mathsf"): "cmd_font", ("cmnd",     "mathtt"): "cmd_font",
+    ("cmnd",  "mathit"): "cmd_font", ("cmnd", "mathnormal"): "cmd_font",
+    ("cmnd", "mathcal"): "cmd_font", ("cmnd",   "mathfrak"): "cmd_font",
+    ("cmnd",  "mathbb"): "cmd_font", ("cmnd",       "text"): "cmd_font",
+    ("cmnd", "mathscr"): "cmd_font",
+
     ("meta", "startline"): "opn_line",
     ("meta",   "endline"): "cls_line",
-    ("cmnd",    "["): "opn_brak",
-    ("cmnd",    "]"): "cls_brak",
-    ("cmnd",    "("): "opn_pren",
-    ("cmnd",    ")"): "cls_pren",
-    ("cmnd",    "\\"): "cmd_lbrk",
-    ("cmnd",  "substack"): "cmd_sbstk",
+    ("cmnd", "["): "opn_brak",
+    ("cmnd", "]"): "cls_brak",
+    ("cmnd", "("): "opn_pren",
+    ("cmnd", ")"): "cls_pren",
+    ("cmnd", "\\"): "cmd_lbrk",
+    ("cmnd",  "newline"): "cmd_lbrk",
+    ("cmnd", "substack"): "cmd_sbstk",
 }
 
 
@@ -161,14 +146,14 @@ node_type_info = {
                  (1,), (True, True, []), (True, False, False)),
     "opn_stkln": ((True, ["cls_stkln", "stk_lbrk"]),
                   (1,), (True, False, ["cmd_sbstk",]), (True, False, False)),
-    "cls_line": ((True, []), (0,),
-                 (False, False, ["opn_line", "cmd_lbrk"],), (False, False, False)),
-    "cls_brak": ((True, []), (0,),
-                 (False, False, ["opn_brak", "cmd_lbrk"],), (False, False, False)),
-    "cls_pren": ((True, []), (0,),
-                 (False, False, ["opn_pren", "cmd_lbrk"],), (False, False, False)),
-    "cls_stkln": ((True, []), (0,),
-                  (False, False, ["opn_stkln", "stk_lbrk"],), (False, True, True)),
+    "cls_line": ((True, []), (0,), (False, False, ["opn_line", "cmd_lbrk"],),
+                 (False, False, False)),
+    "cls_brak": ((True, []), (0,), (False, False, ["opn_brak", "cmd_lbrk"],),
+                 (False, False, False)),
+    "cls_pren": ((True, []), (0,), (False, False, ["opn_pren", "cmd_lbrk"],),
+                 (False, False, False)),
+    "cls_stkln": ((True, []), (0,), (False, False, ["opn_stkln", "stk_lbrk"],),
+                  (False, True, True)),
     "cmd_lbrk": ((True, ["cmd_lbrk", "cls_line", "cls_brak", "cls_pren"]),
                  (1,),
                  (True, False, ["cmd_lbrk", "opn_line", "opn_brak", "opn_pren"]),
@@ -177,7 +162,8 @@ node_type_info = {
                  (1,),
                  (True, False, ["stk_lbrk", "opn_stkln"]),
                  (True, True, False)),
-    "cmd_sbstk": ((True, ["cls_stkln",]), (1,), (True, True, []), (True, False, False)),
+    "cmd_sbstk": ((True, ["cls_stkln",]), (1,), (True, True, []),
+                  (True, False, False)),
 }
 
 
@@ -195,8 +181,6 @@ def can_pop(parent_node_type: str, node_type: str) -> bool:
 
 
 def parent_stack_add(node_type: str, node_id: int) -> list:
-    # if node_type not in node_type_info.keys():
-    #     return []
     add_stack = []
     parent_stack_add_info = node_type_info[node_type][1]
     add_len = parent_stack_add_info[0]
@@ -210,8 +194,6 @@ def can_add(parent_type: str, node_type: str) -> bool:
         if node_type == "opn_root":
             return True
         return False
-    # if node_type not in node_type_info.keys():
-    #     return True
     add_info = node_type_info[node_type][2]
     can_add = add_info[0]
     if add_info[1]:
@@ -225,7 +207,7 @@ def can_add(parent_type: str, node_type: str) -> bool:
     return can_add
 
 
-def parse(tokens: list) -> list:
+def parse(tokens: list, debug: bool) -> list:
     nodes = []
     parent_stack = []
     node_id = 0
@@ -238,7 +220,6 @@ def parse(tokens: list) -> list:
             parent_type = nodes[parent_id][0]
         node_type = get_node_type(token, parent_type)
         can_add_to_nodes = can_add(parent_type, node_type)
-        # can_add_to_children_list = can_add_to_nodes and bool(parent_stack)
         can_pop_parent = can_pop(parent_type, node_type)
         can_add_to_children_list = node_type_info[node_type][3][0]
         can_update_parent_id = node_type_info[node_type][3][1]
@@ -268,5 +249,6 @@ def parse(tokens: list) -> list:
             node = (node_type, token, [], [])
             nodes.append(node)
             node_id += 1
-        # print(i, node_type, node, parent_type, parent_stack)
+        if debug:
+            print(i, token, node_type, node, parent_type, parent_stack)
     return nodes
