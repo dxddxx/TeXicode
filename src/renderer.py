@@ -14,6 +14,44 @@ simple_leaf_commands = {
 simple_symbols = """`!@#$%*()+-=[]|;:'",.<>/?"""
 
 
+def render_font(font_val: str, children: list) -> tuple:
+    sketch, horizon = children[0]
+    new_sketch = []
+    for row in sketch:
+        new_row = ""
+        for char in row:
+            char = revert_font(char)
+            if char not in arts.alphabets["normal"]:
+                new_row += char
+                continue
+            if 'A' <= char <= 'Z':  # Uppercase
+                alpha_id = ord(char) - ord('A')
+            elif 'a' <= char <= 'z':  # Lowercase
+                alpha_id = ord(char) - ord('a') + 26
+            new_row += arts.font[font_val][alpha_id]
+        new_sketch.append(new_row)
+    return new_sketch, horizon
+
+
+def revert_font(char: str) -> str:
+    if char.isascii():
+        return char
+    for alphabet in arts.alphabets.values():
+        if char not in alphabet:
+            continue
+        for alpha_id in range(26*2):
+            if alphabet[alpha_id] == char:
+                return arts.alphabets["normal"][alpha_id]
+    return char
+
+
+def unshrink(small_char: str) -> str:
+    for char, scripts in arts.unicode_scripts.items():
+        if small_char in scripts:
+            return char
+    return small_char
+
+
 def render_leaf(token: tuple) -> tuple:
     token_type = token[0]
     token_val = token[1]
@@ -98,24 +136,60 @@ def render_vert_pile(top, ctr, ctr_horizon, btm, align) -> tuple:
 
 def render_script(children: list, script_type_id: int) -> tuple:
     sketch, horizon = children[0]
+
+    shrunk = render_shrink(sketch, script_type_id, False, False)
+    if shrunk != []:
+        return shrunk, 0
+    smart_shrunk = render_shrink(sketch, 1 - script_type_id, True, False)
+    if smart_shrunk != []:
+        sketch = smart_shrunk
+
     top = [""]
     btm = [""]
     if script_type_id == 0:
         top = sketch
     elif script_type_id == 1:
         btm = sketch
+    return render_vert_pile(top, [" "], 0, btm, "left")
+    # shrunk_row = ""
+    # for char in sketch[0]:
+    #     char = revert_font(char)
+    #     if char not in arts.unicode_scripts.keys():
+    #         return render_vert_pile(top, [" "], 0, btm, "left")
+    #     shrunk_char = arts.unicode_scripts[char][script_type_id]
+    #     if shrunk_char == " " and char != " ":
+    #         return render_vert_pile(top, [" "], 0, btm, "left")
+    #     shrunk_row += shrunk_char
+
+
+def render_shrink(sketch: list, script_type_id: int,
+                  smart: bool, switch: bool) -> list:
+    invert_script_type_id = 1 - script_type_id
     if len(sketch) != 1:
-        return render_vert_pile(top, [" "], 0, btm, "left")
-    shrinked_row = ""
+        return []
+    art = arts.unicode_scripts
+    shrunk_row = ""
     for char in sketch[0]:
         char = revert_font(char)
-        if char not in arts.unicode_scripts.keys():
-            return render_vert_pile(top, [" "], 0, btm, "left")
-        shrinked_char = arts.unicode_scripts[char][script_type_id]
-        if shrinked_char == " " and char != " ":
-            return render_vert_pile(top, [" "], 0, btm, "left")
-        shrinked_row += shrinked_char
-    return [shrinked_row], 0
+        unshrunk_char = unshrink(char)
+        if unshrunk_char not in art.keys():
+            return []
+        if art[unshrunk_char][script_type_id] == char:
+            return []
+        if art[unshrunk_char][invert_script_type_id] == char:
+            if smart:
+                shrunk_row += char
+                continue
+            if switch:
+                shrunk_row += art[unshrunk_char][script_type_id]
+                continue
+            return []
+        shrunk_char = art[unshrunk_char][script_type_id]
+        if shrunk_char != " " or char == " ":
+            shrunk_row += shrunk_char
+            continue
+        return []
+    return [shrunk_row]
 
 
 def render_sup_script(children: list) -> tuple:
@@ -127,7 +201,16 @@ def render_sub_script(children: list) -> tuple:
 
 
 def get_pile_center(base_height, base_horizon) -> tuple:
-    if base_height in {1, 2}:
+    if base_height == 2:
+        # weird hacks but works
+        # basically pointing the horizon to the script's paddings
+        if base_horizon == 0:
+            return [""], 0
+        if base_horizon == 1:
+            return [""], 1
+    if base_height == 1:
+        return [], 0
+    if base_height == 1:
         return [""], 0
     pile_center_sketch = []
     for _ in range(base_height - 2):
@@ -145,32 +228,47 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
         script_position = 0
         if script_type in {"sub_scrpt", "btm_scrpt"}:
             script_position = 1
+        if sorted_scripts[script_position] != [""]:
+            script_type_name = ["super", "sub"][script_position]
+            raise ValueError(f"Double {script_type_name}scripts")
         sorted_scripts[script_position] = script_sketch
     top, btm = sorted_scripts
     if base_position == "left":
         ctr, ctr_horizon = get_pile_center(len(base_sketch), base_horizon)
+        if ctr == []:
+            if top == [""]:
+                return render_concat([(base_sketch, base_horizon), (btm, 0)])
+            if btm == [""]:
+                return render_concat([(base_sketch, base_horizon), (top, len(top)-1)])
+            if len(top) > 1:
+                top.pop()
+                ctr = [""]
+                ctr_horizon = 1
+            elif len(btm) > 1:
+                btm.pop(0)
+                ctr = [""]
+            elif len(top) == 1 and len(btm) == 1:
+                top = render_shrink(top, 1, False, True)
+                btm = render_shrink(btm, 0, False, True)
+                ctr = [" "]
         piled_scripts = render_vert_pile(top, ctr, ctr_horizon, btm, "left")
         return render_concat([(base_sketch, base_horizon), piled_scripts])
     elif base_position == "center":
         return render_vert_pile(top, base_sketch, base_horizon, btm, "center")
 
 
-def render_big_delimiter(size: str, children: list) -> tuple:
-    delim = children[0][0][0]
-    art_col = arts.delimiter["sgl"].find(delim[0])
+def render_delimiter(delim_type, height: int) -> tuple:
+    if delim_type == ".":
+        return [""], 0
+    art_col = arts.delimiter["sgl"].find(delim_type[0])
     if art_col == -1:
-        raise ValueError(f"Invalid delimiter type {delim}")
+        raise ValueError(f"Invalid delimiter type {delim_type}")
     delim_art = dict()
     for pos in arts.delimiter:
         art = arts.delimiter[pos]
         delim_art[pos] = art[art_col]
-    height_dict = {"big": 1, "bigl": 1, "bigr": 1,
-                   "Big": 3, "Bigl": 3, "Bigr": 3,
-                   "bigg": 5, "biggl": 5, "biggr": 5,
-                   "Bigg": 7, "Biggl": 7, "Biggr": 7}
-    height = height_dict[size]
     if height == 1:
-        return [delim], 0
+        return [delim_type], 0
     horizon = height // 2
     sketch = []
     for _ in range(height):
@@ -181,35 +279,24 @@ def render_big_delimiter(size: str, children: list) -> tuple:
     return sketch, horizon
 
 
-def render_open_delimiter(children: list) -> tuple:
-    inside, horizon = render_concat(children[1:-1])
-    left_delim = children[0][0]
-    right_delim = children[-1][0]
-    height = len(inside)
-    if height == 1:
-        return render_concat([(left_delim, 0), (inside, 0), (right_delim, 0)])
+def render_big_delimiter(size: str, children: list) -> tuple:
+    delim_type = children[0][0][0]
+    height_dict = {"big": 1, "bigl": 1, "bigr": 1,
+                   "Big": 3, "Bigl": 3, "Bigr": 3,
+                   "bigg": 5, "biggl": 5, "biggr": 5,
+                   "Bigg": 7, "Biggl": 7, "Biggr": 7}
+    height = height_dict[size]
+    return render_delimiter(delim_type, height)
 
-    left_art_col = arts.delimiter["sgl"].find(left_delim[0])
-    right_art_col = arts.delimiter["sgl"].find(right_delim[0])
-    if left_art_col == -1:
-        raise ValueError(f"Invalid delimiter type {left_delim}")
-    if right_art_col == -1:
-        raise ValueError(f"Invalid delimiter type {right_delim}")
-    left_art = dict()
-    right_art = dict()
-    for pos in arts.delimiter:
-        art = arts.delimiter[pos]
-        left_art[pos] = art[left_art_col]
-    for pos in arts.delimiter:
-        art = arts.delimiter[pos]
-        right_art[pos] = art[right_art_col]
-    sketch = []
-    for row in inside:
-        sketch.append(left_art["fil"] + row + right_art["fil"])
-    sketch[horizon] = left_art["ctr"] + sketch[horizon][1:-1] + right_art["ctr"]
-    sketch[0] = left_art["top"] + sketch[0][1:-1] + right_art["top"]
-    sketch[-1] = left_art["btm"] + sketch[-1][1:-1] + right_art["btm"]
-    return sketch, horizon
+
+def render_open_delimiter(children: list) -> tuple:
+    inside = render_concat(children[1:-1])
+    left_delim_type = children[0][0][0]
+    right_delim_type = children[-1][0][0]
+    height = len(inside[0])
+    left = render_delimiter(left_delim_type, height)
+    right = render_delimiter(right_delim_type, height)
+    return render_concat([left, inside, right])
 
 
 def render_close_delimiter(children: list) -> tuple:
@@ -247,42 +334,11 @@ def render_accents(accent_val: str, children: list) -> tuple:
     return sketch, children[0][1]
 
 
-def render_font(font_val: str, children: list) -> tuple:
-    sketch, horizon = children[0]
-    new_sketch = []
-    for row in sketch:
-        new_row = ""
-        for char in row:
-            char = revert_font(char)
-            if char not in arts.alphabets["normal"]:
-                new_row += char
-                continue
-            if 'A' <= char <= 'Z':  # Uppercase
-                alpha_id = ord(char) - ord('A')
-            elif 'a' <= char <= 'z':  # Lowercase
-                alpha_id = ord(char) - ord('a') + 26
-            new_row += arts.font[font_val][alpha_id]
-        new_sketch.append(new_row)
-    return new_sketch, horizon
-
-
-def revert_font(char: str) -> str:
-    if char.isascii():
-        return char
-    for alphabet in arts.alphabets.values():
-        if char not in alphabet:
-            continue
-        for alpha_id in range(26*2):
-            if alphabet[alpha_id] == char:
-                return arts.alphabets["normal"][alpha_id]
-    return char
-
-
 def render_square_root(children: list) -> tuple:
     degree_sketch, degree_horizon = children[0]
     radicand_sketch, radicand_horizon = children[-1]
     # new math vocab learned: radicand
-    radicand_sketch = render_sup_script(children)[0]
+    # radicand_sketch, radicand_horizon = render_sup_script([children[1]])[0]
     art = arts.square_root
     top_bar = art["top_bar"] * len(radicand_sketch[0])
     sqrt_sketch = [top_bar] + radicand_sketch
@@ -290,6 +346,20 @@ def render_square_root(children: list) -> tuple:
         sqrt_sketch[i] = art["left_bar"] + sqrt_sketch[i] + arts.bg
     sqrt_sketch[0] = art["top_angle"] + sqrt_sketch[0][2:-1] + art["top_tail"]
     sqrt_sketch[-1] = art["btm_angle"] + sqrt_sketch[-1][2:]
+    if len(children) == 1 or len(degree_sketch) > 1:
+        return sqrt_sketch, radicand_horizon + 1
+
+    shrinked_degree = render_shrink(degree_sketch, 1, False, False)
+    if shrinked_degree == []:
+        shrinked_degree = degree_sketch
+    sqrt_sketch[-2] = shrinked_degree[0][-1] + sqrt_sketch[-2][1:]
+    shrinked_degree[0] = shrinked_degree[0][:-1]
+    left_pad = arts.bg * len(shrinked_degree[0])
+    for i in range(len(sqrt_sketch)):
+        if i == len(sqrt_sketch) - 2:
+            sqrt_sketch[i] = shrinked_degree[0] + sqrt_sketch[i]
+            continue
+        sqrt_sketch[i] = left_pad + sqrt_sketch[i]
     return sqrt_sketch, radicand_horizon + 1
 
 
@@ -352,29 +422,6 @@ def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     else:
         raise ValueError(f"Undefined control sequence {token_val}")
 
-
-# parent_node_types = {
-#     "opn_root",
-#     "opn_brac",
-#     "opn_dlim",
-#     "cls_dlim",
-#     "sup_scrpt",
-#     "sub_scrpt",
-#     "top_scrpt",
-#     "btm_scrpt",
-#     "cmd_sqrt",
-#     "cmd_frac",
-#     "cmd_binom",
-#     "cmd_acnt",
-#     "cmd_font",
-#     "opn_line",
-#     "opn_brak",
-#     "opn_pren",
-#     "cls_line",
-#     "cls_brak",
-#     "cls_pren",
-#     "cmd_lbrk",
-# }
 
 leaf_node_types = {
     "txt_leaf",

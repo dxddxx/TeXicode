@@ -136,10 +136,10 @@ node_type_info = {
                  (True, True, []), (True, False, False)),
     "cmd_frac":  ((False, []), (2,), (True, True, []), (True, False, False)),
     "cmd_binom": ((False, []), (2,), (True, True, []), (True, False, False)),
-    "sup_scrpt": ((False, []), (1,), (True, True, []), (False, False, False)),
-    "sub_scrpt": ((False, []), (1,), (True, True, []), (False, False, False)),
-    "top_scrpt": ((False, []), (1,), (True, True, []), (False, False, False)),
-    "btm_scrpt": ((False, []), (1,), (True, True, []), (False, False, False)),
+    "sup_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
+    "sub_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
+    "top_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
+    "btm_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
     "cls_dlim":  ((False, []), (1,), (True, True, []), (True, False, False)),
     "cls_root": ((True, []), (0,),
                  (False, False, ["opn_root",],), (False, False, False)),
@@ -249,7 +249,7 @@ def parse(tokens: list) -> list:
             base_node = nodes[base_id]
             node_type = update_node_type(base_node[0], node_type)
             base_node[3].append(node_id)
-            # can_add_to_children_list = False
+            can_add_to_children_list = False
             can_pop_parent = False
         if can_pop_parent:
             parent_stack.pop()

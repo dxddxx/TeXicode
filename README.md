@@ -97,13 +97,9 @@ arctan⎜-╶────╴⎟=╶─╴
 
 # TODO
 
-- handle scripts properly once and for all
-- square root with degree
-- align equation with &=
+- square root with multi line degree
+- align equation with begin align, %= , end align
 - delimiters
     - tall angle brackets
     - `\middle`
-- proper errors
-    - this is a previewing tool
-    - people use previewing tools to check the validity of their latex
-    - wrong latex should wrong in here as well
+- error consistent with LaTeX

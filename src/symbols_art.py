@@ -18,6 +18,9 @@ symbols = {
     "ldots": "…",
     "vdots": "⋮",
     "ddots": "⋱",
+    "lvert": "|",
+    "rvert": "|",
+    "divides": "∣",
     # from https://latexref.xyz/Math-symbols.html
     "|": "∥",
     "aleph": "ℵ",
