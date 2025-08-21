@@ -20,6 +20,20 @@ TeX Terminal Renderer, a terminal TeX renderer in the terminal that renders TeX 
 > [!IMPORTANT]
 > omg github can't even render in monospace and box glyphs don't even line up, go try yourself, all equations on this page look horrible
 
+inline equation $\frac{1}{2}$
+big equation
+$$
+\frac{1}{2}
+$$
+big equation
+\[
+\frac{1}{2}
+\]
+latex block
+```latex
+\frac{1}{2}
+```
+
 # Features
 
 1. Unicode characters

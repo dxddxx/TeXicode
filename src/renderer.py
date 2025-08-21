@@ -11,7 +11,7 @@ simple_leaf_commands = {
     "Pr", "sec", "sin", "sinh", "sup", "tan", "tanh", "%",
 }
 
-simple_symbols = """`!@#$%*()+-=[]|;:'",.<>/?"""
+simple_symbols = """`!@#%*()+-=[]|;:'",.<>/?"""
 
 
 def render_font(font_val: str, children: list) -> tuple:
