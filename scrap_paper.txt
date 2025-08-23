@@ -1,0 +1,76 @@
+Index      Value    Parent     Parent_Stack
+0          root     -1         [0]
+1          \frac    0          [0, 1, 1]
+2          {        1          [0, 1, *2*]
+3          -        2          [0, 1, *2*]
+4          b        2          [0, 1, *2*]
+5          \pm      2          [0, 1, *2*]
+6          \sqrt    2          [0, 1, *2*, 6]
+7          {        6          [0, 1, *2*, *7*]
+8          b        7          [0, 1, *2*, *7*]
+9          ^        7          [0, 1, *2*, *7*, 9]
+10         2        9          [0, 1, *2*, *7*]
+11         -        7          [0, 1, *2*, *7*]
+12         4        7          [0, 1, *2*, *7*]
+13         a        7          [0, 1, *2*, *7*]
+14         c        7          [0, 1, *2*, *7*]
+15         }        7          [0, 1, *2*]
+16         }        2          [0, 1]
+17         {        1          [0, *17*]
+18         2        17         [0, *17*]
+19         a        17         [0, *17*]
+20         }        17         [0]
+
+Index      Value    Children   Stack
+0          \frac    [1]        [0, 0]
+1          {        [2]        [0, 0, 1.1]
+2          -        []         [0, 0, 1.1]
+3          b        []         [0, 0, 1.1]
+4          \pm      []         [0, 0, 1.1]
+5          \sqrt    [6]        [0, 0, 1.1, 5]
+6          {        []         [0, 0, 1.1, 5, 6.1]
+7          b        []         [0, 0, 1.1, 5, 6.1]
+8          ^        []         [0, 0, 1.1, 5, 6.1, 8]
+9          2        []         [0, 0, 1.1, 5, 6.1]
+10         -        []         [0, 0, 1.1, 5, 6.1]
+11         4        []         [0, 0, 1.1, 5, 6.1]
+12         a        []         [0, 0, 1.1, 5, 6.1]
+13         c        []         [0, 0, 1.1, 5, 6.1]
+14         }        
+15         }        
+16         {        
+16         2        
+18         a        
+19         }        
+
+          __ ∞       -b ±⟍│b  - 4ac  i\theta                                                                                                                                                    
+          ❯          ───────────────)                                                                                                                                                           
+          ‾‾ x  ──> 0       1                                                                                                                                                                   
+__     1
+ i2 = ─
+‾‾     2
+
+ ___       
+ ╲        _1_ 
+ ╱    i2 = 2
+ ‾‾‾       
+
+
+
+0 {'Val': '\\frac', 'Type': 'command', 'Children': [1, 16]}
+1 {'Val': '{', 'Type': 'openbrac', 'Children': [2, 3, 4, 5, 15]}
+2 {'Val': '-', 'Type': 'symbol', 'Children': []}
+3 {'Val': 'b', 'Type': 'letter', 'Children': []}
+4 {'Val': '\\pm', 'Type': 'command', 'Children': []}
+5 {'Val': '\\sqrt', 'Type': 'command', 'Children': [6]}
+6 {'Val': '{', 'Type': 'openbrac', 'Children': [7, 8, 10, 11, 12, 13, 14]}
+7 {'Val': 'b', 'Type': 'letter', 'Children': []}
+8 {'Val': '^', 'Type': 'script', 'Children': [9]}
+9 {'Val': '2', 'Type': 'number', 'Children': []}
+10 {'Val': '-', 'Type': 'symbol', 'Children': []}
+11 {'Val': '4', 'Type': 'number', 'Children': []}
+12 {'Val': 'a', 'Type': 'letter', 'Children': []}
+13 {'Val': 'c', 'Type': 'letter', 'Children': []}
+14 {'Val': '{', 'Type': 'openbrac', 'Children': [17, 18]}
+15 {'Val': '2', 'Type': 'number', 'Children': []}
+16 {'Val': 'a', 'Type': 'letter', 'Children': []}
