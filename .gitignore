@@ -3,6 +3,17 @@ test.sh
 src/oldmain.py
 src/arrays_and_dicts.py
 src/lgcy_arts.py
-dist/*
-build/*
-__pycache__
+
+# Ignore build artifacts
+dist/
+build/
+*.egg-info/
+
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environments
+venv/
+.env
