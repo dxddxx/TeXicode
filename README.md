@@ -1,5 +1,6 @@
 TeXicode
-=====
+========
+
 TeXicode, short for TeX to Unicode, a cli that turns TeX math expressions into Unicode art.
 
 # Installation
@@ -11,46 +12,48 @@ TeXicode, short for TeX to Unicode, a cli that turns TeX math expressions into U
 1. Make sure this is the correct directory by running `./txc '\Delta'`, should output `Δ`.
 1. `pwd` to get the path
 1. in ~/.zshrc or ~/.bashrc, add line `alias txc="<the_path>/txc"`
+
 Running as a script seems to be faster
 
 ## Install Binary
 
 1. Download from releases
 1. Put binary in `/usr/local/bin` if on Linux or MacOS
+
 Running as a binary seems to be slower
 
 # Usage
 
 ## Basic Usage
 
-1. `txc '\prod_{i=0}^n\ x ~=~ x^n'` to output Unicode art
+- `txc '\prod_{i=0}^n\ x ~=~ x^n'` to output Unicode art
     - replace your own TeX equation inside quotes
     - use single quotes
     - if expression contains single quotes like `f'(x)`, replace with `f\'(x)`
     - `\[ \]`, `\( \)`, `$ $`, or `$$ $$` is optional, `\begin{} \end{}` is not supported yet
-1. add `-c` at the end of the command to output in color (black on white)
+- add `-c` at the end of the command to output in color (black on white)
 
 ## Rendering Math in Markdown
 
-1. `txc -f filename.md` to replace latex expressions in markdown files with Unicode art in text blocks.
-1. Pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate markdown previewing:
-1. add `-c` at the end of the command to output in color (black on white)
+- `txc -f filename.md` to replace latex expressions in markdown files with Unicode art in text blocks.
+- Pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate markdown previewing:
+- add `-c` at the end of the command to output in color (black on white)
+
 Here is a screenshot of [example.md](example.md) rendered with `txr -f example.md -c | glow`, using the [JuliaMono](https://juliamono.netlify.app/) font.
 
 ![Screenshot](example.png)
 
 # Features
 
-1. Unicode characters
-    - Prettier than similar projects by fully utilizing Unicode glyphs
-1. Unicode *italic texts*
-    - Differentiate functions from letters
-    - Actual italic glyphs, not italicized text
+1. Supports most latex commands
+1. Uses Unicode, not limited to ASCII characters
+    - Prettier than similar projects
+    - Unicode italic texts to differentiate functions from letters. Actual italic glyphs, not italicized text
 1. Works with any good terminal font
     - The examples provided here did not use any legacy glyphs
-    - Change the header of `renderer.py` if your font support legacy glyphs to get even better symbols
+    - go to `src/arts` and uncomment some parts if your font support legacy glyphs to get even better symbols
 1. Written in python
-    - So you can fork it and turn it into a vim plugin
+    - so it can be turned into a vim plugin one day
 
 # Design Principles:
 
@@ -62,10 +65,10 @@ Here is a screenshot of [example.md](example.md) rendered with `txr -f example.m
     - makes long concatenated expression readable
     - space saving square roots kinda goes against this, might fix later
     - maybe add vertical horizon as well for &= aligning
-- Aesthetics first, clarity even more first (0th)
+- Clarity over aesthetics
     - the square root tail is too long but it makes it clear
     - all glyphs must connect, sums, square roots, etc
-- Fully utilize Unicode chars, expressions should look as good as the possibly can
+- Fully utilize Unicode features, expressions should look as good as the possibly can
 
 # TODO
 
@@ -74,4 +77,4 @@ Here is a screenshot of [example.md](example.md) rendered with `txr -f example.m
 - delimiters
     - tall angle brackets
     - `\middle`
-- error consistent with LaTeX
+- better error, consistent with LaTeX
