@@ -1,13 +1,13 @@
-# # Ignore build artifacts
-# dist/
-# build/
-# 
-# # Ignore Python bytecode
-# __pycache__/
-# 
-# 
-# scrap_paper.txt
-# test.sh
-# src/oldmain.py
-# src/arrays_and_dicts.py
-# src/lgcy_arts.py
+# Ignore build artifacts
+dist/
+build/
+
+# Ignore Python bytecode
+__pycache__/
+
+
+scrap_paper.txt
+test.sh
+src/oldmain.py
+src/arrays_and_dicts.py
+src/lgcy_arts.py
