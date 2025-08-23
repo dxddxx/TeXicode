@@ -5,6 +5,9 @@ build/
 # Ignore Python bytecode
 __pycache__/
 
+# pyinstall files
+main.spec
+
 
 scrap_paper.txt
 test.sh
