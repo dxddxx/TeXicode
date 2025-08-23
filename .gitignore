@@ -1,4 +1,3 @@
-
 # Ignore build artifacts
 dist/
 build/
