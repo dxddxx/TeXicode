@@ -3,6 +3,6 @@ test.sh
 src/oldmain.py
 src/arrays_and_dicts.py
 src/lgcy_arts.py
-dist/
-build/
+dist/*
+build/*
 __pycache__
