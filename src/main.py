@@ -36,8 +36,10 @@ def join_rows(rendered_rows: list, color: bool) -> str:
 
 def process_markdown(content, debug, color):
 
-    # Regex to find LaTeX blocks: $$...$$ or $...$ or \[...\] or \[...\]
-    latex_regex = r'(\$\$.*?\$\$|\$.*?\$|\\\[[^\]]*?\\\]|\\\([^\)]*?\\\))'
+    # Regex to find LaTeX blocks: $$...$$ or $...$ or \[...\] or \(...\)
+    # latex_regex = r'(\$\$.*?\$\$|\\\[[\s\S]*?\\\]|\\\([^\)]*?\\\)|\$(.*?)\$|\((.*?)\))'
+    # latex_regex = r'\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$(?:(?!\$\$)[\s\S])*?\$'
+    latex_regex = r'\$\$.*?\$\$|\$.*?\$|\\\[.*?\\\]|\\\(.*?\\\)'
 
     def replace_latex(match):
         tex_block = match.group(0)
