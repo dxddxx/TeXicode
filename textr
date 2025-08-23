@@ -10,12 +10,12 @@ SCRIPT_DIR="$(dirname "$(readlink -f "$BASH_SOURCE")")"
 #     python3 "$SCRIPT_DIR/src/main.py" "$@"
 # fi
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <input_markdown_file>"
-    exit 1
-fi
-
-input_file="$1"
+# if [ -z "$1" ]; then
+#     echo "Usage: $0 <input_markdown_file>"
+#     exit 1
+# fi
+# 
+# input_file="$1"
 
 # Run the Python script with the input file
-python3 "$SCRIPT_DIR/src/main.py" "$input_file"
+python3 "$SCRIPT_DIR/src/main.py" "$@"

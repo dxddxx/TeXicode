@@ -150,7 +150,7 @@ def render_script(children: list, script_type_id: int) -> tuple:
         top = sketch
     elif script_type_id == 1:
         btm = sketch
-    return render_vert_pile(top, [" "], 0, btm, "left")
+    return render_vert_pile(top, [arts.bg], 0, btm, "left")
     # shrunk_row = ""
     # for char in sketch[0]:
     #     char = revert_font(char)
@@ -214,7 +214,7 @@ def get_pile_center(base_height, base_horizon) -> tuple:
         return [""], 0
     pile_center_sketch = []
     for _ in range(base_height - 2):
-        pile_center_sketch.append(" ")
+        pile_center_sketch.append(arts.bg)
     pile_center_horizon = base_horizon - 1
     return pile_center_sketch, pile_center_horizon
 
@@ -250,7 +250,7 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
             elif len(top) == 1 and len(btm) == 1:
                 top = render_shrink(top, 1, False, True)
                 btm = render_shrink(btm, 0, False, True)
-                ctr = [" "]
+                ctr = [arts.bg]
         piled_scripts = render_vert_pile(top, ctr, ctr_horizon, btm, "left")
         return render_concat([(base_sketch, base_horizon), piled_scripts])
     elif base_position == "center":
@@ -338,7 +338,10 @@ def render_square_root(children: list) -> tuple:
     degree_sketch, degree_horizon = children[0]
     radicand_sketch, radicand_horizon = children[-1]
     # new math vocab learned: radicand
-    # radicand_sketch, radicand_horizon = render_sup_script([children[1]])[0]
+
+    # clearer square root
+    radicand_sketch = render_sup_script([children[-1]])[0]
+
     art = arts.square_root
     top_bar = art["top_bar"] * len(radicand_sketch[0])
     sqrt_sketch = [top_bar] + radicand_sketch
@@ -352,8 +355,9 @@ def render_square_root(children: list) -> tuple:
     shrinked_degree = render_shrink(degree_sketch, 1, False, False)
     if shrinked_degree == []:
         shrinked_degree = degree_sketch
-    sqrt_sketch[-2] = shrinked_degree[0][-1] + sqrt_sketch[-2][1:]
-    shrinked_degree[0] = shrinked_degree[0][:-1]
+    if sqrt_sketch[-2][0] == " ":
+        sqrt_sketch[-2] = shrinked_degree[0][-1] + sqrt_sketch[-2][1:]
+        shrinked_degree[0] = shrinked_degree[0][:-1]
     left_pad = arts.bg * len(shrinked_degree[0])
     for i in range(len(sqrt_sketch)):
         if i == len(sqrt_sketch) - 2:
@@ -374,7 +378,7 @@ def render_vert_concat(children: list, sep: list, align: str) -> tuple:
 
 
 def render_root(children: list) -> tuple:
-    return render_vert_concat(children, [" ", " "], "left")
+    return render_vert_concat(children, [arts.bg], "left")
 
 
 def render_substack(children: list) -> tuple:
@@ -384,8 +388,9 @@ def render_substack(children: list) -> tuple:
 def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     if node_type == "opn_root":
         return render_root(children)
-    if node_type in {"opn_line", "opn_brak", "opn_pren",
-                     "opn_brac", "opn_degr", "opn_stkln"}:
+    elif node_type in {"opn_line", "opn_brak", "opn_pren",
+                       "opn_brac", "opn_degr", "opn_stkln",
+                       "opn_dllr", "opn_ddlr"}:
         return render_concat(children)
     elif node_type == "opn_dlim":
         return render_open_delimiter(children)
@@ -431,6 +436,8 @@ leaf_node_types = {
 
 
 def render(nodes: list, debug: bool) -> list:
+    if debug:
+        print("Rendering")
     canvas = []
     for i in range(len(nodes)):
         canvas.append(())

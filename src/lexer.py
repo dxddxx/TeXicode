@@ -17,15 +17,20 @@ def get_char_type(char: str) -> str:
 
 
 def lexer(tex: str, debug: bool) -> list:
+    tex = tex.replace('\n', ' ').replace('\r', ' ')
+    if debug:
+        print("Lexerizing")
+        print(tex)
     tokens = []
     token_type, token_val = "", ""
-    tex = tex.replace('\n', ' ').replace('\r', ' ')
     for i in range(len(tex)):
         char = tex[i]
         char_type = get_char_type(char)
         token_val += char
         if len(token_val) > 1:
-            if (i == len(tex) - 1 or
+            if token_val == "$$":
+                token_type = "symb"
+            elif (i == len(tex) - 1 or
                     char_type != get_char_type(tex[i+1]) or
                     char_type == "symb"):
                 token_val = token_val[1:]
@@ -34,6 +39,13 @@ def lexer(tex: str, debug: bool) -> list:
             token_type = ""
             if i == len(tex) - 1:
                 raise ValueError(f"Unexpexted character {char}")
+        elif token_val == "$":
+            if i == len(tex) - 1:
+                token_type = "symb"
+            elif tex[i+1] == "$":
+                token_type = ""
+            else:
+                token_type = "symb"
         else:
             token_type = char_type
 
@@ -43,11 +55,15 @@ def lexer(tex: str, debug: bool) -> list:
                 continue
             tokens.append((token_type, token_val))
             token_type, token_val = "", ""
-        if debug:
-            print(i, token_type, token_val)
-    if tokens[0] not in (("cmnd", "["), ("cmnd", "(")):
+        if debug and tokens:
+            print(i, tokens[-1])
+    if tokens[0] not in (("cmnd", "["), ("cmnd", "("),
+                         ("symb", "$"), ("symb", "$$")):
         tokens.insert(0, ("meta", "startline"))
         tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))
     tokens.append(("meta", "end"))
+    if debug:
+        for i in range(len(tokens)):
+            print(i, tokens[i])
     return tokens

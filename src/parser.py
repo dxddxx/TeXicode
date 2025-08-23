@@ -8,6 +8,10 @@ node_type_parent_dependent_dict = {
     ("stk_lbrk",  ("cmnd", "\\")): "stk_lbrk",
     ("opn_stkln", ("cmnd", "newline")): "stk_lbrk",
     ("stk_lbrk",  ("cmnd", "newline")): "stk_lbrk",
+    ("opn_dllr",  ("symb", "$")):  "cls_dllr",
+    ("opn_ddlr",  ("symb", "$$")): "cls_ddlr",
+    ("cmd_lbrk",  ("symb", "$")):  "cls_dllr",
+    ("cmd_lbrk",  ("symb", "$$")): "cls_ddlr",
 }
 
 node_type_dict = {
@@ -57,6 +61,9 @@ node_type_dict = {
     ("cmnd", "\\"): "cmd_lbrk",
     ("cmnd",  "newline"): "cmd_lbrk",
     ("cmnd", "substack"): "cmd_sbstk",
+
+    ("symb", "$"): "opn_dllr",
+    ("symb", "$$"): "opn_ddlr",
 }
 
 
@@ -154,9 +161,11 @@ node_type_info = {
                  (False, False, False)),
     "cls_stkln": ((True, []), (0,), (False, False, ["opn_stkln", "stk_lbrk"],),
                   (False, True, True)),
-    "cmd_lbrk": ((True, ["cmd_lbrk", "cls_line", "cls_brak", "cls_pren"]),
+    "cmd_lbrk": ((True, ["cmd_lbrk", "cls_line", "cls_brak",
+                         "cls_pren", "cls_dllr", "cls_ddlr"]),
                  (1,),
-                 (True, False, ["cmd_lbrk", "opn_line", "opn_brak", "opn_pren"]),
+                 (True, False, ["cmd_lbrk", "opn_line", "opn_brak",
+                                "opn_pren", "opn_dllr", "opn_ddlr"]),
                  (True, True, False)),
     "stk_lbrk": ((True, ["stk_lbrk", "cls_stkln"]),
                  (1,),
@@ -164,6 +173,14 @@ node_type_info = {
                  (True, True, False)),
     "cmd_sbstk": ((True, ["cls_stkln",]), (1,), (True, True, []),
                   (True, False, False)),
+    "opn_dllr": ((True, ["cls_dllr", "cmd_lbrk"]),
+                 (1,), (True, True, []), (True, False, False)),
+    "cls_dllr": ((True, []), (0,), (False, False, ["opn_dllr", "cmd_lbrk"],),
+                 (False, False, False)),
+    "opn_ddlr": ((True, ["cls_ddlr", "cmd_lbrk"]),
+                 (1,), (True, True, []), (True, False, False)),
+    "cls_ddlr": ((True, []), (0,), (False, False, ["opn_ddlr", "cmd_lbrk"],),
+                 (False, False, False)),
 }
 
 
@@ -202,16 +219,16 @@ def can_add(parent_type: str, node_type: str) -> bool:
     else:
         if parent_type not in add_info[2]:
             expected = node_type_info[parent_type][0][1]
-            print(parent_type, add_info)
             raise ValueError(f"Expected {expected}, got {node_type}")
     return can_add
 
 
 def parse(tokens: list, debug: bool) -> list:
+    if debug:
+        print("Parsing")
     nodes = []
     parent_stack = []
     node_id = 0
-
     for i in range(len(tokens)):
         token = tokens[i]
         parent_type = "none"
@@ -251,4 +268,7 @@ def parse(tokens: list, debug: bool) -> list:
             node_id += 1
         if debug:
             print(i, token, node_type, node, parent_type, parent_stack)
+    if debug:
+        for i in range(len(nodes)):
+            print(i, nodes[i])
     return nodes
