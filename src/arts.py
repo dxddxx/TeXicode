@@ -1,4 +1,4 @@
-bg = "░"
+# bg = "░"
 bg = " "
 fraction = "╶─╴"
 
@@ -41,6 +41,10 @@ multi_line_leaf_commands = {
     (["┰─╴",
       "▐╸ ",
       "┸─╴",], 1),
+    # "sum":
+    # (["┌──",
+    #   "🮥  ",
+    #   "└──",], 1),
     "prod":
     (["┰─┰",
       "┃ ┃",
@@ -51,15 +55,15 @@ multi_line_leaf_commands = {
       "⌡",], 1),
     "iint":
     (["⌠⌠",
-      "┃⎪",
+      "⎮⎪",
       "⌡⌡",], 1),
     "iiint":
     (["⌠⌠⌠",
-      "┃┃┃",
+      "⎮⎮⎮",
       "⌡⌡⌡",], 1),
     "idotsint":
     (["⌠ ⌠",
-      "┃⋯┃",
+      "⎮⋯⎮",
       "⌡ ⌡",], 1),
     "oint":
     ([" ⌠ ",
@@ -80,21 +84,19 @@ square_root = {
     "top_tail": "╴",
     "top_angle": " ┌",
     "left_bar":  " │",
-    "btm_angle": "🯓🯗",
-}
-square_root = {
-    "top_bar": "▔",
-    "top_tail": "▔",
-    "top_angle": "▕▔",
-    "left_bar":  " ▏",
-    "btm_angle": "╲▏",
-}
-square_root = {
-    "top_bar": "─",
-    "top_tail": "╴",
-    "top_angle": " ┌",
-    "left_bar":  " │",
     "btm_angle": "╰┘",
+
+    # "top_bar": "─",
+    # "top_tail": "╴",
+    # "top_angle": " ┌",
+    # "left_bar":  " │",
+    # "btm_angle": "🯓🯗",
+
+    # "top_bar": "▔",
+    # "top_tail": "▔",
+    # "top_angle": "▕▔",
+    # "left_bar":  " ▏",
+    # "btm_angle": "╲▏",
 }
 
 unicode_scripts = {

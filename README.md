@@ -1,8 +1,19 @@
 TeXicode
 =====
-TeXicode, short for TeX to Unicode, a cli tool that turns TeX math expressions into Unicode art.
+TeXicode, short for TeX to Unicode, a cli that turns TeX math expressions into Unicode art.
 
 # Installation
+
+## Run as Script
+
+1. Clone repo, `cd` into the repo.
+1. Make sure this is the correct directory by running `./txc '\Delta'`, should output `Δ`.
+1. `pwd` to get the path
+1. in ~/.zshrc or ~/.bashrc, add line `alias txc="<the_path>/txc"`
+
+## Install Binary
+
+1. 
 
 # Usage
 
