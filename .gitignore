@@ -2,4 +2,5 @@ scrap_paper.txt
 test.sh
 src/oldmain.py
 src/arrays_and_dicts.py
+main.spec
 __pycache__
