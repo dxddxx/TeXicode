@@ -31,7 +31,7 @@ TeXicode, short for TeX to Unicode, a cli that turns TeX math expressions into U
 1. `txc -f filename.md` to replace latex expressions in markdown files with Unicode art in text blocks.
 1. Pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate markdown previewing:
 1. add `-c` at the end of the command to output in color (black on white)
-Here is [example.md]() rendered with `txr -f example.md -c | glow`
+Here is [example.md](https://github.com/dxddxx/TexTR/blob/main/example.md) rendered with `txr -f example.md -c | glow`
 
 # Features
 

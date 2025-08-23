@@ -1,8 +1,8 @@
 # Inline LaTeX
 
-This is an inline latex equation $ e \approx 2.718281828 $ wrapped with dollar signs
-This is an inline latex equation \( e^{i\theta} = cos\theta + i\sin\theta \) wrapped with backslash parenthesis
-This is also an inline latex equation $ e\ =\ \lim_{n\to\infty}~\left(1+\frac1n\right)^n $, but too tall to be rendered inline.
+This is an inline latex equation $e \approx 2.718281828$ wrapped with dollar signs
+This is an inline latex equation \(e^{i\theta} = cos\theta + i\sin\theta\) wrapped with backslash parenthesis
+This is also an inline latex equation $e\ =\ \lim_{n\to\infty}~\left(1+\frac1n\right)^n$, but too tall to be rendered inline.
 
 # LaTeX Blocks
 
