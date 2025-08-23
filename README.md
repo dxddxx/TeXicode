@@ -1,38 +1,26 @@
-TexTR
+TeXicode
 =====
-TeX Terminal Renderer, a terminal TeX renderer in the terminal that renders TeX into your terminal by rendering the TeX.
+TeXicode, short for TeX to Unicode, a cli tool that turns TeX math expressions into Unicode art.
+
+# Installation
 
 # Usage
 
-1. Clone and `cd` into repo
-1. run in terminal: `./textr '\prod_{i=0}^n\ x ~=~ x^n'`, replace your own TeX equation inside quotes
-    - use single quotes!
-    - `\[ \]` or `\( \)` is optional, `\begin` and `$` is not supported yet
-1. Enjoy beautiful Unicode art
+## Basic Usage
 
-```text
- ₙ        
-┰─┰       
-┃ ┃ 𝑥 = 𝑥ⁿ
-┸ ┸       
-ⁱ⁼⁰       
-```
-> [!IMPORTANT]
-> omg github can't even render in monospace and box glyphs don't even line up, go try yourself, all equations on this page look horrible
+1. `txc '\prod_{i=0}^n\ x ~=~ x^n'` to output Unicode art
+    - replace your own TeX equation inside quotes
+    - use single quotes
+    - if expression contains single quotes like `f'(x)`, replace with `f\'(x)`
+    - `\[ \]`, `\( \)`, `$ $`, or `$$ $$` is optional, `\begin{} \end{}` is not supported yet
+1. add `-c` at the end of the command to output in color (black on white)
 
-inline equation $\frac{1}{2}$
-big equation
-$$
-\frac{1}{2}
-$$
-big equation
-\[
-\frac{1}{2}
-\]
-latex block
-```latex
-\frac{1}{2}
-```
+## Rendering Math in Markdown
+
+1. `txc -f filename.md` to replace latex expressions in markdown files with Unicode art in text blocks.
+1. Pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate markdown previewing:
+1. add `-c` at the end of the command to output in color (black on white)
+Here is [example.md]() rendered with `txr -f example.md -c | glow`
 
 # Features
 
@@ -47,57 +35,10 @@ latex block
 1. Written in python
     - So you can fork it and turn it into a vim plugin
 
-# Examples
-
-`e^{i\theta} = \cos\theta + i\sin{\theta}`:
-```text
-𝑒ⁱᶿ=cosθ+𝑖sinθ
-```
-`r = \sqrt{a^2+b^2}`:
-```text
-   ┌─────╴
-𝑟= │𝑎²+𝑏² 
-  ╰┘      
-```
-`(x+y)^n ~=~ \sum_{k=0}^n \binom{n}k x^n y^{n-k}`:
-```text
-          ₙ          
-         ┰─╴⎛𝑛⎞      
-(𝑥+𝑦)ⁿ = ▐╸ ⎜ ⎟𝑥ⁿ𝑦ⁿ⁻ᵏ
-         ┸─╴⎝𝑘⎠      
-         ᵏ⁼⁰         
-```
-`\arctan\left(-\frac1{\sqrt 3}\right) = \frac\pi6`:
-```text
-      ⎛   1   ⎞  π 
-arctan⎜-╶────╴⎟=╶─╴
-      ⎜   ┌─╴ ⎟  6 
-      ⎝  ╰┘³  ⎠    
-```
-
-Notice the 3 under the square root is shrunk to save space, below is the same equation with full size 3
-```text
-      ⎛   1   ⎞  π 
-arctan⎜-╶────╴⎟=╶─╴
-      ⎜   ┌─╴ ⎟  6 
-      ⎜   │3  ⎟    
-      ⎝  ╰┘   ⎠    
-
-```
-`x = \frac{-b\pm\sqrt{b^2-4ac}}{2a}`:
-```text
-       ┌──────╴ 
-   -𝑏± │𝑏²-4𝑎𝑐  
-      ╰┘        
-𝑥=╶────────────╴
-        2𝑎      
-
-```
-
 # Design Principles:
 
-- Use box drawing characters
-    - supported in most fonts
+- Use box drawing characters when possible
+    - supported in almost all terminal fonts
     - consistent spacing between lines
     - fine tune length with half length glyphs
 - Horizon (center line)
@@ -112,7 +53,7 @@ arctan⎜-╶────╴⎟=╶─╴
 # TODO
 
 - square root with multi line degree
-- align equation with begin align, %= , end align
+- align equation with \begin{align}, %= ,and \end{align}
 - delimiters
     - tall angle brackets
     - `\middle`

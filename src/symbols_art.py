@@ -10,7 +10,6 @@ symbols = {
     "qquad": "    ",
     # my own
     "LaTeX": "LᴬTₑX",
-    "TeXtR": "TₑXᵀR",
     "mod": "  mod",
     "boxtimes": "⊠",  # found in overleaf
     "cdots": "⋯",
