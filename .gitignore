@@ -1,16 +1,10 @@
 # Ignore build artifacts
 dist/
 build/
-*.egg-info/
 
 # Ignore Python bytecode
 __pycache__/
-*.pyc
-*.pyo
 
-# Ignore virtual environments
-venv/
-.env
 
 scrap_paper.txt
 test.sh
