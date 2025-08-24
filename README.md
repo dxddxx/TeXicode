@@ -5,11 +5,17 @@ TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into U
 
 # Installation
 
+## Run as Script
+
 1. Have python3 installed, check with `python3 --version`
 1. Clone and `cd` into this repo.
 1. Make sure this is the correct directory by running `./txc '\Delta'`, should output `Δ`.
 1. `pwd` to get the path
 1. In `~/.zshrc` or `~/.bashrc`, add line `alias txc="<the_path>/txc"`
+
+## Install form pip
+
+`pip install TeXicode`
 
 # Usage
 
