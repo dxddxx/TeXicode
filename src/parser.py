@@ -15,11 +15,15 @@ node_type_parent_dependent_dict = {
 }
 
 node_type_dict = {
-    ("meta", "start"): "opn_root", ("meta",   "end"): "cls_root",
-    ("symb",     "^"): "sup_scrpt", ("symb",    "_"): "sub_scrpt",
-    ("symb",     "{"): "opn_brac", ("symb",     "}"): "cls_brac",
-    ("cmnd",  "left"): "opn_dlim", ("cmnd", "right"): "cls_dlim",
+    ("meta",     "start"): "opn_root", ("meta",     "end"): "cls_root",
+    ("meta", "startline"): "opn_line", ("meta", "endline"): "cls_line",
+    ("symb",         "^"): "sup_scrpt", ("symb",      "_"): "sub_scrpt",
+    ("symb", "$"): "opn_dllr",  ("symb",  "$$"): "opn_ddlr",
+    ("cmnd", "["): "opn_brak",  ("cmnd",  "]"): "cls_brak",
+    ("cmnd", "("): "opn_pren",  ("cmnd",  ")"): "cls_pren",
+    ("symb", "{"): "opn_brac",  ("symb",  "}"): "cls_brac",
 
+    ("cmnd"   "left"): "opn_dlim", ("cmnd", "right"): "cls_dlim",
     ("cmnd",  "bigl"): "big_dlim", ("cmnd",   "big"): "big_dlim",
     ("cmnd",  "bigr"): "big_dlim", ("cmnd",  "Bigl"): "big_dlim",
     ("cmnd",   "Big"): "big_dlim", ("cmnd",  "Bigr"): "big_dlim",
@@ -52,18 +56,10 @@ node_type_dict = {
     ("cmnd",  "mathbb"): "cmd_font", ("cmnd",       "text"): "cmd_font",
     ("cmnd", "mathscr"): "cmd_font",
 
-    ("meta", "startline"): "opn_line",
-    ("meta",   "endline"): "cls_line",
-    ("cmnd", "["): "opn_brak",
-    ("cmnd", "]"): "cls_brak",
-    ("cmnd", "("): "opn_pren",
-    ("cmnd", ")"): "cls_pren",
     ("cmnd", "\\"): "cmd_lbrk",
     ("cmnd",  "newline"): "cmd_lbrk",
     ("cmnd", "substack"): "cmd_sbstk",
 
-    ("symb", "$"): "opn_dllr",
-    ("symb", "$$"): "opn_ddlr",
 }
 
 
@@ -112,75 +108,74 @@ def update_node_type(base_node_type: str, script_node_type) -> str:
 #                   (add_amount)
 #                   (can_add, "err if/if_not", under[])
 #                   (can_be_children, can_break_parent, can_double_pop)
-# ) can double pop is a hack for cls_stkln, find a better way to parse it
+# ) can double pop is a bit of a hack for cls_stkln
 node_type_info = {
-    "opn_root": ((True, ["cls_root"]), (1,),
-                 (True, True, []), (False, False, False)),
-    "opn_brac": ((True, ["cls_brac"]), (1,),
-                 (True, True, []), (True, False, False)),
-    "opn_degr": ((True, ["cls_degr"]), (1,),
-                 (True, True, []), (True, False, False)),
-    "opn_dlim": ((True, ["cls_dlim"]), (1,),
-                 (True, True, []), (True, False, False)),
-    "big_dlim": ((False, []), (1,),
-                 (True, True, []), (True, False, False)),
-    "cmd_sqrt": ((False, ["opn_degr"]), (1,),
-                 (True, True, []), (True, False, False)),
-    "cmd_frac":  ((False, []), (2,), (True, True, []), (True, False, False)),
-    "cmd_binom": ((False, []), (2,), (True, True, []), (True, False, False)),
-    "sup_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
-    "sub_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
-    "top_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
-    "btm_scrpt": ((False, []), (1,), (True, True, []), (True, False, False)),
-    "cls_dlim":  ((False, []), (1,), (True, True, []), (True, False, False)),
-    "cls_root": ((True, []), (0,),
-                 (False, False, ["opn_root",],), (False, False, False)),
-    "cls_brac": ((True, []), (0,),
-                 (False, False, ["opn_brac",],), (False, False, False)),
-    "cls_degr": ((True, []), (0,),
-                 (False, False, ["opn_degr",],), (False, False, False)),
-    "cmd_lmts": ((True, []), (0,), (True, True, []), (True, False, False)),
-    "ctr_base": ((True, []), (0,), (True, True, []), (True, False, False)),
-    "txt_leaf": ((True, []), (0,), (True, True, []), (True, False, False)),
-    "cmd_leaf": ((True, []), (0,), (True, True, []), (True, False, False)),
-    "cmd_acnt": ((False, []), (1,), (True, True, []), (True, False, False)),
-    "cmd_font": ((False, []), (1,), (True, True, []), (True, False, False)),
-    "opn_line": ((True, ["cls_line", "cmd_lbrk"]),
-                 (1,), (True, True, []), (True, False, False)),
-    "opn_brak": ((True, ["cls_brak", "cmd_lbrk"]),
-                 (1,), (True, True, []), (True, False, False)),
-    "opn_pren": ((True, ["cls_pren", "cmd_lbrk"]),
-                 (1,), (True, True, []), (True, False, False)),
-    "opn_stkln": ((True, ["cls_stkln", "stk_lbrk"]),
-                  (1,), (True, False, ["cmd_sbstk",]), (True, False, False)),
-    "cls_line": ((True, []), (0,), (False, False, ["opn_line", "cmd_lbrk"],),
-                 (False, False, False)),
-    "cls_brak": ((True, []), (0,), (False, False, ["opn_brak", "cmd_lbrk"],),
-                 (False, False, False)),
-    "cls_pren": ((True, []), (0,), (False, False, ["opn_pren", "cmd_lbrk"],),
-                 (False, False, False)),
-    "cls_stkln": ((True, []), (0,), (False, False, ["opn_stkln", "stk_lbrk"],),
-                  (False, True, True)),
-    "cmd_lbrk": ((True, ["cmd_lbrk", "cls_line", "cls_brak",
-                         "cls_pren", "cls_dllr", "cls_ddlr"]),
-                 (1,),
-                 (True, False, ["cmd_lbrk", "opn_line", "opn_brak",
-                                "opn_pren", "opn_dllr", "opn_ddlr"]),
-                 (True, True, False)),
-    "stk_lbrk": ((True, ["stk_lbrk", "cls_stkln"]),
-                 (1,),
-                 (True, False, ["stk_lbrk", "opn_stkln"]),
-                 (True, True, False)),
-    "cmd_sbstk": ((True, ["cls_stkln",]), (1,), (True, True, []),
-                  (True, False, False)),
-    "opn_dllr": ((True, ["cls_dllr", "cmd_lbrk"]),
-                 (1,), (True, True, []), (True, False, False)),
-    "cls_dllr": ((True, []), (0,), (False, False, ["opn_dllr", "cmd_lbrk"],),
-                 (False, False, False)),
-    "opn_ddlr": ((True, ["cls_ddlr", "cmd_lbrk"]),
-                 (1,), (True, True, []), (True, False, False)),
-    "cls_ddlr": ((True, []), (0,), (False, False, ["opn_ddlr", "cmd_lbrk"],),
-                 (False, False, False)),
+    "opn_root":  ((True,  ["cls_root"
+                           ]), (1,), (True,  True, []), (False, False, False)),
+    "opn_brac":  ((True,  ["cls_brac"
+                           ]), (1,), (True,  True,  []), (True, False, False)),
+    "opn_degr":  ((True,  ["cls_degr"
+                           ]), (1,), (True,  True,  []), (True, False, False)),
+    "opn_dlim":  ((True,  ["cls_dlim"
+                           ]), (1,), (True,  True,  []), (True, False, False)),
+    "cmd_sqrt":  ((False, ["opn_degr"
+                           ]), (1,), (True,  True,  []), (True, False, False)),
+    "cmd_frac":  ((False, []), (2,), (True,  True,  []), (True, False, False)),
+    "cmd_binom": ((False, []), (2,), (True,  True,  []), (True, False, False)),
+    "big_dlim":  ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "sup_scrpt": ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "sub_scrpt": ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "top_scrpt": ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "btm_scrpt": ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "cls_dlim":  ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "cmd_acnt":  ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "cmd_font":  ((False, []), (1,), (True,  True,  []), (True, False, False)),
+    "cmd_lmts":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
+    "ctr_base":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
+    "txt_leaf":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
+    "cmd_leaf":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
+    "cls_root":  ((True, []), (0,), (False, False, ["opn_root"
+                                                    ]), (False, False, False)),
+    "cls_brac":  ((True, []), (0,), (False, False, ["opn_brac"
+                                                    ]), (False, False, False)),
+    "cls_degr":  ((True, []), (0,), (False, False, ["opn_degr"
+                                                    ]), (False, False, False)),
+    "cls_line":  ((True, []), (0,), (False, False, ["opn_line", "cmd_lbrk"
+                                                    ]), (False, False, False)),
+    "cls_brak":  ((True, []), (0,), (False, False, ["opn_brak", "cmd_lbrk"
+                                                    ]), (False, False, False)),
+    "cls_pren":  ((True, []), (0,), (False, False, ["opn_pren", "cmd_lbrk"
+                                                    ]), (False, False, False)),
+    "cls_dllr":  ((True, []), (0,), (False, False, ["opn_dllr", "cmd_lbrk"
+                                                    ]), (False, False, False)),
+    "cls_ddlr":  ((True, []), (0,), (False, False, ["opn_ddlr", "cmd_lbrk"
+                                                    ]), (False, False, False)),
+    "cls_stkln": ((True, []), (0,), (False, False, ["opn_stkln", "stk_lbrk"
+                                                    ]), (False, True,  True)),
+    "opn_line":  ((True, ["cls_line", "cmd_lbrk"
+                          ]), (1,), (True,  True,  []), (True,  False, False)),
+    "opn_brak":  ((True, ["cls_brak", "cmd_lbrk"
+                          ]), (1,), (True,  True,  []), (True,  False, False)),
+    "opn_pren":  ((True, ["cls_pren", "cmd_lbrk"
+                          ]), (1,), (True,  True,  []), (True,  False, False)),
+    "opn_dllr":  ((True, ["cls_dllr", "cmd_lbrk"
+                          ]), (1,), (True,  True,  []), (True,  False, False)),
+    "opn_ddlr":  ((True, ["cls_ddlr", "cmd_lbrk"
+                          ]), (1,), (True,  True,  []), (True,  False, False)),
+    "stk_lbrk":  ((True, ["cls_stkln", "stk_lbrk"
+                          ]), (1,), (True,  False, ["opn_stkln", "stk_lbrk"
+                                                    ]), (True,  True,  False)),
+    "opn_stkln": ((True, ["cls_stkln", "stk_lbrk"
+                          ]), (1,), (True,  False, ["cmd_sbstk"
+                                                    ]), (True,  False, False)),
+    "cmd_sbstk": ((True, ["cls_stkln"
+                          ]), (1,), (True,  True,  []), (True,  False, False)),
+    "cmd_lbrk":  ((True, ["cmd_lbrk", "cls_line", "cls_brak", "cls_pren",
+                          "cls_dllr", "cls_ddlr"
+                          ]), (1,), (True,  False, ["cmd_lbrk", "opn_line",
+                                                    "opn_brak", "opn_pren",
+                                                    "opn_dllr", "opn_ddlr"
+                                                    ]), (True,  True,  False)),
 }
 
 
@@ -254,7 +249,7 @@ def parse(tokens: list, debug: bool) -> list:
         if can_update_parent_id:
             parent_id = parent_stack[-1]
             parent_type = nodes[parent_id][0]
-        # double pop is a hack for cls_sbstk
+        # double pop is only true for cls_sbstk
         if can_double_pop:
             parent_stack.pop()
             parent_id = parent_stack[-1]
