@@ -5,8 +5,15 @@ with open("README.md", "r") as f:
 
 setup(
     name='TeXicode',
-    version='0.1.1',
-    packages=find_packages(where='src'),
+    version='0.1.4',
+    py_modules=[
+        'main',
+        'lexer',
+        'arts',
+        'parser',
+        'symbols_art',
+        'renderer',
+    ],
     package_dir={'': 'src'},
     entry_points={
         'console_scripts': [
@@ -16,6 +23,6 @@ setup(
     install_requires=[
         # List your dependencies here
     ],
-    long_descriptio=description,
-    long_descriptio_content_type="text/markdown",
+    long_description=description,
+    long_description_content_type="text/markdown",
 )

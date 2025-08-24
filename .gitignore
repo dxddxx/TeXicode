@@ -4,7 +4,7 @@ build/
 
 # Ignore Python bytecode
 src/__pycache__/
-src/TeXicode.egg-info
+*.egg-info/
 
 # pyinstall files
 main.spec
