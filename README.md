@@ -15,7 +15,9 @@ TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into U
 
 ## Install form pip
 
-`pip install TeXicode`
+```bash
+pip install TeXicode
+```
 
 # Usage
 
