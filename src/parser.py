@@ -67,7 +67,6 @@ def get_node_type(token: tuple, parent_type: str) -> str:
     if (parent_type, token) in node_type_parent_dependent_dict.keys():
         return node_type_parent_dependent_dict[(parent_type, token)]
     elif token in node_type_dict.keys():
-        print(token)
         return node_type_dict[token]
     elif token[0] in ("symb", "alph", "numb"):
         return "txt_leaf"
