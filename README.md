@@ -13,7 +13,15 @@ TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into U
 1. `pwd` to get the path
 1. In `~/.zshrc` or `~/.bashrc`, add line `alias txc="<the_path>/txc"`
 
-## Install form pip
+## Install form `pipx` or `pip`
+
+with `pipx` (recommended)
+
+```bash
+pipx install TeXicode
+```
+
+or with `pip`
 
 ```bash
 pip install TeXicode
