@@ -27,34 +27,58 @@ def lexer(tex: str, debug: bool) -> list:
         char = tex[i]
         char_type = get_char_type(char)
         token_val += char
-        if len(token_val) > 1:
-            if token_val == "$$":
-                token_type = "symb"
-            elif (i == len(tex) - 1 or
-                    char_type != get_char_type(tex[i+1]) or
-                    char_type == "symb"):
-                token_val = token_val[1:]
-                token_type = "cmnd"
-        elif token_val == "\\":
-            token_type = ""
-            if i == len(tex) - 1:
-                raise ValueError(f"Unexpexted character {char}")
-        elif token_val == "$":
-            if i == len(tex) - 1:
-                token_type = "symb"
-            elif tex[i+1] == "$":
-                token_type = ""
+        is_final_char = i == len(tex) - 1
+        if len(token_val) > 1 and token_val[0] == "\\":
+            if not is_final_char and (
+                    char_type == get_char_type(tex[i+1]) and
+                    char_type != "symb"):
+                continue
             else:
-                token_type = "symb"
+                token_val = token_val[1:]
+        elif token_val == "\\":
+            token_type = "cmnd"
+            if is_final_char:
+                raise ValueError(f"Unexpexted character {char}")
+            continue
+        elif token_val == "$":
+            token_type = "symb"
+            if (not is_final_char) and tex[i+1] == "$":
+                continue
         else:
             token_type = char_type
+        if token_type == "symb" and token_val == " ":
+            token_val, token_type = "", ""
+            continue
+        tokens.append((token_type, token_val))
+        token_type, token_val = "", ""
+        # if len(token_val) > 1:
+        #     if token_val == "$$":
+        #         token_type = "symb"
+        #     elif (i == len(tex) - 1 or
+        #             char_type != get_char_type(tex[i+1]) or
+        #             char_type == "symb"):
+        #         token_val = token_val[1:]
+        #         token_type = "cmnd"
+        # elif token_val == "\\":
+        #     token_type = ""
+        #     if i == len(tex) - 1:
+        #         raise ValueError(f"Unexpexted character {char}")
+        # elif token_val == "$":
+        #     if i == len(tex) - 1:
+        #         token_type = "symb"
+        #     elif tex[i+1] == "$":
+        #         token_type = ""
+        #     else:
+        #         token_type = "symb"
+        # else:
+        #     token_type = char_type
 
-        if token_type:
-            if token_type == "symb" and token_val == " ":
-                token_val, token_type = "", ""
-                continue
-            tokens.append((token_type, token_val))
-            token_type, token_val = "", ""
+        # if token_type:
+        #     if token_type == "symb" and token_val == " ":
+        #         token_val, token_type = "", ""
+        #         continue
+        #     tokens.append((token_type, token_val))
+        #     token_type, token_val = "", ""
         if debug and tokens:
             print(i, tokens[-1])
     if tokens[0] not in (("cmnd", "["), ("cmnd", "("),
