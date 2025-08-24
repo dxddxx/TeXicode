@@ -23,7 +23,7 @@ node_type_dict = {
     ("cmnd", "("): "opn_pren",  ("cmnd",  ")"): "cls_pren",
     ("symb", "{"): "opn_brac",  ("symb",  "}"): "cls_brac",
 
-    ("cmnd"   "left"): "opn_dlim", ("cmnd", "right"): "cls_dlim",
+    ("cmnd",  "left"): "opn_dlim", ("cmnd", "right"): "cls_dlim",
     ("cmnd",  "bigl"): "big_dlim", ("cmnd",   "big"): "big_dlim",
     ("cmnd",  "bigr"): "big_dlim", ("cmnd",  "Bigl"): "big_dlim",
     ("cmnd",   "Big"): "big_dlim", ("cmnd",  "Bigr"): "big_dlim",
@@ -67,6 +67,7 @@ def get_node_type(token: tuple, parent_type: str) -> str:
     if (parent_type, token) in node_type_parent_dependent_dict.keys():
         return node_type_parent_dependent_dict[(parent_type, token)]
     elif token in node_type_dict.keys():
+        print(token)
         return node_type_dict[token]
     elif token[0] in ("symb", "alph", "numb"):
         return "txt_leaf"

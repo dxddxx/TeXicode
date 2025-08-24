@@ -73,7 +73,7 @@ def render_leaf(token: tuple) -> tuple:
         elif token_val in symbols_art.symbols.keys():
             return [symbols_art.symbols[token_val]], horizon
         else:
-            # print(f"unknown command {token_val}, rendering as '?'")
+            print(f"unknown command {token_val}, rendering as '?'")
             return ["?"], 0
 
 
