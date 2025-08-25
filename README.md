@@ -77,8 +77,17 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 
 # TODO
 
+- spaces should render in /text{}
+    - easy
+- \bm \boldsymbol
+    - easy
+- scrpt_top and scrpt_btm should use shrink(), not script()
+    - easy
 - square root with multi line degree
+    - with concat
 - align equation with \begin{align}, %= ,and \end{align}
+    - store vert horizon of line in horizon
+    - make a concat with vert horizon
 - delimiters
     - tall angle brackets
     - `\middle`
