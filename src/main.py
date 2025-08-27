@@ -43,14 +43,17 @@ def process_markdown(content, debug, color):
         tex_block = match.group(0)
         tex_rows = render_tex(tex_block, debug)
         is_multiline = len(tex_rows) > 1
-        if is_multiline or \
-                tex_block.startswith('$$') or \
+        if tex_block.startswith('$$') or \
                 tex_block.startswith('\\['):
             tex_art = join_rows(tex_rows, color)
             return f"\n```\n{tex_art}\n```\n"
+        elif is_multiline:
+            tex_art = join_rows(tex_rows, False)
+            return f"\n```\n{tex_art}\n```\n"
         else:
             tex_art = join_rows(tex_rows, False)
-            return f"`{tex_art}`"
+            # return f"`{tex_art}`"
+            return tex_art
 
     new_content = re.sub(latex_regex, replace_latex, content, flags=re.DOTALL)
     print(new_content)
