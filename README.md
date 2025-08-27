@@ -77,6 +77,9 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 
 # TODO
 
+- align equation with \begin{align}, %= ,and \end{align}
+    - store vert horizon of line in horizon
+    - make a concat with vert horizon
 - fix \left(_b\right)
 - spaces should render in /text{}
     - easy
@@ -84,9 +87,6 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
     - easy
 - square root with multi line degree
     - with concat
-- align equation with \begin{align}, %= ,and \end{align}
-    - store vert horizon of line in horizon
-    - make a concat with vert horizon
 - delimiters
     - tall angle brackets
     - `\middle`
