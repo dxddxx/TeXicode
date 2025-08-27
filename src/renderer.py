@@ -200,6 +200,20 @@ def render_sub_script(children: list) -> tuple:
     return render_script(children, 1)
 
 
+def render_top_script(children: list) -> tuple:
+    shrunk = render_shrink(children[0][0], 1, True, False)
+    if shrunk == []:
+        return children[0]
+    return shrunk, 0
+
+
+def render_bottom_script(children: list) -> tuple:
+    shrunk = render_shrink(children[0][0], 0, True, False)
+    if shrunk == []:
+        return children[0]
+    return shrunk, 0
+
+
 def get_pile_center(base_height, base_horizon) -> tuple:
     if base_height == 2:
         # weird hacks but works
@@ -402,12 +416,10 @@ def render_parent(node_type: str, token_val: str, children: list) -> tuple:
         return render_sup_script(children)
     elif node_type == "sub_scrpt":
         return render_sub_script(children)
-    # top/btm script uses the same fn as sup/sub script
-    # so that top/btm scripts stick to their ctr base
     elif node_type == "top_scrpt":
-        return render_sub_script(children)
+        return render_top_script(children)
     elif node_type == "btm_scrpt":
-        return render_sup_script(children)
+        return render_bottom_script(children)
     elif node_type == "cmd_sqrt":
         return render_square_root(children)
     elif node_type == "cmd_frac":

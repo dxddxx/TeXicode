@@ -10,16 +10,16 @@ def render_tex(tex: str, debug: bool) -> list:
     try:
         lexered = lexer(tex, debug)
     except ValueError as e:
-        return [f"TexTR: lexerizing error: {e}"]
+        return [f"TeXicode: lexerizing error: {e}"]
         return
     try:
         parsed = parse(lexered, debug)
     except ValueError as e:
-        return [f"TexTR: parsing error: {e}"]
+        return [f"TeXicode: parsing error: {e}"]
     try:
         rendered = render(parsed, debug)
     except ValueError as e:
-        return [f"TexTR: rendering error: {e}"]
+        return [f"TeXicode: rendering error: {e}"]
     return rendered
 
 
@@ -37,8 +37,6 @@ def join_rows(rendered_rows: list, color: bool) -> str:
 def process_markdown(content, debug, color):
 
     # Regex to find LaTeX blocks: $$...$$ or $...$ or \[...\] or \(...\)
-    # latex_regex = r'(\$\$.*?\$\$|\\\[[\s\S]*?\\\]|\\\([^\)]*?\\\)|\$(.*?)\$|\((.*?)\))'
-    # latex_regex = r'\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\([\s\S]*?\\\)|\$(?:(?!\$\$)[\s\S])*?\$'
     latex_regex = r'\$\$.*?\$\$|\$.*?\$|\\\[.*?\\\]|\\\(.*?\\\)'
 
     def replace_latex(match):
@@ -59,11 +57,11 @@ def process_markdown(content, debug, color):
 
 
 def main():
-    input_parser = argparse.ArgumentParser(description='Process Markdown with LaTeX or raw LaTeX')
-    input_parser.add_argument('-d', '--debug', action='store_true', help='Enable debug output')
-    input_parser.add_argument('-f', '--file', help='Input Markdown file to process')
-    input_parser.add_argument('-c', '--color', action='store_true', help='Enable colored output')
-    input_parser.add_argument('latex_string', nargs='?', help='Raw LaTeX string (if not using -f)')
+    input_parser = argparse.ArgumentParser(description='render TeX string or process markdown math')
+    input_parser.add_argument('-d', '--debug', action='store_true', help='enable debug')
+    input_parser.add_argument('-f', '--file', help='input Markdown file')
+    input_parser.add_argument('-c', '--color', action='store_true', help='enable color')
+    input_parser.add_argument('latex_string', nargs='?', help='raw TeX string (if not using -f)')
     args = input_parser.parse_args()
     debug = args.debug
     color = args.color
@@ -77,7 +75,7 @@ def main():
         tex_art = join_rows(tex_rows, color)
         print(tex_art)
     else:
-        print("Error: No input provided. Use -f for file or provide raw LaTeX.")
+        print("Error: No input provided. provide TeX string or -f <markdown_file>")
         sys.exit(1)
 
 
