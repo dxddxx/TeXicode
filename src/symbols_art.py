@@ -20,6 +20,8 @@ symbols = {
     "lvert": "|",
     "rvert": "|",
     "divides": "∣",
+    "because": "∵",
+    "therefore" "∴",
     # from https://latexref.xyz/Math-symbols.html
     "|": "∥",
     "aleph": "ℵ",
