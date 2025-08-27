@@ -77,11 +77,10 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 
 # TODO
 
+- fix \left(_b\right)
 - spaces should render in /text{}
     - easy
 - \bm \boldsymbol
-    - easy
-- scrpt_top and scrpt_btm should use shrink(), not script()
     - easy
 - square root with multi line degree
     - with concat
