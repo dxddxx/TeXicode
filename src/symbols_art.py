@@ -21,7 +21,7 @@ symbols = {
     "rvert": "|",
     "divides": "∣",
     "because": "∵",
-    "therefore" "∴",
+    "therefore": "∴",
     # from https://latexref.xyz/Math-symbols.html
     "|": "∥",
     "aleph": "ℵ",
