@@ -84,6 +84,12 @@ square_root = {
     "top_tail": "╴",
     "top_angle": " ┌",
     "left_bar":  " │",
+    "btm_angle": "╺┪",
+
+    "top_bar": "─",
+    "top_tail": "╴",
+    "top_angle": " ┌",
+    "left_bar":  " │",
     "btm_angle": "╰┘",
 
     # "top_bar": "─",

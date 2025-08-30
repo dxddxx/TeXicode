@@ -78,10 +78,7 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 # TODO
 
 - update screenshot
-- align equation with \begin{align}, %= ,and \end{align}
-    - partially done
-    - store vert horizon of line in horizon
-    - make a concat with vert horizon
+- overline
 - spaces should render in /text{}
     - easy
 - \bm \boldsymbol

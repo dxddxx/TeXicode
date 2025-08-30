@@ -48,7 +48,8 @@ def process_markdown(content, debug, color):
         tex_rows = render_tex(tex_block, debug)
         is_multiline = len(tex_rows) > 1
         if tex_block.startswith('$$') or \
-                tex_block.startswith('\\['):
+                tex_block.startswith('\\[') or \
+                tex_block.startswith('\\begin'):
             tex_art = join_rows(tex_rows, color)
             return f"\n```\n{tex_art}\n```\n"
         elif is_multiline:
