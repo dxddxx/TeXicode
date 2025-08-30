@@ -35,7 +35,7 @@ pip install TeXicode
     - replace your own TeX equation inside quotes
     - use single quotes
     - if expression contains single quotes like `f'(x)`, replace with `f\'(x)`
-    - `\[ \]`, `\( \)`, `$ $`, or `$$ $$` is optional, `\begin{} \end{}` is not supported yet
+    - `\[ \]`, `\( \)`, `$ $`, `$$ $$`, `\begin{...} \end{...}` is optional
 - Add `-c` at the end of the command to output in color (black on white)
 - Unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
 
@@ -79,6 +79,7 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 
 - update screenshot
 - align equation with \begin{align}, %= ,and \end{align}
+    - partially done
     - store vert horizon of line in horizon
     - make a concat with vert horizon
 - spaces should render in /text{}
