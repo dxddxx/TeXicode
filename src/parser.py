@@ -4,6 +4,9 @@ node_type_parent_dependent_dict = {
     ("cmd_sbstk", ("symb", "{")):  "opn_stkln",
     ("opn_stkln", ("symb", "}")):  "cls_stkln",
     ("stk_lbrk",  ("symb", "}")):  "cls_stkln",
+    ("opn_envn",  ("symb", "}")):  "cls_envn",
+    ("cmd_bgin",  ("symb", "{")):  "opn_envn",
+    ("cmd_end",   ("symb", "{")):  "opn_envn",
     ("opn_stkln", ("cmnd", "\\")): "stk_lbrk",
     ("stk_lbrk",  ("cmnd", "\\")): "stk_lbrk",
     ("opn_stkln", ("cmnd", "newline")): "stk_lbrk",
@@ -56,9 +59,9 @@ node_type_dict = {
     ("cmnd",  "mathbb"): "cmd_font", ("cmnd",       "text"): "cmd_font",
     ("cmnd", "mathscr"): "cmd_font",
 
-    ("cmnd", "\\"): "cmd_lbrk",
-    ("cmnd",  "newline"): "cmd_lbrk",
     ("cmnd", "substack"): "cmd_sbstk",
+    ("cmnd",    "\\"): "cmd_lbrk", ("cmnd", "newline"): "cmd_lbrk",
+    ("cmnd", "begin"): "cmd_bgin", ("cmnd",     "end"): "cmd_end",
 
 }
 
@@ -69,7 +72,10 @@ def get_node_type(token: tuple, parent_type: str) -> str:
     elif token in node_type_dict.keys():
         return node_type_dict[token]
     elif token[0] in ("symb", "alph", "numb"):
-        return "txt_leaf"
+        if parent_type in ("opn_envn"):
+            return "txt_info"
+        else:
+            return "txt_leaf"
     elif token[0] == "cmnd":
         return "cmd_leaf"
     else:
@@ -108,7 +114,7 @@ def update_node_type(base_node_type: str, script_node_type) -> str:
 #                   (add_amount)
 #                   (can_add, "err if/if_not", under[])
 #                   (can_be_children, can_break_parent, can_double_pop)
-# ) can double pop is a bit of a hack for cls_stkln
+# ) can double pop is a bit of a hack for cls_stkln and cmd_end
 node_type_info = {
     "opn_root":  ((True,  ["cls_root"
                            ]), (1,), (True,  True, []), (False, False, False)),
@@ -133,6 +139,7 @@ node_type_info = {
     "cmd_lmts":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
     "ctr_base":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
     "txt_leaf":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
+    "txt_info":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
     "cmd_leaf":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
     "cls_root":  ((True, []), (0,), (False, False, ["opn_root"
                                                     ]), (False, False, False)),
@@ -150,8 +157,12 @@ node_type_info = {
                                                     ]), (False, False, False)),
     "cls_ddlr":  ((True, []), (0,), (False, False, ["opn_ddlr", "cmd_lbrk"
                                                     ]), (False, False, False)),
+    "cmd_end":  ((False, []), (1,), (True,  False, ["cmd_bgin", "cmd_lbrk"
+                                                    ]), (False, True,  False)),
     "cls_stkln": ((True, []), (0,), (False, False, ["opn_stkln", "stk_lbrk"
                                                     ]), (False, True,  True)),
+    "cls_envn":  ((True, []), (0,), (False, False, ["opn_envn"
+                                                    ]), (False, False, False)),
     "opn_line":  ((True, ["cls_line", "cmd_lbrk"
                           ]), (1,), (True,  True,  []), (True,  False, False)),
     "opn_brak":  ((True, ["cls_brak", "cmd_lbrk"
@@ -162,19 +173,25 @@ node_type_info = {
                           ]), (1,), (True,  True,  []), (True,  False, False)),
     "opn_ddlr":  ((True, ["cls_ddlr", "cmd_lbrk"
                           ]), (1,), (True,  True,  []), (True,  False, False)),
+    "cmd_bgin":  ((True, ["cmd_end", "cmd_lbrk"
+                          ]), (1,), (True,  True,  []), (True,  False, False)),
     "stk_lbrk":  ((True, ["cls_stkln", "stk_lbrk"
                           ]), (1,), (True,  False, ["opn_stkln", "stk_lbrk"
                                                     ]), (True,  True,  False)),
     "opn_stkln": ((True, ["cls_stkln", "stk_lbrk"
                           ]), (1,), (True,  False, ["cmd_sbstk"
                                                     ]), (True,  False, False)),
+    "opn_envn":  ((True, ["cls_envn"
+                          ]), (1,), (True,  False, ["cmd_bgin", "cmd_end"
+                                                    ]), (True,  False, False)),
     "cmd_sbstk": ((True, ["cls_stkln"
                           ]), (1,), (True,  True,  []), (True,  False, False)),
     "cmd_lbrk":  ((True, ["cmd_lbrk", "cls_line", "cls_brak", "cls_pren",
-                          "cls_dllr", "cls_ddlr"
+                          "cls_dllr", "cls_ddlr", "cmd_end"
                           ]), (1,), (True,  False, ["cmd_lbrk", "opn_line",
                                                     "opn_brak", "opn_pren",
-                                                    "opn_dllr", "opn_ddlr"
+                                                    "opn_dllr", "opn_ddlr",
+                                                    "cmd_bgin"
                                                     ]), (True,  True,  False)),
 }
 

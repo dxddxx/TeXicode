@@ -54,7 +54,8 @@ def lexer(tex: str, debug: bool) -> list:
         if debug and tokens:
             print(i, tokens[-1])
     if tokens[0] not in (("cmnd", "["), ("cmnd", "("),
-                         ("symb", "$"), ("symb", "$$")):
+                         ("symb", "$"), ("symb", "$$"),
+                         ("cmnd", "begin")):
         tokens.insert(0, ("meta", "startline"))
         tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))

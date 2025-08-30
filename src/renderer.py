@@ -52,11 +52,13 @@ def unshrink(small_char: str) -> str:
     return small_char
 
 
-def render_leaf(token: tuple) -> tuple:
+def render_leaf(token: tuple, node_type: str) -> tuple:
     token_type = token[0]
     token_val = token[1]
     horizon = 0
-    if token_type == "numb":
+    if node_type == "txt_info":
+        return [token_val], horizon
+    elif token_type == "numb":
         return [token_val], horizon
     elif token_type == "symb":
         if token_val in simple_symbols:
@@ -408,13 +410,25 @@ def render_substack(children: list) -> tuple:
     return render_vert_concat(children, [""], "center")
 
 
+def render_begin(children: list):
+    return render_concat(children[1:])
+
+
+def render_end(children: list):
+    return children[0]
+
+
 def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     if node_type == "opn_root":
         return render_root(children)
     elif node_type in {"opn_line", "opn_brak", "opn_pren",
                        "opn_brac", "opn_degr", "opn_stkln",
-                       "opn_dllr", "opn_ddlr"}:
+                       "opn_dllr", "opn_ddlr", "opn_envn"}:
         return render_concat(children)
+    elif node_type == "cmd_bgin":
+        return render_begin(children)
+    elif node_type == "cmd_end":
+        return render_end(children)
     elif node_type == "opn_dlim":
         return render_open_delimiter(children)
     elif node_type == "cls_dlim":
@@ -451,6 +465,7 @@ def render_parent(node_type: str, token_val: str, children: list) -> tuple:
 
 leaf_node_types = {
     "txt_leaf",
+    "txt_info",
     "cmd_leaf",
     "ctr_base",
 }
@@ -477,7 +492,7 @@ def render(nodes: list, debug: bool) -> list:
             scripts.append((nodes[j][0], canvas[j][0]))
 
         if node_type in leaf_node_types:
-            sketch, horizon = render_leaf(node_token)
+            sketch, horizon = render_leaf(node_token, node_type)
         # elif node_type in parent_node_types:
         else:
             sketch, horizon = render_parent(node_type, node_token[1], children)
