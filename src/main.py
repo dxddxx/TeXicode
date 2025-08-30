@@ -1,3 +1,7 @@
+# TeXicode, a cli script that renders TeX math into Unicode
+# Author: Darcy Zhang
+# Project url: https://github.com/dxddxx/TeXicode
+
 import sys
 import argparse
 import re
