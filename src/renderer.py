@@ -271,7 +271,7 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
         return render_vert_pile(top, base_sketch, base_horizon, btm, "center")
 
 
-def render_delimiter(delim_type, height: int) -> tuple:
+def render_delimiter(delim_type, height: int, horizon: int) -> tuple:
     if delim_type == ".":
         return [""], 0
     art_col = arts.delimiter["sgl"].find(delim_type[0])
@@ -283,11 +283,19 @@ def render_delimiter(delim_type, height: int) -> tuple:
         delim_art[pos] = art[art_col]
     if height == 1:
         return [delim_type], 0
-    horizon = height // 2
+    if height == 2 and delim_type in "{}":
+        height = 3
+        if horizon == 0:
+            horizon = 1
+    center = horizon
+    if center == 0:
+        center = 1
+    if center == height - 1:
+        center = height - 2
     sketch = []
     for _ in range(height):
         sketch.append(delim_art["fil"])
-    sketch[horizon] = delim_art["ctr"]
+    sketch[center] = delim_art["ctr"]
     sketch[0] = delim_art["top"]
     sketch[-1] = delim_art["btm"]
     return sketch, horizon
@@ -300,7 +308,7 @@ def render_big_delimiter(size: str, children: list) -> tuple:
                    "bigg": 5, "biggl": 5, "biggr": 5,
                    "Bigg": 7, "Biggl": 7, "Biggr": 7}
     height = height_dict[size]
-    return render_delimiter(delim_type, height)
+    return render_delimiter(delim_type, height, height // 2)
 
 
 def render_open_delimiter(children: list) -> tuple:
@@ -308,8 +316,9 @@ def render_open_delimiter(children: list) -> tuple:
     left_delim_type = children[0][0][0]
     right_delim_type = children[-1][0][0]
     height = len(inside[0])
-    left = render_delimiter(left_delim_type, height)
-    right = render_delimiter(right_delim_type, height)
+    horizon = inside[1]
+    left = render_delimiter(left_delim_type, height, horizon)
+    right = render_delimiter(right_delim_type, height, horizon)
     return render_concat([left, inside, right])
 
 
