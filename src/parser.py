@@ -63,6 +63,10 @@ node_type_dict = {
     ("cmnd",    "\\"): "cmd_lbrk", ("cmnd", "newline"): "cmd_lbrk",
     ("cmnd", "begin"): "cmd_bgin", ("cmnd",     "end"): "cmd_end",
 
+    ("cmnd", "textstyle"): "cmd_styl",
+    ("cmnd", "displaystyle"): "cmd_styl",
+    ("cmnd", "scriptstyle"): "cmd_styl",
+    ("cmnd", "scriptscriptstyle"): "cmd_styl",
 }
 
 
@@ -137,11 +141,12 @@ node_type_info = {
     "cls_dlim":  ((False, []), (1,), (True,  True,  []), (True, False, False)),
     "cmd_acnt":  ((False, []), (1,), (True,  True,  []), (True, False, False)),
     "cmd_font":  ((False, []), (1,), (True,  True,  []), (True, False, False)),
-    "cmd_lmts":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
-    "ctr_base":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
-    "txt_leaf":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
-    "txt_info":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
-    "cmd_leaf":  ((True,  []), (0,), (True,  True,  []), (True, False, False)),
+    "cmd_lmts":  ((True, []), (0,), (True,  True,  []), (True, False, False)),
+    "ctr_base":  ((True, []), (0,), (True,  True,  []), (True, False, False)),
+    "txt_leaf":  ((True, []), (0,), (True,  True,  []), (True, False, False)),
+    "txt_info":  ((True, []), (0,), (True,  True,  []), (True, False, False)),
+    "cmd_leaf":  ((True, []), (0,), (True,  True,  []), (True, False, False)),
+    "cmd_styl":  ((True, []), (0,), (True,  False, []), (False, False, False)),
     "cls_root":  ((True, []), (0,), (False, False, ["opn_root"
                                                     ]), (False, False, False)),
     "cls_brac":  ((True, []), (0,), (False, False, ["opn_brac"
