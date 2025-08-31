@@ -48,16 +48,19 @@ def process_markdown(content, debug, color):
         tex_rows = render_tex(tex_block, debug)
         is_multiline = len(tex_rows) > 1
         if tex_block.startswith('$$') or \
-                tex_block.startswith('\\[') or \
-                tex_block.startswith('\\begin'):
+                tex_block.startswith(r'\[') or \
+                tex_block.startswith(r'\begin'):
+            tex_block.strip('$')
             tex_art = join_rows(tex_rows, color)
             return f"\n```\n{tex_art}\n```\n"
         elif is_multiline:
             tex_art = join_rows(tex_rows, False)
             return f"\n```\n{tex_art}\n```\n"
+        # else if single line inline math
+        tex_art = join_rows(tex_rows, False)
+        if color:
+            return f"`{tex_art}`"
         else:
-            tex_art = join_rows(tex_rows, False)
-            # return f"`{tex_art}`"
             return tex_art
 
     new_content = re.sub(latex_regex, replace_latex, content, flags=re.DOTALL)
@@ -83,7 +86,7 @@ def main():
         tex_art = join_rows(tex_rows, color)
         print(tex_art)
     else:
-        print("Error: No input provided. provide TeX string or -f <markdown_file>")
+        print("Error: no input. provide TeX string or -f <markdown_file>")
         sys.exit(1)
 
 
