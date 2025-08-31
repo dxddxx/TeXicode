@@ -16,11 +16,12 @@ $$
 $$
 
 This is a latex block wrapped with backslash square brackets
+<!-- actually its begin align now, will update screenshot later -->
 
-\[
-|a+bi| ~= \sqrt{a^2+b^2} \\
-\arg(a+bi) ~=~ \tan^{-1}\left( \frac b a \right)
-\]
+\begin{align*}
+|a+bi| ~&= \sqrt{a^2+b^2} \\
+\arg(a+bi) ~&=~ \tan^{-1}\left( \frac b a \right)
+\end{align*}
 
 This is what products, sums, and exponents look like:
 
