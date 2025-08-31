@@ -85,8 +85,10 @@ def util_concat(children: list, align_line: bool) -> tuple:
     concated_sketch = []
     maxh_sky = 0  # max height above horizon - max height of sky
     maxh_ocn = 0
+    contain_amp = False
     for sketch, horizon in children:
         if horizon == -1:
+            contain_amp = True
             if not align_line:
                 raise ValueError(f"Unexpected {sketch}")
             continue
@@ -114,6 +116,8 @@ def util_concat(children: list, align_line: bool) -> tuple:
         sketch = top_pad + sketch + btm_pad
         for i in range(len(concated_sketch)):
             concated_sketch[i] += sketch[i]
+    if align_line and not contain_amp:
+        concated_horizon = len(concated_sketch[0])
     return concated_sketch, concated_horizon
 
 
@@ -451,7 +455,8 @@ def util_add_ampersand_padding(children: list) -> tuple:
 
 
 def util_vert_concat(children: list, sep: list, align: str) -> tuple:
-    children = util_add_ampersand_padding(children)
+    if children[0][1] != -2:
+        children = util_add_ampersand_padding(children)
     sketch = children.pop(0)[0]
     horizon = 0
     for child in children:
@@ -461,7 +466,12 @@ def util_vert_concat(children: list, sep: list, align: str) -> tuple:
     return sketch, horizon
 
 
-def render_concat_line(children: list) -> tuple:
+def render_concat_line_no_align_amp(children: list) -> tuple:
+    line_sketch = util_concat(children, False)[0]
+    return line_sketch, -2
+
+
+def render_concat_line_align_amp(children: list) -> tuple:
     return util_concat(children, True)
 
 
@@ -474,7 +484,8 @@ def render_substack(children: list) -> tuple:
 
 
 def render_begin(children: list):
-    return render_concat_line(children[1:])
+    # return render_concat_line(children[1:])
+    return util_concat(children[1:], True)
 
 
 def render_end(children: list):
@@ -485,11 +496,11 @@ def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     if node_type == "opn_root":
         return render_root(children)
     elif node_type in {"cmd_lbrk", "stk_lbrk"}:
-        return render_concat_line(children)
-    elif node_type in {"opn_line", "opn_brak", "opn_pren", "opn_degr",
-                       "opn_stkln", "opn_dllr", "opn_ddlr", "opn_envn"}:
-        return render_concat(children)
-    elif node_type == "opn_brac":
+        return render_concat_line_align_amp(children)
+    elif node_type in {"opn_line", "opn_brak", "opn_pren", "opn_ddlr"}:
+        return render_concat_line_no_align_amp(children)
+    elif node_type in {"opn_brac", "opn_degr", "opn_stkln", "opn_dllr",
+                       "opn_envn"}:
         return render_concat(children)
     elif node_type == "cmd_bgin":
         return render_begin(children)
@@ -563,6 +574,7 @@ def render(nodes: list, debug: bool) -> list:
             sketch, horizon = render_apply_scripts(sketch, horizon, scripts)
         canvas[i] = (sketch, horizon)
         if debug:
+            print(f"horizon at {horizon}")
             for i in range(len(sketch)):
                 arrow = ""
                 if i == horizon:
