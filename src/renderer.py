@@ -455,6 +455,7 @@ def util_add_ampersand_padding(children: list) -> tuple:
 
 
 def util_vert_concat(children: list, sep: list, align: str) -> tuple:
+    print(children[0])
     if children[0][1] != -2:
         children = util_add_ampersand_padding(children)
     sketch = children.pop(0)[0]
@@ -497,10 +498,10 @@ def render_parent(node_type: str, token_val: str, children: list) -> tuple:
         return render_root(children)
     elif node_type in {"cmd_lbrk", "stk_lbrk"}:
         return render_concat_line_align_amp(children)
-    elif node_type in {"opn_line", "opn_brak", "opn_pren", "opn_ddlr"}:
+    elif node_type in {"opn_line", "opn_brak", "opn_pren", "opn_dllr",
+                       "opn_ddlr"}:
         return render_concat_line_no_align_amp(children)
-    elif node_type in {"opn_brac", "opn_degr", "opn_stkln", "opn_dllr",
-                       "opn_envn"}:
+    elif node_type in {"opn_brac", "opn_degr", "opn_stkln", "opn_envn"}:
         return render_concat(children)
     elif node_type == "cmd_bgin":
         return render_begin(children)
