@@ -88,6 +88,7 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 - delimiters
     - tall angle brackets
     - `\middle`
+- displaystyle
 - better error, consistent with LaTeX
 - turn it into a vim plugin
 
