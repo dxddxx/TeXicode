@@ -121,7 +121,8 @@ node_type_info = {
     "opn_brac":  ((True,  ["cls_brac"
                            ]), (1,), (True,  True,  []), (True, False, False)),
     "opn_degr":  ((True,  ["cls_degr"
-                           ]), (1,), (True,  True,  []), (True, False, False)),
+                           ]), (1,), (True,  False, ["cmd_sqrt"
+                                                     ]), (True, False, False)),
     "opn_dlim":  ((True,  ["cls_dlim"
                            ]), (1,), (True,  True,  []), (True, False, False)),
     "cmd_sqrt":  ((False, ["opn_degr"
@@ -164,17 +165,23 @@ node_type_info = {
     "cls_envn":  ((True, []), (0,), (False, False, ["opn_envn"
                                                     ]), (False, False, False)),
     "opn_line":  ((True, ["cls_line", "cmd_lbrk"
-                          ]), (1,), (True,  True,  []), (True,  False, False)),
+                          ]), (1,), (True,  False, ["opn_root"
+                                                    ]), (True,  False, False)),
     "opn_brak":  ((True, ["cls_brak", "cmd_lbrk"
-                          ]), (1,), (True,  True,  []), (True,  False, False)),
+                          ]), (1,), (True,  False, ["opn_root"
+                                                    ]), (True,  False, False)),
     "opn_pren":  ((True, ["cls_pren", "cmd_lbrk"
-                          ]), (1,), (True,  True,  []), (True,  False, False)),
+                          ]), (1,), (True,  False, ["opn_root"
+                                                    ]), (True,  False, False)),
     "opn_dllr":  ((True, ["cls_dllr", "cmd_lbrk"
-                          ]), (1,), (True,  True,  []), (True,  False, False)),
+                          ]), (1,), (True,  False, ["opn_root"
+                                                    ]), (True,  False, False)),
     "opn_ddlr":  ((True, ["cls_ddlr", "cmd_lbrk"
-                          ]), (1,), (True,  True,  []), (True,  False, False)),
+                          ]), (1,), (True,  False, ["opn_root"
+                                                    ]), (True,  False, False)),
     "cmd_bgin":  ((True, ["cmd_end", "cmd_lbrk"
-                          ]), (1,), (True,  True,  []), (True,  False, False)),
+                          ]), (1,), (True,  False, ["opn_root"
+                                                    ]), (True,  False, False)),
     "stk_lbrk":  ((True, ["cls_stkln", "stk_lbrk"
                           ]), (1,), (True,  False, ["opn_stkln", "stk_lbrk"
                                                     ]), (True,  True,  False)),
@@ -185,7 +192,8 @@ node_type_info = {
                           ]), (1,), (True,  False, ["cmd_bgin", "cmd_end"
                                                     ]), (True,  False, False)),
     "cmd_sbstk": ((True, ["cls_stkln"
-                          ]), (1,), (True,  True,  []), (True,  False, False)),
+                          ]), (1,), (True,  True,  ["opn_root"
+                                                    ]), (True,  False, False)),
     "cmd_lbrk":  ((True, ["cmd_lbrk", "cls_line", "cls_brak", "cls_pren",
                           "cls_dllr", "cls_ddlr", "cmd_end"
                           ]), (1,), (True,  False, ["cmd_lbrk", "opn_line",

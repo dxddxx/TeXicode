@@ -81,7 +81,7 @@ def render_leaf(token: tuple, node_type: str) -> tuple:
             return ["?"], 0
 
 
-def util_concat(children: list, align_line: bool) -> tuple:
+def util_concat(children: list, concat_line: bool, align_amp: bool) -> tuple:
     concated_sketch = []
     maxh_sky = 0  # max height above horizon - max height of sky
     maxh_ocn = 0
@@ -89,7 +89,7 @@ def util_concat(children: list, align_line: bool) -> tuple:
     for sketch, horizon in children:
         if horizon == -1:
             contain_amp = True
-            if not align_line:
+            if not align_amp:
                 raise ValueError(f"Unexpected {sketch}")
             continue
         h_sky = horizon
@@ -103,7 +103,7 @@ def util_concat(children: list, align_line: bool) -> tuple:
         concated_sketch.append("")
     for sketch, horizon in children:
         if horizon == -1:
-            if not align_line:
+            if not align_amp:
                 raise ValueError(f"Unexpected {sketch}")
             concated_horizon = len(concated_sketch[0])
             continue
@@ -116,37 +116,13 @@ def util_concat(children: list, align_line: bool) -> tuple:
         sketch = top_pad + sketch + btm_pad
         for i in range(len(concated_sketch)):
             concated_sketch[i] += sketch[i]
-    if align_line and not contain_amp:
+    if concat_line and not contain_amp:
         concated_horizon = len(concated_sketch[0])
     return concated_sketch, concated_horizon
 
 
 def render_concat(children: list) -> tuple:
-    # concated_sketch = []
-    # maxh_sky = 0  # max height above horizon - max height of sky
-    # maxh_ocn = 0
-    # for sketch, horizon in children:
-    #     h_sky = horizon
-    #     h_ocn = len(sketch) - h_sky - 1
-    #     if h_sky > maxh_sky:
-    #         maxh_sky = h_sky
-    #     if h_ocn > maxh_ocn:
-    #         maxh_ocn = h_ocn
-    # for i in range(maxh_sky + 1 + maxh_ocn):
-    #     concated_sketch.append("")
-    # for sketch, horizon in children:
-    #     h_sky = horizon
-    #     h_ocn = len(sketch) - h_sky - 1
-    #     top_pad_len = maxh_sky - h_sky
-    #     btm_pad_len = maxh_ocn - h_ocn
-    #     top_pad = [arts.bg * len(sketch[0])] * top_pad_len
-    #     btm_pad = [arts.bg * len(sketch[0])] * btm_pad_len
-    #     sketch = top_pad + sketch + btm_pad
-    #     for i in range(len(concated_sketch)):
-    #         concated_sketch[i] += sketch[i]
-    # concated_horizon = maxh_sky
-    # return concated_sketch, concated_horizon
-    return util_concat(children, False)
+    return util_concat(children, False, False)
 
 
 def util_vert_pile(top, ctr, ctr_horizon, btm, align) -> tuple:
@@ -467,12 +443,12 @@ def util_vert_concat(children: list, sep: list, align: str) -> tuple:
 
 
 def render_concat_line_no_align_amp(children: list) -> tuple:
-    line_sketch = util_concat(children, False)[0]
+    line_sketch = util_concat(children, True, False)[0]
     return line_sketch, -2
 
 
 def render_concat_line_align_amp(children: list) -> tuple:
-    return util_concat(children, True)
+    return util_concat(children, True, True)
 
 
 def render_root(children: list) -> tuple:
@@ -485,7 +461,7 @@ def render_substack(children: list) -> tuple:
 
 def render_begin(children: list):
     # return render_concat_line(children[1:])
-    return util_concat(children[1:], True)
+    return render_concat_line_align_amp(children[1:])
 
 
 def render_end(children: list):
@@ -574,7 +550,7 @@ def render(nodes: list, debug: bool) -> list:
             sketch, horizon = render_apply_scripts(sketch, horizon, scripts)
         canvas[i] = (sketch, horizon)
         if debug:
-            print(f"horizon at {horizon}")
+            print(f"{node_type}, horizon at {horizon}")
             for i in range(len(sketch)):
                 arrow = ""
                 if i == horizon:
