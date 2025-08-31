@@ -68,7 +68,7 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
     - fine tune length with half length glyphs
 - Horizon (center line)
     - makes long concatenated expression readable
-    - maybe add vertical horizon as well for &= aligning
+    - vertical horizon for &= aligning
     - space saving square roots kinda goes against this, might fix later when I find a better way to draw square roots
 - Clarity over aesthetics
     - the square root tail is lengthened for clarity
