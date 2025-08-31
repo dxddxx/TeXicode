@@ -455,7 +455,6 @@ def util_add_ampersand_padding(children: list) -> tuple:
 
 
 def util_vert_concat(children: list, sep: list, align: str) -> tuple:
-    print(children[0])
     if children[0][1] != -2:
         children = util_add_ampersand_padding(children)
     sketch = children.pop(0)[0]
