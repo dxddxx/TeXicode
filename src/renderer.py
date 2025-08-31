@@ -460,8 +460,10 @@ def render_substack(children: list) -> tuple:
 
 
 def render_begin(children: list):
-    # return render_concat_line(children[1:])
-    return render_concat_line_align_amp(children[1:])
+    if children[0][0] in (["align*"], ["align"]):
+        return render_concat_line_align_amp(children[1:])
+    else:
+        return render_concat_line_no_align_amp(children[1:])
 
 
 def render_end(children: list):
@@ -471,12 +473,12 @@ def render_end(children: list):
 def render_parent(node_type: str, token_val: str, children: list) -> tuple:
     if node_type == "opn_root":
         return render_root(children)
-    elif node_type in {"cmd_lbrk", "stk_lbrk"}:
+    elif node_type in {"cmd_lbrk"}:
         return render_concat_line_align_amp(children)
-    elif node_type in {"opn_line", "opn_brak", "opn_pren", "opn_dllr",
-                       "opn_ddlr"}:
+    elif node_type in {"opn_line", "opn_brak", "opn_stkln", "stk_lbrk",
+                       "opn_pren", "opn_dllr", "opn_ddlr"}:
         return render_concat_line_no_align_amp(children)
-    elif node_type in {"opn_brac", "opn_degr", "opn_stkln", "opn_envn"}:
+    elif node_type in {"opn_brac", "opn_degr", "opn_envn"}:
         return render_concat(children)
     elif node_type == "cmd_bgin":
         return render_begin(children)
