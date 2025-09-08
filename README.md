@@ -78,6 +78,7 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 # TODO
 
 - update screenshot
+- put functions in node info
 - overline
 - spaces should render in /text{}
     - easy
@@ -91,5 +92,6 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 - displaystyle
 - better error, consistent with LaTeX
 - turn it into a vim plugin
+- make a website/browser extension for reddit comments
 
 -->
