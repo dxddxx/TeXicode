@@ -11,6 +11,7 @@ setup(
         'lexer',
         'arts',
         'parser',
+        'node_data',
         'symbols_art',
         'renderer',
     ],
