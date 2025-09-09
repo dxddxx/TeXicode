@@ -15,7 +15,7 @@ simple_leaf_commands = {
 simple_symbols = """`!@#%*()+-=[]|;:'",.<>/?"""
 
 
-def render_font(font_val: str, children: list) -> tuple:
+def util_font(font_val: str, children: list) -> tuple:
     sketch, horizon = children[0]
     new_sketch = []
     for row in sketch:
@@ -32,6 +32,10 @@ def render_font(font_val: str, children: list) -> tuple:
             new_row += arts.font[font_val][alpha_id]
         new_sketch.append(new_row)
     return new_sketch, horizon
+
+
+def render_font(token: str, children: list) -> tuple:
+    return util_font(token[1], children)
 
 
 def util_revert_font(char: str) -> str:
@@ -53,13 +57,17 @@ def util_unshrink(small_char: str) -> str:
     return small_char
 
 
-def render_leaf(token: tuple, node_type: str) -> tuple:
+def render_text_info(token: tuple, children: list) -> tuple:
+    return [token[1]], 0
+
+
+def render_leaf(token: tuple, children: list) -> tuple:
     token_type = token[0]
     token_val = token[1]
     horizon = 0
-    if node_type == "txt_info":
-        return [token_val], horizon
-    elif token_type == "numb":
+    # if node_type == "txt_info":
+    #     return [token_val], horizon
+    if token_type == "numb":
         return [token_val], horizon
     elif token_type == "symb":
         if token_val == "&":
@@ -69,7 +77,7 @@ def render_leaf(token: tuple, node_type: str) -> tuple:
         elif token_val in arts.special_symbols.keys():
             return [arts.special_symbols[token_val]], horizon
     elif token_type == "alph":
-        return render_font("mathnormal", [([token_val], 0)])
+        return util_font("mathnormal", [([token_val], 0)])
     elif token_type == "cmnd":
         if token_val in simple_leaf_commands:
             return [token_val], horizon
@@ -275,12 +283,15 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
     ctr, ctr_horizon = util_get_pile_center(len(base_sketch), base_horizon)
     if ctr != []:
         piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
-        return render_concat([(base_sketch, base_horizon), piled_scripts])
+        # return render_concat([(base_sketch, base_horizon), piled_scripts])
+        return util_concat([(base_sketch, base_horizon), piled_scripts], False, False)
     # else if ctr is []:
     if top == [""]:
-        return render_concat([(base_sketch, base_horizon), (btm, 0)])
+        # return render_concat([(base_sketch, base_horizon), (btm, 0)])
+        return util_concat([(base_sketch, base_horizon), (btm, 0)], False, False)
     if btm == [""]:
-        return render_concat([(base_sketch, base_horizon), (top, len(top)-1)])
+        # return render_concat([(base_sketch, base_horizon), (top, len(top)-1)])
+        return util_concat([(base_sketch, base_horizon), (top, len(top)-1)], False, False)
     if len(top) > 1:
         top.pop()
         ctr = [""]
@@ -293,7 +304,8 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
         btm = util_shrink(btm, 0, False, True)
         ctr = [arts.bg]
     piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
-    return render_concat([(base_sketch, base_horizon), piled_scripts])
+    # return render_concat([(base_sketch, base_horizon), piled_scripts])
+    return util_concat([(base_sketch, base_horizon), piled_scripts], False, False)
 
 
 def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
@@ -326,7 +338,8 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
     return sketch, horizon
 
 
-def render_big_delimiter(size: str, children: list) -> tuple:
+def render_big_delimiter(token: tuple, children: list) -> tuple:
+    size = token[1]
     delim_type = children[0][0][0]
     height_dict = {"big": 1, "bigl": 1, "bigr": 1,
                    "Big": 3, "Bigl": 3, "Bigr": 3,
@@ -337,14 +350,16 @@ def render_big_delimiter(size: str, children: list) -> tuple:
 
 
 def render_open_delimiter(children: list) -> tuple:
-    inside = render_concat(children[1:-1])
+    # inside = render_concat(children[1:-1])
+    inside = util_concat(children[1:-1], False, False)
     left_delim_type = children[0][0][0]
     right_delim_type = children[-1][0][0]
     height = len(inside[0])
     horizon = inside[1]
     left = util_delimiter(left_delim_type, height, horizon)
     right = util_delimiter(right_delim_type, height, horizon)
-    return render_concat([left, inside, right])
+    # return util_concat([left, inside, right], False, False)
+    return util_concat([left, inside, right], False, False)
 
 
 def render_close_delimiter(children: list) -> tuple:
@@ -355,7 +370,7 @@ def render_binomial(children: list) -> tuple:
     n, r = children[0][0], children[1][0]
     sep_space = max(len(n[0]), len(r[0])) * arts.bg
     piled = util_vert_pile(n, [sep_space], 0, r, "center")
-    return render_open_delimiter([("("), piled, (")")])
+    return render_open_delimiter([("(", 0), piled, (")", 0)])
 
 
 def render_fraction(children: list) -> tuple:
@@ -366,7 +381,8 @@ def render_fraction(children: list) -> tuple:
     return util_vert_pile(numer, [fraction_line], 0, denom, "center")
 
 
-def render_accents(accent_val: str, children: list) -> tuple:
+def render_accents(token: tuple, children: list) -> tuple:
+    accent_val = token[1]
     import unicodedata
     u_hex = {"acute": "\u0302", "bar": "\u0304", "breve": "\u0306",
              "check": "\u030C", "ddot": "\u0308", "dot": "\u0307",
@@ -471,17 +487,18 @@ def render_end(children: list):
     return children[0]
 
 
-def render_parent(node_type: str, token_val: str, children: list) -> tuple:
+def render_node(node_type: str, token: tuple, children: list) -> tuple:
     if node_type not in node_data.type_info_dict.keys():
-        raise ValueError(f"Undefined control sequence {token_val}")
+        raise ValueError(f"Undefined control sequence {token}")
     rendering_info = node_data.type_info_dict[node_type][4]
     require_token = rendering_info[0]
     function_name = rendering_info[1]
     rendering_function = globals().get(function_name)
     if not callable(rendering_function):
         raise ValueError(f"Unknwon Function {function_name} (internal error)")
-    if node_type in {"cmd_acnt", "cmd_font", "big_dlim"}:
-        return rendering_function(token_val, children)
+    if node_type in {"txt_leaf", "txt_info", "cmd_leaf", "ctr_base",
+                     "cmd_acnt", "cmd_font", "big_dlim"}:
+        return rendering_function(token, children)
     else:
         return rendering_function(children)
     # if node_type == "opn_root":
@@ -555,11 +572,12 @@ def render(nodes: list, debug: bool) -> list:
             # scripts is a list of tuple(node_type, sketch)
             scripts.append((nodes[j][0], canvas[j][0]))
 
-        if node_type in leaf_node_types:
-            sketch, horizon = render_leaf(node_token, node_type)
-        # elif node_type in parent_node_types:
-        else:
-            sketch, horizon = render_parent(node_type, node_token[1], children)
+        # if node_type in leaf_node_types:
+        #     sketch, horizon = render_leaf(node_token, node_type)
+        # # elif node_type in parent_node_types:
+        # else:
+        #     sketch, horizon = render_parent(node_type, node_token[1], children)
+        sketch, horizon = render_node(node_type, node_token, children)
 
         if scripts:
             sketch, horizon = render_apply_scripts(sketch, horizon, scripts)
