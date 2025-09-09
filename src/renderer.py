@@ -1,3 +1,4 @@
+import node_data
 import arts
 import symbols_art
 
@@ -471,47 +472,59 @@ def render_end(children: list):
 
 
 def render_parent(node_type: str, token_val: str, children: list) -> tuple:
-    if node_type == "opn_root":
-        return render_root(children)
-    elif node_type in {"cmd_lbrk"}:
-        return render_concat_line_align_amp(children)
-    elif node_type in {"opn_line", "opn_brak", "opn_stkln", "stk_lbrk",
-                       "opn_pren", "opn_dllr", "opn_ddlr"}:
-        return render_concat_line_no_align_amp(children)
-    elif node_type in {"opn_brac", "opn_degr", "opn_envn"}:
-        return render_concat(children)
-    elif node_type == "cmd_bgin":
-        return render_begin(children)
-    elif node_type == "cmd_end":
-        return render_end(children)
-    elif node_type == "opn_dlim":
-        return render_open_delimiter(children)
-    elif node_type == "cls_dlim":
-        return render_close_delimiter(children)
-    elif node_type == "big_dlim":
-        return render_big_delimiter(token_val, children)
-    elif node_type == "sup_scrpt":
-        return render_sup_script(children)
-    elif node_type == "sub_scrpt":
-        return render_sub_script(children)
-    elif node_type == "top_scrpt":
-        return render_top_script(children)
-    elif node_type == "btm_scrpt":
-        return render_bottom_script(children)
-    elif node_type == "cmd_sqrt":
-        return render_square_root(children)
-    elif node_type == "cmd_frac":
-        return render_fraction(children)
-    elif node_type == "cmd_binom":
-        return render_binomial(children)
-    elif node_type == "cmd_acnt":
-        return render_accents(token_val, children)
-    elif node_type == "cmd_font":
-        return render_font(token_val, children)
-    elif node_type == "cmd_sbstk":
-        return render_substack(children)
-    else:
+    if node_type not in node_data.type_info_dict.keys():
         raise ValueError(f"Undefined control sequence {token_val}")
+    rendering_info = node_data.type_info_dict[node_type][4]
+    require_token = rendering_info[0]
+    function_name = rendering_info[1]
+    rendering_function = globals().get(function_name)
+    if not callable(rendering_function):
+        raise ValueError(f"Unknwon Function {function_name} (internal error)")
+    if node_type in {"cmd_acnt", "cmd_font", "big_dlim"}:
+        return rendering_function(token_val, children)
+    else:
+        return rendering_function(children)
+    # if node_type == "opn_root":
+    #     return render_root(children)
+    # elif node_type in {"cmd_lbrk"}:
+    #     return render_concat_line_align_amp(children)
+    # elif node_type in {"opn_line", "opn_brak", "opn_stkln", "stk_lbrk",
+    #                    "opn_pren", "opn_dllr", "opn_ddlr"}:
+    #     return render_concat_line_no_align_amp(children)
+    # elif node_type in {"opn_brac", "opn_degr", "opn_envn"}:
+    #     return render_concat(children)
+    # elif node_type == "cmd_bgin":
+    #     return render_begin(children)
+    # elif node_type == "cmd_end":
+    #     return render_end(children)
+    # elif node_type == "opn_dlim":
+    #     return render_open_delimiter(children)
+    # elif node_type == "cls_dlim":
+    #     return render_close_delimiter(children)
+    # elif node_type == "big_dlim":
+    #     return render_big_delimiter(token_val, children)
+    # elif node_type == "sup_scrpt":
+    #     return render_sup_script(children)
+    # elif node_type == "sub_scrpt":
+    #     return render_sub_script(children)
+    # elif node_type == "top_scrpt":
+    #     return render_top_script(children)
+    # elif node_type == "btm_scrpt":
+    #     return render_bottom_script(children)
+    # elif node_type == "cmd_sqrt":
+    #     return render_square_root(children)
+    # elif node_type == "cmd_frac":
+    #     return render_fraction(children)
+    # elif node_type == "cmd_binom":
+    #     return render_binomial(children)
+    # elif node_type == "cmd_acnt":
+    #     return render_accents(token_val, children)
+    # elif node_type == "cmd_font":
+    #     return render_font(token_val, children)
+    # elif node_type == "cmd_sbstk":
+    #     return render_substack(children)
+    # else:
+    #     raise ValueError(f"Undefined control sequence {token_val}")
 
 
 leaf_node_types = {
