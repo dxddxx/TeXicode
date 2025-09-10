@@ -78,7 +78,6 @@ Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, us
 # TODO
 
 - update screenshot
-- put functions in node info
 - overline
 - spaces should render in /text{}
     - easy
