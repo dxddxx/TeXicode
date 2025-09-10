@@ -2,17 +2,16 @@ import node_data
 import arts
 import symbols_art
 
-# from https://latexref.xyz/Math-functions.html
-simple_leaf_commands = {
-    " ", "_", "$", "{", "}", "#", "&",
-    "arccos", "arcsin", "arctan", "arg", "bmod", "cos", "cosh", "cot", "coth",
-    "csc", "deg", "det", "dim", "exp", "gcd", "hom", "inf", "ker", "lg", "lim",
-    "liminf", "limsup", "ln", "log", "max", "min", "pmod",
-    # "mod",  # \mod creates leading spaces, not simple
-    "Pr", "sec", "sin", "sinh", "sup", "tan", "tanh", "%",
-}
-
-simple_symbols = """`!@#%*()+-=[]|;:'",.<>/?"""
+def util_revert_font(char: str) -> str:
+    if char.isascii():
+        return char
+    for alphabet in arts.alphabets.values():
+        if char not in alphabet:
+            continue
+        for alpha_id in range(26*2):
+            if alphabet[alpha_id] == char:
+                return arts.alphabets["normal"][alpha_id]
+    return char
 
 
 def util_font(font_val: str, children: list) -> tuple:
@@ -34,60 +33,11 @@ def util_font(font_val: str, children: list) -> tuple:
     return new_sketch, horizon
 
 
-def render_font(token: str, children: list) -> tuple:
-    return util_font(token[1], children)
-
-
-def util_revert_font(char: str) -> str:
-    if char.isascii():
-        return char
-    for alphabet in arts.alphabets.values():
-        if char not in alphabet:
-            continue
-        for alpha_id in range(26*2):
-            if alphabet[alpha_id] == char:
-                return arts.alphabets["normal"][alpha_id]
-    return char
-
-
 def util_unshrink(small_char: str) -> str:
     for char, scripts in arts.unicode_scripts.items():
         if small_char in scripts:
             return char
     return small_char
-
-
-def render_text_info(token: tuple, children: list) -> tuple:
-    return [token[1]], 0
-
-
-def render_leaf(token: tuple, children: list) -> tuple:
-    token_type = token[0]
-    token_val = token[1]
-    horizon = 0
-    # if node_type == "txt_info":
-    #     return [token_val], horizon
-    if token_type == "numb":
-        return [token_val], horizon
-    elif token_type == "symb":
-        if token_val == "&":
-            return ["&"], -1
-        if token_val in simple_symbols:
-            return [token_val], horizon
-        elif token_val in arts.special_symbols.keys():
-            return [arts.special_symbols[token_val]], horizon
-    elif token_type == "alph":
-        return util_font("mathnormal", [([token_val], 0)])
-    elif token_type == "cmnd":
-        if token_val in simple_leaf_commands:
-            return [token_val], horizon
-        elif token_val in arts.multi_line_leaf_commands.keys():
-            return arts.multi_line_leaf_commands[token_val]
-        elif token_val in symbols_art.symbols.keys():
-            return [symbols_art.symbols[token_val]], horizon
-        else:
-            # print(f"unknown command {token_val}, rendering as '?'")
-            return ["?"], 0
 
 
 def util_concat(children: list, concat_line: bool, align_amp: bool) -> tuple:
@@ -128,10 +78,6 @@ def util_concat(children: list, concat_line: bool, align_amp: bool) -> tuple:
     if concat_line and not contain_amp:
         concated_horizon = len(concated_sketch[0])
     return concated_sketch, concated_horizon
-
-
-def render_concat(children: list) -> tuple:
-    return util_concat(children, False, False)
 
 
 def util_vert_pile(top, ctr, ctr_horizon, btm, align) -> tuple:
@@ -181,15 +127,6 @@ def util_script(children: list, script_type_id: int) -> tuple:
     elif script_type_id == 1:
         btm = sketch
     return util_vert_pile(top, [arts.bg], 0, btm, "left")
-    # shrunk_row = ""
-    # for char in sketch[0]:
-    #     char = revert_font(char)
-    #     if char not in arts.unicode_scripts.keys():
-    #         return render_vert_pile(top, [" "], 0, btm, "left")
-    #     shrunk_char = arts.unicode_scripts[char][script_type_id]
-    #     if shrunk_char == " " and char != " ":
-    #         return render_vert_pile(top, [" "], 0, btm, "left")
-    #     shrunk_row += shrunk_char
 
 
 def util_shrink(sketch: list, script_type_id: int,
@@ -222,28 +159,6 @@ def util_shrink(sketch: list, script_type_id: int,
     return [shrunk_row]
 
 
-def render_sup_script(children: list) -> tuple:
-    return util_script(children, 0)
-
-
-def render_sub_script(children: list) -> tuple:
-    return util_script(children, 1)
-
-
-def render_top_script(children: list) -> tuple:
-    shrunk = util_shrink(children[0][0], 1, True, False)
-    if shrunk == []:
-        return children[0]
-    return shrunk, 0
-
-
-def render_bottom_script(children: list) -> tuple:
-    shrunk = util_shrink(children[0][0], 0, True, False)
-    if shrunk == []:
-        return children[0]
-    return shrunk, 0
-
-
 def util_get_pile_center(base_height, base_horizon) -> tuple:
     if base_height == 2:
         # weird hacks but works
@@ -261,51 +176,6 @@ def util_get_pile_center(base_height, base_horizon) -> tuple:
         pile_center_sketch.append(arts.bg)
     pile_center_horizon = base_horizon - 1
     return pile_center_sketch, pile_center_horizon
-
-
-def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
-    sorted_scripts = [[""], [""]]
-    base_position = "left"
-    for script_type, script_sketch in scripts:
-        if script_type in {"top_scrpt", "btm_scrpt"}:
-            base_position = "center"
-        script_position = 0
-        if script_type in {"sub_scrpt", "btm_scrpt"}:
-            script_position = 1
-        if sorted_scripts[script_position] != [""]:
-            script_type_name = ["super", "sub"][script_position]
-            raise ValueError(f"Double {script_type_name}scripts")
-        sorted_scripts[script_position] = script_sketch
-    top, btm = sorted_scripts
-    if base_position == "center":
-        return util_vert_pile(top, base_sketch, base_horizon, btm, "center")
-    # else if base_position is "left":
-    ctr, ctr_horizon = util_get_pile_center(len(base_sketch), base_horizon)
-    if ctr != []:
-        piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
-        # return render_concat([(base_sketch, base_horizon), piled_scripts])
-        return util_concat([(base_sketch, base_horizon), piled_scripts], False, False)
-    # else if ctr is []:
-    if top == [""]:
-        # return render_concat([(base_sketch, base_horizon), (btm, 0)])
-        return util_concat([(base_sketch, base_horizon), (btm, 0)], False, False)
-    if btm == [""]:
-        # return render_concat([(base_sketch, base_horizon), (top, len(top)-1)])
-        return util_concat([(base_sketch, base_horizon), (top, len(top)-1)], False, False)
-    if len(top) > 1:
-        top.pop()
-        ctr = [""]
-        ctr_horizon = 1
-    elif len(btm) > 1:
-        btm.pop(0)
-        ctr = [""]
-    elif len(top) == 1 and len(btm) == 1:
-        top = util_shrink(top, 1, False, True)
-        btm = util_shrink(btm, 0, False, True)
-        ctr = [arts.bg]
-    piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
-    # return render_concat([(base_sketch, base_horizon), piled_scripts])
-    return util_concat([(base_sketch, base_horizon), piled_scripts], False, False)
 
 
 def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
@@ -338,6 +208,138 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
     return sketch, horizon
 
 
+def util_add_ampersand_padding(children: list) -> tuple:
+    padded_children = []
+    max_amp_pos = 0
+    for sketch, amp_pos in children:
+        if amp_pos > max_amp_pos:
+            max_amp_pos = amp_pos
+    for sketch, amp_pos in children:
+        padded_sketch = []
+        pad_len = max_amp_pos - amp_pos
+        padding = pad_len * arts.bg
+        for row in sketch:
+            padded_sketch.append(padding + row)
+        padded_children.append((padded_sketch, amp_pos))
+    return padded_children
+
+
+def util_vert_concat(children: list, sep: list, align: str) -> tuple:
+    if children[0][1] != -2:
+        children = util_add_ampersand_padding(children)
+    sketch = children.pop(0)[0]
+    horizon = 0
+    for child in children:
+        top = sketch
+        btm = child[0]
+        sketch, horizon = util_vert_pile(top, sep, 0, btm, align)
+    return sketch, horizon
+
+
+def render_font(token: str, children: list) -> tuple:
+    return util_font(token[1], children)
+
+
+def render_text_info(token: tuple, children: list) -> tuple:
+    return [token[1]], 0
+
+
+def render_leaf(token: tuple, children: list) -> tuple:
+
+    token_type = token[0]
+    token_val = token[1]
+    horizon = 0
+    if token_type == "numb":
+        return [token_val], horizon
+    elif token_type == "symb":
+        if token_val == "&":
+            return ["&"], -1
+        if token_val in arts.simple_symbols:
+            return [token_val], horizon
+        elif token_val in arts.special_symbols.keys():
+            return [arts.special_symbols[token_val]], horizon
+    elif token_type == "alph":
+        return util_font("mathnormal", [([token_val], 0)])
+    elif token_type == "cmnd":
+        if token_val in arts.simple_leaf_commands:
+            return [token_val], horizon
+        elif token_val in arts.multi_line_leaf_commands.keys():
+            return arts.multi_line_leaf_commands[token_val]
+        elif token_val in symbols_art.symbols.keys():
+            return [symbols_art.symbols[token_val]], horizon
+        else:
+            # print(f"unknown command {token_val}, rendering as '?'")
+            return ["?"], 0
+
+
+def render_concat(children: list) -> tuple:
+    return util_concat(children, False, False)
+
+
+def render_sup_script(children: list) -> tuple:
+    return util_script(children, 0)
+
+
+def render_sub_script(children: list) -> tuple:
+    return util_script(children, 1)
+
+
+def render_top_script(children: list) -> tuple:
+    shrunk = util_shrink(children[0][0], 1, True, False)
+    if shrunk == []:
+        return children[0]
+    return shrunk, 0
+
+
+def render_bottom_script(children: list) -> tuple:
+    shrunk = util_shrink(children[0][0], 0, True, False)
+    if shrunk == []:
+        return children[0]
+    return shrunk, 0
+
+
+def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
+    sorted_scripts = [[""], [""]]
+    base_position = "left"
+    for script_type, script_sketch in scripts:
+        if script_type in {"top_scrpt", "btm_scrpt"}:
+            base_position = "center"
+        script_position = 0
+        if script_type in {"sub_scrpt", "btm_scrpt"}:
+            script_position = 1
+        if sorted_scripts[script_position] != [""]:
+            script_type_name = ["super", "sub"][script_position]
+            raise ValueError(f"Double {script_type_name}scripts")
+        sorted_scripts[script_position] = script_sketch
+    top, btm = sorted_scripts
+    base = (base_sketch, base_horizon)
+    if base_position == "center":
+        return util_vert_pile(top, base_sketch, base_horizon, btm, "center")
+    # else if base_position is "left":
+    ctr, ctr_horizon = util_get_pile_center(len(base_sketch), base_horizon)
+    if ctr != []:
+        piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
+        return util_concat([base, piled_scripts], False, False)
+    # else if ctr is []:
+    if top == [""]:
+        return util_concat([base, (btm, 0)], False, False)
+    if btm == [""]:
+        return util_concat([base, (top, len(top)-1)], False, False)
+    if len(top) > 1:
+        top.pop()
+        ctr = [""]
+        ctr_horizon = 1
+    elif len(btm) > 1:
+        btm.pop(0)
+        ctr = [""]
+    elif len(top) == 1 and len(btm) == 1:
+        top = util_shrink(top, 1, False, True)
+        btm = util_shrink(btm, 0, False, True)
+        ctr = [arts.bg]
+    piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
+    return util_concat([base, piled_scripts], False, False)
+
+
 def render_big_delimiter(token: tuple, children: list) -> tuple:
     size = token[1]
     delim_type = children[0][0][0]
@@ -350,7 +352,6 @@ def render_big_delimiter(token: tuple, children: list) -> tuple:
 
 
 def render_open_delimiter(children: list) -> tuple:
-    # inside = render_concat(children[1:-1])
     inside = util_concat(children[1:-1], False, False)
     left_delim_type = children[0][0][0]
     right_delim_type = children[-1][0][0]
@@ -358,7 +359,6 @@ def render_open_delimiter(children: list) -> tuple:
     horizon = inside[1]
     left = util_delimiter(left_delim_type, height, horizon)
     right = util_delimiter(right_delim_type, height, horizon)
-    # return util_concat([left, inside, right], False, False)
     return util_concat([left, inside, right], False, False)
 
 
@@ -403,8 +403,8 @@ def render_square_root(children: list) -> tuple:
     radicand_sketch, radicand_horizon = children[-1]
     # new math vocab learned: radicand
 
-    # clearer square root
-    # radicand_sketch = render_sup_script([children[-1]])[0]
+    # uncomment this for clearer square root
+    radicand_sketch = util_script([children[-1]], 0)[0]
 
     art = arts.square_root
     top_bar = art["top_bar"] * len(radicand_sketch[0])
@@ -431,32 +431,8 @@ def render_square_root(children: list) -> tuple:
     return sqrt_sketch, radicand_horizon + 1
 
 
-def util_add_ampersand_padding(children: list) -> tuple:
-    padded_children = []
-    max_amp_pos = 0
-    for sketch, amp_pos in children:
-        if amp_pos > max_amp_pos:
-            max_amp_pos = amp_pos
-    for sketch, amp_pos in children:
-        padded_sketch = []
-        pad_len = max_amp_pos - amp_pos
-        padding = pad_len * arts.bg
-        for row in sketch:
-            padded_sketch.append(padding + row)
-        padded_children.append((padded_sketch, amp_pos))
-    return padded_children
-
-
-def util_vert_concat(children: list, sep: list, align: str) -> tuple:
-    if children[0][1] != -2:
-        children = util_add_ampersand_padding(children)
-    sketch = children.pop(0)[0]
-    horizon = 0
-    for child in children:
-        top = sketch
-        btm = child[0]
-        sketch, horizon = util_vert_pile(top, sep, 0, btm, align)
-    return sketch, horizon
+def render_concat_line_align_amp(children: list) -> tuple:
+    return util_concat(children, True, True)
 
 
 def render_concat_line_no_align_amp(children: list) -> tuple:
@@ -464,8 +440,11 @@ def render_concat_line_no_align_amp(children: list) -> tuple:
     return line_sketch, -2
 
 
-def render_concat_line_align_amp(children: list) -> tuple:
-    return util_concat(children, True, True)
+def render_begin(children: list):
+    if children[0][0] in (["align*"], ["align"]):
+        return util_concat(children[1:], True, True)
+    else:
+        return render_concat_line_no_align_amp(children[1:])
 
 
 def render_root(children: list) -> tuple:
@@ -476,22 +455,14 @@ def render_substack(children: list) -> tuple:
     return util_vert_concat(children, [""], "center")
 
 
-def render_begin(children: list):
-    if children[0][0] in (["align*"], ["align"]):
-        return render_concat_line_align_amp(children[1:])
-    else:
-        return render_concat_line_no_align_amp(children[1:])
-
-
 def render_end(children: list):
     return children[0]
 
 
 def render_node(node_type: str, token: tuple, children: list) -> tuple:
     if node_type not in node_data.type_info_dict.keys():
-        raise ValueError(f"Undefined control sequence {token}")
+        raise ValueError(f"Undefined control sequence {token[1]}")
     rendering_info = node_data.type_info_dict[node_type][4]
-    require_token = rendering_info[0]
     function_name = rendering_info[1]
     rendering_function = globals().get(function_name)
     if not callable(rendering_function):
@@ -501,55 +472,6 @@ def render_node(node_type: str, token: tuple, children: list) -> tuple:
         return rendering_function(token, children)
     else:
         return rendering_function(children)
-    # if node_type == "opn_root":
-    #     return render_root(children)
-    # elif node_type in {"cmd_lbrk"}:
-    #     return render_concat_line_align_amp(children)
-    # elif node_type in {"opn_line", "opn_brak", "opn_stkln", "stk_lbrk",
-    #                    "opn_pren", "opn_dllr", "opn_ddlr"}:
-    #     return render_concat_line_no_align_amp(children)
-    # elif node_type in {"opn_brac", "opn_degr", "opn_envn"}:
-    #     return render_concat(children)
-    # elif node_type == "cmd_bgin":
-    #     return render_begin(children)
-    # elif node_type == "cmd_end":
-    #     return render_end(children)
-    # elif node_type == "opn_dlim":
-    #     return render_open_delimiter(children)
-    # elif node_type == "cls_dlim":
-    #     return render_close_delimiter(children)
-    # elif node_type == "big_dlim":
-    #     return render_big_delimiter(token_val, children)
-    # elif node_type == "sup_scrpt":
-    #     return render_sup_script(children)
-    # elif node_type == "sub_scrpt":
-    #     return render_sub_script(children)
-    # elif node_type == "top_scrpt":
-    #     return render_top_script(children)
-    # elif node_type == "btm_scrpt":
-    #     return render_bottom_script(children)
-    # elif node_type == "cmd_sqrt":
-    #     return render_square_root(children)
-    # elif node_type == "cmd_frac":
-    #     return render_fraction(children)
-    # elif node_type == "cmd_binom":
-    #     return render_binomial(children)
-    # elif node_type == "cmd_acnt":
-    #     return render_accents(token_val, children)
-    # elif node_type == "cmd_font":
-    #     return render_font(token_val, children)
-    # elif node_type == "cmd_sbstk":
-    #     return render_substack(children)
-    # else:
-    #     raise ValueError(f"Undefined control sequence {token_val}")
-
-
-leaf_node_types = {
-    "txt_leaf",
-    "txt_info",
-    "cmd_leaf",
-    "ctr_base",
-}
 
 
 def render(nodes: list, debug: bool) -> list:
@@ -572,11 +494,6 @@ def render(nodes: list, debug: bool) -> list:
             # scripts is a list of tuple(node_type, sketch)
             scripts.append((nodes[j][0], canvas[j][0]))
 
-        # if node_type in leaf_node_types:
-        #     sketch, horizon = render_leaf(node_token, node_type)
-        # # elif node_type in parent_node_types:
-        # else:
-        #     sketch, horizon = render_parent(node_type, node_token[1], children)
         sketch, horizon = render_node(node_type, node_token, children)
 
         if scripts:

@@ -2,6 +2,18 @@
 bg = " "
 fraction = "╶─╴"
 
+# from https://latexref.xyz/Math-functions.html
+simple_leaf_commands = {
+    " ", "_", "$", "{", "}", "#", "&",
+    "arccos", "arcsin", "arctan", "arg", "bmod", "cos", "cosh", "cot", "coth",
+    "csc", "deg", "det", "dim", "exp", "gcd", "hom", "inf", "ker", "lg", "lim",
+    "liminf", "limsup", "ln", "log", "max", "min", "pmod",
+    # "mod",  # \mod creates leading spaces, not simple
+    "Pr", "sec", "sin", "sinh", "sup", "tan", "tanh", "%",
+}
+
+simple_symbols = """`!@#%*()+-=[]|;:'",.<>/?"""
+
 special_symbols = {
     "~": " ",
     "&": "",
@@ -107,6 +119,12 @@ square_root = {
     # "top_bar": "─",
     # "top_tail": "╴",
     # "top_angle": "𜺯─",
+    # "left_bar":  " ▏",
+    # "btm_angle": "╲▏",
+
+    # "top_bar": "─",
+    # "top_tail": "╴",
+    # "top_angle": " 🯐",
     # "left_bar":  " ▏",
     # "btm_angle": "╲▏",
 }
