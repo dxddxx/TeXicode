@@ -44,7 +44,7 @@ pip install TeXicode
 - `txc -f filename.md` to replace latex expressions in markdown files with Unicode art in text blocks.
 - Pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate markdown previewing:
 
-Here is [example.md](example.md) rendered with `txr -f example.md -c | glow`, using the [JuliaMono](https://juliamono.netlify.app/) font.
+Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, using the [JuliaMono](https://juliamono.netlify.app/) font.
 
 ![Screenshot](example.png)
 
