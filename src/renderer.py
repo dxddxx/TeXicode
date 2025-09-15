@@ -244,6 +244,10 @@ def render_text_info(token: tuple, children: list) -> tuple:
     return [token[1]], 0
 
 
+def render_text(token: str, children: list) -> tuple:
+    return util_font(token[1], children)
+
+
 def render_leaf(token: tuple, children: list) -> tuple:
     token_type = token[0]
     token_val = token[1]
