@@ -79,8 +79,7 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 
 - update screenshot
 - overline
-- spaces should render in /text{}
-    - easy
+- math mode in \text
 - \bm \boldsymbol
     - easy
 - square root with multi line degree
