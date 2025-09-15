@@ -1,20 +1,34 @@
 parent_dependent_type_dict = {
     ("cmd_sqrt",  ("symb", "[")):  "opn_degr",
     ("opn_degr",  ("symb", "]")):  "cls_degr",
+
     ("cmd_sbstk", ("symb", "{")):  "opn_stkln",
     ("opn_stkln", ("symb", "}")):  "cls_stkln",
     ("stk_lbrk",  ("symb", "}")):  "cls_stkln",
-    ("opn_envn",  ("symb", "}")):  "cls_envn",
-    ("cmd_bgin",  ("symb", "{")):  "opn_envn",
-    ("cmd_end",   ("symb", "{")):  "opn_envn",
+
     ("opn_stkln", ("cmnd", "\\")): "stk_lbrk",
     ("stk_lbrk",  ("cmnd", "\\")): "stk_lbrk",
     ("opn_stkln", ("cmnd", "newline")): "stk_lbrk",
     ("stk_lbrk",  ("cmnd", "newline")): "stk_lbrk",
+
+    ("cmd_bgin",  ("symb", "{")):  "opn_envn",
+    ("cmd_end",   ("symb", "{")):  "opn_envn",
+    ("opn_envn",  ("symb", "}")):  "cls_envn",
+
+    ("cmd_text",  ("symb", "{")):  "opn_text",
+    ("opn_text",  ("symb", "}")):  "cls_text",
+    ("opn_text",  ("symb", " ")):  "txt_leaf",
+
     ("opn_dllr",  ("symb", "$")):  "cls_dllr",
     ("opn_ddlr",  ("symb", "$$")): "cls_ddlr",
     ("cmd_lbrk",  ("symb", "$")):  "cls_dllr",
     ("cmd_lbrk",  ("symb", "$$")): "cls_ddlr",
+}
+
+type_dependent_type_dict = {
+    ("opn_envn", "symb"): "txt_info",
+    ("opn_envn", "alph"): "txt_info",
+    ("opn_envn", "numb"): "txt_info",
 }
 
 type_dict = {
@@ -25,6 +39,7 @@ type_dict = {
     ("cmnd", "["): "opn_brak",  ("cmnd",  "]"): "cls_brak",
     ("cmnd", "("): "opn_pren",  ("cmnd",  ")"): "cls_pren",
     ("symb", "{"): "opn_brac",  ("symb",  "}"): "cls_brac",
+    ("symb", " "): "txt_invs",
 
     ("cmnd",  "left"): "opn_dlim", ("cmnd", "right"): "cls_dlim",
     ("cmnd",  "bigl"): "big_dlim", ("cmnd",   "big"): "big_dlim",
@@ -56,8 +71,9 @@ type_dict = {
     ("cmnd",  "mathsf"): "cmd_font", ("cmnd",     "mathtt"): "cmd_font",
     ("cmnd",  "mathit"): "cmd_font", ("cmnd", "mathnormal"): "cmd_font",
     ("cmnd", "mathcal"): "cmd_font", ("cmnd",   "mathfrak"): "cmd_font",
-    ("cmnd",  "mathbb"): "cmd_font", ("cmnd",       "text"): "cmd_font",
-    ("cmnd", "mathscr"): "cmd_font",
+    ("cmnd",  "mathbb"): "cmd_font", ("cmnd",    "mathscr"): "cmd_font",
+
+    ("cmnd", "text"): "cmd_text",
 
     ("cmnd", "substack"): "cmd_sbstk",
     ("cmnd",    "\\"): "cmd_lbrk", ("cmnd", "newline"): "cmd_lbrk",
@@ -69,12 +85,19 @@ type_dict = {
     ("cmnd", "scriptscriptstyle"): "cmd_styl",
 }
 
+self_dependent_type_dict = {
+    "symb": "txt_leaf",
+    "alph": "txt_leaf",
+    "numb": "txt_leaf",
+    "cmnd": "cmd_leaf",
+}
+
 
 # node_info( ("only/only_not", popable_by["node_type"])
 #            (add_amount)
 #            (can_add_to_nodes_tree, "err if/if_not", under[])
 #            (can_be_children, can_break_parent, can_double_pop)
-#            (rendering_function)
+#            (token_depented_render, rendering_function)
 # ) can double pop is a bit of a hack for cls_stkln and cmd_end
 type_info_dict = {
     "opn_root":  ((True, ["cls_root",]),
@@ -116,7 +139,7 @@ type_info_dict = {
                   (1,),
                   (True, True, []),
                   (True, False, False),
-                  (False, "render_big_delimiter")),
+                  (True, "render_big_delimiter")),
     "sup_scrpt": ((False, []),
                   (1,),
                   (True, True, []),
@@ -146,12 +169,12 @@ type_info_dict = {
                   (1,),
                   (True, True, []),
                   (True, False, False),
-                  (False, "render_accents")),
+                  (True, "render_accents")),
     "cmd_font":  ((False, []),
                   (1,),
                   (True, True, []),
                   (True, False, False),
-                  (False, "render_font")),
+                  (True, "render_font")),
     "cmd_lmts":  ((True, []),
                   (0,),
                   (True, True, []),
@@ -161,22 +184,27 @@ type_info_dict = {
                   (0,),
                   (True, True, []),
                   (True, False, False),
-                  (False, "render_leaf")),
+                  (True, "render_leaf")),
     "txt_leaf":  ((True, []),
                   (0,),
                   (True, True, []),
                   (True, False, False),
-                  (False, "render_leaf")),
+                  (True, "render_leaf")),
     "txt_info":  ((True, []),
                   (0,),
                   (True, True, []),
                   (True, False, False),
-                  (False, "render_text_info")),
+                  (True, "render_text_info")),
+    "txt_invs":  ((True, []),
+                  (0,),
+                  (False, True, []),
+                  (False, False, False),
+                  (False, )),
     "cmd_leaf":  ((True, []),
                   (0,),
                   (True, True, []),
                   (True, False, False),
-                  (False, "render_leaf")),
+                  (True, "render_leaf")),
     "cmd_styl":  ((True, []),
                   (0,),
                   (False, True, []),
@@ -222,11 +250,11 @@ type_info_dict = {
                   (False, False, ["opn_ddlr", "cmd_lbrk",]),
                   (False, True, False),
                   (False, )),
-    "cmd_end":  ((False, []),
-                 (1,),
-                 (True, False, ["cmd_bgin", "cmd_lbrk",]),
-                 (False, True, False),
-                 (False, "render_end")),
+    "cmd_end":   ((False, []),
+                  (1,),
+                  (True, False, ["cmd_bgin", "cmd_lbrk",]),
+                  (False, True, False),
+                  (False, "render_end")),
     "cls_stkln": ((True, []),
                   (0,),
                   (False, False, ["opn_stkln", "stk_lbrk",]),
@@ -280,6 +308,11 @@ type_info_dict = {
     "opn_envn":  ((True, ["cls_envn",]),
                   (1,),
                   (True, False, ["cmd_bgin", "cmd_end",]),
+                  (True, False, False),
+                  (False, "render_concat")),
+    "opn_text":  ((True, ["cls_text",]),
+                  (1,),
+                  (True, False, ["cmd_text",]),
                   (True, False, False),
                   (False, "render_concat")),
     "cmd_sbstk": ((True, ["cls_stkln",]),

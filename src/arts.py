@@ -12,7 +12,7 @@ simple_leaf_commands = {
     "Pr", "sec", "sin", "sinh", "sup", "tan", "tanh", "%",
 }
 
-simple_symbols = """`!@#%*()+-=[]|;:'",.<>/?"""
+simple_symbols = """`!@#%*( )+-=[]|;:'",.<>/?""" # note whitespace is in there
 
 special_symbols = {
     "~": " ",

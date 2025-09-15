@@ -245,7 +245,6 @@ def render_text_info(token: tuple, children: list) -> tuple:
 
 
 def render_leaf(token: tuple, children: list) -> tuple:
-
     token_type = token[0]
     token_val = token[1]
     horizon = 0
@@ -463,12 +462,14 @@ def render_node(node_type: str, token: tuple, children: list) -> tuple:
     if node_type not in node_data.type_info_dict.keys():
         raise ValueError(f"Undefined control sequence {token[1]}")
     rendering_info = node_data.type_info_dict[node_type][4]
+    require_token = rendering_info[0]
     function_name = rendering_info[1]
     rendering_function = globals().get(function_name)
     if not callable(rendering_function):
         raise ValueError(f"Unknwon Function {function_name} (internal error)")
-    if node_type in {"txt_leaf", "txt_info", "cmd_leaf", "ctr_base",
-                     "cmd_acnt", "cmd_font", "big_dlim"}:
+    # if node_type in {"txt_leaf", "txt_info", "cmd_leaf", "ctr_base",
+    #                  "cmd_acnt", "cmd_font", "big_dlim"}:
+    if require_token:
         return rendering_function(token, children)
     else:
         return rendering_function(children)

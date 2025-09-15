@@ -23,6 +23,7 @@ def lexer(tex: str, debug: bool) -> list:
         print(tex)
     tokens = []
     token_type, token_val = "", ""
+    token = (token_type, token_val)
     for i in range(len(tex)):
         char = tex[i]
         char_type = get_char_type(char)
@@ -46,16 +47,19 @@ def lexer(tex: str, debug: bool) -> list:
                 continue
         else:
             token_type = char_type
-        if token_type == "symb" and token_val == " ":
+        if (token_type == "symb" and token_val == " "
+                and token in {("symb", " "), ("", "")}):
             token_val, token_type = "", ""
             continue
-        tokens.append((token_type, token_val))
+        token = (token_type, token_val)
+        tokens.append(token)
         token_type, token_val = "", ""
         if debug and tokens:
             print(i, tokens[-1])
     if tokens[0] not in (("cmnd", "["), ("cmnd", "("),
                          ("symb", "$"), ("symb", "$$"),
                          ("cmnd", "begin")):
+        print(tokens[0])
         tokens.insert(0, ("meta", "startline"))
         tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))
