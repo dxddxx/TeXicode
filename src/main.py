@@ -5,37 +5,7 @@
 import sys
 import argparse
 import re
-from lexer import lexer
-from parser import parse
-from renderer import render
-
-
-def render_tex(tex: str, debug: bool) -> list:
-    try:
-        lexered = lexer(tex, debug)
-    except ValueError as e:
-        return [f"TeXicode: lexerizing error: {e}"]
-        return
-    try:
-        parsed = parse(lexered, debug)
-    except ValueError as e:
-        return [f"TeXicode: parsing error: {e}"]
-    try:
-        rendered = render(parsed, debug)
-    except ValueError as e:
-        return [f"TeXicode: rendering error: {e}"]
-    return rendered
-
-
-def join_rows(rendered_rows: list, color: bool) -> str:
-    tag_end = ""
-    tag_start = ""
-    if color:
-        tag_end = "\x1b[0m"
-        tag_start = "\x1b[38;5;232m\x1b[48;5;255m"
-    joined = f"{tag_end}\n{tag_start}".join(rendered_rows)
-    joined = tag_start + joined + tag_end
-    return joined
+from pipeline import render_tex
 
 
 def process_markdown(content, debug, color):
@@ -46,22 +16,27 @@ def process_markdown(content, debug, color):
     def replace_latex(match):
         tex_block = match.group(0)
         clean_tex_block = tex_block.strip('$')
-        tex_rows = render_tex(clean_tex_block, debug)
-        is_multiline = len(tex_rows) > 1
-        if tex_block.startswith('$$') or \
-                tex_block.startswith(r'\[') or \
-                tex_block.startswith(r'\begin'):
-            tex_art = join_rows(tex_rows, color)
-            return f"\n```\n{tex_art}\n```\n"
-        elif is_multiline:
-            tex_art = join_rows(tex_rows, False)
-            return f"\n```\n{tex_art}\n```\n"
-        # else if single line inline math
-        tex_art = join_rows(tex_rows, False)
-        if color:
-            return f"`{tex_art}`"
-        else:
-            return tex_art
+        # tex_rows = render_tex(clean_tex_block, debug)
+        # is_multiline = len(tex_rows) > 1
+        # if tex_block.startswith('$$') or \
+        #         tex_block.startswith(r'\[') or \
+        #         tex_block.startswith(r'\begin'):
+        #     tex_art = join_rows(tex_rows, color)
+        #     return f"\n```\n{tex_art}\n```\n"
+        # elif is_multiline:
+        #     tex_art = join_rows(tex_rows, False)
+        #     return f"\n```\n{tex_art}\n```\n"
+        # # else if single line inline math
+        # tex_art = join_rows(tex_rows, False)
+        # if color:
+        #     return f"`{tex_art}`"
+        # else:
+        #     return tex_art
+        context = "md_inline"
+        if tex_block.startswith('$$') or tex_block.startswith(r'\[') \
+                or tex_block.startswith(r'\begin'):
+            context = "md_block"
+        return render_tex(clean_tex_block, debug, color, context)
 
     new_content = re.sub(latex_regex, replace_latex, content, flags=re.DOTALL)
     print(new_content)
@@ -82,8 +57,9 @@ def main():
             content = file.read()
         process_markdown(content, debug, color)
     elif args.latex_string:
-        tex_rows = render_tex(args.latex_string, debug)
-        tex_art = join_rows(tex_rows, color)
+        # tex_rows = render_tex(args.latex_string, debug)
+        # tex_art = join_rows(tex_rows, color)
+        tex_art = render_tex(args.latex_string, debug, color, "raw")
         print(tex_art)
     else:
         print("Error: no input. provide TeX string or -f <markdown_file>")

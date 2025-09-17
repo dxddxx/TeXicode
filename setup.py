@@ -14,6 +14,7 @@ setup(
         'node_data',
         'symbols_art',
         'renderer',
+        'pipeline',
     ],
     package_dir={'': 'src'},
     entry_points={

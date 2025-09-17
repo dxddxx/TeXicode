@@ -59,7 +59,6 @@ def lexer(tex: str, debug: bool) -> list:
     if tokens[0] not in (("cmnd", "["), ("cmnd", "("),
                          ("symb", "$"), ("symb", "$$"),
                          ("cmnd", "begin")):
-        print(tokens[0])
         tokens.insert(0, ("meta", "startline"))
         tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))
