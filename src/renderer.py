@@ -511,4 +511,6 @@ def render(nodes: list, debug: bool) -> list:
                 if i == horizon:
                     arrow = "<--"
                 print(i, sketch[i], arrow)
+    if len(canvas) == 0:
+        return [""]
     return canvas[0][0]

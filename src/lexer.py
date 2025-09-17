@@ -56,6 +56,8 @@ def lexer(tex: str, debug: bool) -> list:
         token_type, token_val = "", ""
         if debug and tokens:
             print(i, tokens[-1])
+    if len(tokens) == 0:
+        return tokens
     if tokens[0] not in (("cmnd", "["), ("cmnd", "("),
                          ("symb", "$"), ("symb", "$$"),
                          ("cmnd", "begin")):
