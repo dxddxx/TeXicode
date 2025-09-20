@@ -45,3 +45,12 @@ def render_tex(tex: str, debug: bool, color: bool, context: str):
         return f"\n```\n{tex_art}\n```\n"
     elif context == "raw":
         return tex_art
+    else:
+        raise ValueError(f"TeXicode: pipeline error: unknown context {context}")
+
+
+if __name__ == "__main__":
+    input_tex = str(input())
+    debug = False
+    art = render_tex(input_tex, debug, False, "raw")
+    print(art)

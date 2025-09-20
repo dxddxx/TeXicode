@@ -16,22 +16,6 @@ def process_markdown(content, debug, color):
     def replace_latex(match):
         tex_block = match.group(0)
         clean_tex_block = tex_block.strip('$')
-        # tex_rows = render_tex(clean_tex_block, debug)
-        # is_multiline = len(tex_rows) > 1
-        # if tex_block.startswith('$$') or \
-        #         tex_block.startswith(r'\[') or \
-        #         tex_block.startswith(r'\begin'):
-        #     tex_art = join_rows(tex_rows, color)
-        #     return f"\n```\n{tex_art}\n```\n"
-        # elif is_multiline:
-        #     tex_art = join_rows(tex_rows, False)
-        #     return f"\n```\n{tex_art}\n```\n"
-        # # else if single line inline math
-        # tex_art = join_rows(tex_rows, False)
-        # if color:
-        #     return f"`{tex_art}`"
-        # else:
-        #     return tex_art
         context = "md_inline"
         if tex_block.startswith('$$') or tex_block.startswith(r'\[') \
                 or tex_block.startswith(r'\begin'):
