@@ -30,7 +30,7 @@ def join_rows(rendered_rows: list, color: bool) -> str:
     return joined
 
 
-def render_tex(tex: str, debug: bool, color: bool, context: str):
+def render_tex(tex: str, debug: bool, color: bool, context: str) -> str:
     tex_rows = render_tex_rows(tex, debug)
     single_line = len(tex_rows) == 1
     if context == "md_inline":
@@ -49,8 +49,5 @@ def render_tex(tex: str, debug: bool, color: bool, context: str):
         raise ValueError(f"TeXicode: pipeline error: unknown context {context}")
 
 
-if __name__ == "__main__":
-    input_tex = str(input())
-    debug = False
-    art = render_tex(input_tex, debug, False, "raw")
-    print(art)
+def render_tex_web(tex: str) -> str:
+    return render_tex(tex, False, False, "raw")
