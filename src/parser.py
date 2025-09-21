@@ -91,7 +91,7 @@ def parse(tokens: list, debug: bool) -> list:
     for i in range(len(tokens)):
         token = tokens[i]
         parent_type = "none"
-        if len(parent_stack) < 0:
+        if len(parent_stack) != 0:
             parent_id = parent_stack[-1]
             parent_type = nodes[parent_id][0]
         node_type = get_node_type(token, parent_type)
