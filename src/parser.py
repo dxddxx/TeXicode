@@ -11,13 +11,6 @@ def get_node_type(token: tuple, parent_type: str) -> str:
         return node_data.type_dict[token]
     elif token_type in node_data.self_dependent_type_dict.keys():
         return node_data.self_dependent_type_dict[token_type]
-    # elif token[0] in ("symb", "alph", "numb"):
-    #     if parent_type in ("opn_envn"):
-    #         return "txt_info"
-    #     else:
-    #         return "txt_leaf"
-    # elif token[0] == "cmnd":
-    #     return "cmd_leaf"
     else:
         raise ValueError(f"Unknown token {token}")
         return token[0]  # token type
@@ -98,7 +91,7 @@ def parse(tokens: list, debug: bool) -> list:
     for i in range(len(tokens)):
         token = tokens[i]
         parent_type = "none"
-        if parent_stack:
+        if len(parent_stack) < 0:
             parent_id = parent_stack[-1]
             parent_type = nodes[parent_id][0]
         node_type = get_node_type(token, parent_type)
