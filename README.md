@@ -3,15 +3,11 @@ TeXicode
 
 TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into Unicode art.
 
-# Installation
+# Website
 
-## Run as Script
+Visit the TeXicode website
 
-1. Have python3 installed, check with `python3 --version`
-1. Clone and `cd` into this repo.
-1. Make sure this is the correct directory by running `./txc '\Delta'`, should output `Δ`.
-1. `pwd` to get the path
-1. In `~/.zshrc` or `~/.bashrc`, add line `alias txc="<the_path>/txc"`
+# CLI
 
 ## Install form `pipx` or `pip`
 
@@ -27,11 +23,9 @@ or with `pip`
 pip install TeXicode
 ```
 
-# Usage
-
 ## Basic Usage
 
-- `txc '\prod_{i=0}^n\ x ~=~ x^n'` to output Unicode art
+- `txc '\LaTeX'` to output Unicode art
     - replace your own TeX equation inside quotes
     - use single quotes
     - if expression contains single quotes like `f'(x)`, replace with `f\'(x)`
