@@ -5,7 +5,7 @@ TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into U
 
 # Website
 
-Visit the TeXicode website
+Visit the [TeXicode website](https://dxddxx.github.io/TeXicode/)
 
 # CLI
 
