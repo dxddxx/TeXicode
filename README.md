@@ -3,13 +3,13 @@ TeXicode
 
 TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into Unicode art.
 
-# Website
+## Website
 
 Visit the [TeXicode website](https://dxddxx.github.io/TeXicode/)
 
-# CLI
+## CLI
 
-## Install form `pipx` or `pip`
+### Install
 
 with `pipx` (recommended)
 
@@ -23,7 +23,7 @@ or with `pip`
 pip install TeXicode
 ```
 
-## Basic Usage
+### Basic Usage
 
 - `txc '\LaTeX'` to output Unicode art
     - replace your own TeX equation inside quotes
@@ -33,7 +33,7 @@ pip install TeXicode
 - Add `-c` at the end of the command to output in color (black on white)
 - Unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
 
-## Rendering Math in Markdown
+### Rendering Math in Markdown
 
 - `txc -f filename.md` to replace latex expressions in markdown files with Unicode art in text blocks.
 - Pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate markdown previewing:
@@ -42,7 +42,7 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 
 ![Screenshot](example.png)
 
-# Features
+## Features
 
 - Supports most LaTeX math commands
 - Uses Unicode
