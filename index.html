@@ -181,7 +181,8 @@ render_tex_web = mod["render_tex_web"]
             el.textContent = "Copied!";
             setTimeout(() => {
               el.textContent = baseLabel;
-            }, 2000);
+            //}, 2000);
+            }, 0);
           } catch (e) {
             console.error("Clipboard error", e);
           }
