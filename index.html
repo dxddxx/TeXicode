@@ -153,7 +153,8 @@ render_tex_web = mod["render_tex_web"]
       let timeoutId;
       input.addEventListener("input", () => {
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(updateOutput, 300);
+        // timeoutId = setTimeout(updateOutput, 300);
+        timeoutId = setTimeout(updateOutput, 0);
       });
 
       async function updateOutput() {
