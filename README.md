@@ -4,6 +4,11 @@ TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into U
 
 ### TeXicode in Reddit code blocks
 
+<details>
+<summary>TeXicode in Reddit code blocks</summary>
+
+Posting math equations in Reddit is very annoying, you either have to post a screenshot of rendered LaTeX, or use Reddit's limited markdown features.
+
 1. Visit the [TeXicode website](https://texicode.dx512.com), copy output to clipboard
 1. Make a new line in Reddit text field (check line spacing, if there is no line spacing above and below the cursor, it means Reddit does not see it as a separate line)
 ![Reddit1.png](images/Reddit1.png)
@@ -12,6 +17,8 @@ TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into U
 1. Paste
 ![Reddit3.png](images/Reddit3.png)
 If the output from TeXicode is a single line, can be placed inline using `Code` instead of `Code Block`
+
+</details>
 
 # CLI
 
