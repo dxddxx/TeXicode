@@ -407,7 +407,7 @@ def render_square_root(children: list) -> tuple:
     # new math vocab learned: radicand
 
     # uncomment this for clearer square root
-    radicand_sketch = util_script([children[-1]], 0)[0]
+    # radicand_sketch = util_script([children[-1]], 0)[0]
 
     art = arts.square_root
     top_bar = art["top_bar"] * len(radicand_sketch[0])
