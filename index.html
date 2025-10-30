@@ -4,196 +4,22 @@
   <meta charset="UTF-8" />
   <title>TeXicode</title>
   <script src="https://cdn.jsdelivr.net/pyodide/v0.28.3/full/pyodide.js"></script>
-  <style>
-    :root {
-      color-scheme: light dark;
-    }
-
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      background: var(--bg);
-      color: var(--fg);
-    }
-
-    header {
-      padding: 0.5em 1em;
-      background: var(--header-bg);
-    }
-
-    header a {
-      color: var(--header-fg);
-      text-decoration: none;
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
-
-    .panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid var(--border);
-    }
-
-    .panel-header {
-      text-align: center;
-      padding: 0.7em;
-      border-bottom: 1px solid var(--border);
-      user-select: none;
-      cursor: pointer;
-      transition: background 0.2s;
-      font-weight: bold;
-      background: var(--panel-header-bg);
-      color: var(--panel-header-fg);
-    }
-
-    .panel-header:hover {
-      background: var(--panel-header-hover-bg);
-    }
-
-    textarea {
-      flex: 1;
-      width: 100%;
-      border: none;
-      resize: none;
-      font-family: monospace;
-      font-size: 14px;
-      padding: 1em;
-      box-sizing: border-box;
-      outline: none;
-      background: var(--textarea-bg);
-      color: var(--textarea-fg);
-    }
-
-    /* Light theme (default) */
-    @media (prefers-color-scheme: light) {
-      :root {
-        --bg: #ffffff;
-        --fg: #000000;
-        --header-bg: #333333;
-        --header-fg: #ffffff;
-        --border: #ccc;
-        --panel-header-bg: #f0f0f0;
-        --panel-header-hover-bg: #e0e0e0;
-        --panel-header-fg: #000000;
-        --textarea-bg: #ffffff;
-        --textarea-fg: #000000;
-      }
-    }
-
-    /* Dark theme */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #121212;
-        --fg: #eeeeee;
-        --header-bg: #1f1f1f;
-        --header-fg: #ffffff;
-        --border: #444;
-        --panel-header-bg: #2a2a2a;
-        --panel-header-hover-bg: #3a3a3a;
-        --panel-header-fg: #ffffff;
-        --textarea-bg: #1e1e1e;
-        --textarea-fg: #ffffff;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
     <a href="https://github.com/dxddxx/TeXicode" target="_blank">TeXicode</a>
   </header>
-
   <main>
     <div class="panel input-panel">
       <div class="panel-header" id="copy-input">Copy Input</div>
       <textarea id="input" placeholder="Type LaTeX equation here…"></textarea>
     </div>
-
     <div class="panel output-panel">
       <div class="panel-header" id="copy-output">Copy Output</div>
       <textarea id="output" class="output" readonly></textarea>
     </div>
   </main>
-
-  <script type="module">
-    async function main() {
-      const pyodide = await loadPyodide();
-
-      const files = [
-        "arts.py", "lexer.py", "main.py", "node_data.py",
-        "parser.py", "pipeline.py", "renderer.py", "symbols_art.py",
-      ];
-      for (const f of files) {
-        const resp = await fetch(`./src/${f}`);
-        const code = await resp.text();
-        pyodide.FS.writeFile(f, code);
-      }
-
-      // Entry point: pipeline.py
-      await pyodide.runPythonAsync(`
-import sys, runpy
-sys.path.insert(0, "")
-mod = runpy.run_path("pipeline.py")
-render_tex_web = mod["render_tex_web"]
-      `);
-
-      const input = document.getElementById("input");
-      const output = document.getElementById("output");
-
-      // Real-time updates with debounce
-      let timeoutId;
-      input.addEventListener("input", () => {
-        clearTimeout(timeoutId);
-        // timeoutId = setTimeout(updateOutput, 300);
-        timeoutId = setTimeout(updateOutput, 0);
-      });
-
-      async function updateOutput() {
-        const text = input.value;
-        try {
-          const result = await pyodide.runPythonAsync(
-            "render_tex_web(" + JSON.stringify(text) + ")"
-          );
-          output.value = result ?? "";
-        } catch (err) {
-          output.value = "Error: " + err;
-          console.error(err);
-        }
-      }
-
-      // Copy feedback handler
-      function addCopyHandler(id, getTextFn, baseLabel) {
-        const el = document.getElementById(id);
-        el.addEventListener("click", async () => {
-          if (!navigator.clipboard) return;
-          try {
-            await navigator.clipboard.writeText(getTextFn());
-            const original = el.textContent;
-            el.textContent = "Copied!";
-            setTimeout(() => {
-              el.textContent = baseLabel;
-            //}, 2000);
-            }, 0);
-          } catch (e) {
-            console.error("Clipboard error", e);
-          }
-        });
-      }
-
-      addCopyHandler("copy-input", () => input.value, "Copy Input");
-      addCopyHandler("copy-output", () => output.value, "Copy Output");
-    }
-
-    main();
-  </script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
