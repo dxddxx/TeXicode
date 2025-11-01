@@ -1,100 +1,96 @@
+@font-face {
+    font-family: 'Julia Mono';
+    src: url('font/JuliaMono-Regular.woff2') format('woff2'),
+         url('font/JuliaMono-Regular.ttf') format('truetype'); /* Fallback */
+}
+
 :root {
-  color-scheme: light dark;
+    color-scheme: light dark;
 }
-
 body {
-  font-family: sans-serif;
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-  color: var(--fg);
+    font-family: sans-serif;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--fg);
 }
-
 header {
-  padding: 0.5em 1em;
-  background: var(--header-bg);
+    padding: 0.5em 1em;
+    background: var(--header-bg);
 }
-
 header a {
-  color: var(--header-fg);
-  text-decoration: none;
-  font-size: 1.4em;
-  font-weight: bold;
+    color: var(--header-fg);
+    text-decoration: none;
+    font-size: 1.4em;
+    font-weight: bold;
 }
-
 main {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
+    flex: 1;
+    display: flex;
+    overflow: hidden;
 }
-
 .panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--border);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
 }
-
 .panel-header {
-  text-align: center;
-  padding: 0.7em;
-  border-bottom: 1px solid var(--border);
-  user-select: none;
-  cursor: pointer;
-  transition: background 0.2s;
-  font-weight: bold;
-  background: var(--panel-header-bg);
-  color: var(--panel-header-fg);
+    text-align: center;
+    padding: 0.7em;
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: bold;
+    background: var(--panel-header-bg);
+    color: var(--panel-header-fg);
 }
-
 .panel-header:hover {
-  background: var(--panel-header-hover-bg);
+    background: var(--panel-header-hover-bg);
 }
-
 textarea {
-  flex: 1;
-  width: 100%;
-  border: none;
-  resize: none;
-  font-family: monospace;
-  font-size: 14px;
-  padding: 1em;
-  box-sizing: border-box;
-  outline: none;
-  background: var(--textarea-bg);
-  color: var(--textarea-fg);
+    flex: 1;
+    width: 100%;
+    border: none;
+    resize: none;
+    font-family: 'Julia Mono', monospace; /* Updated font-family */
+    font-size: 14px;
+    padding: 1em;
+    box-sizing: border-box;
+    outline: none;
+    background: var(--textarea-bg);
+    color: var(--textarea-fg);
 }
-
 /* Light theme (default) */
 @media (prefers-color-scheme: light) {
-  :root {
-    --bg: #ffffff;
-    --fg: #000000;
-    --header-bg: #333333;
-    --header-fg: #ffffff;
-    --border: #ccc;
-    --panel-header-bg: #f0f0f0;
-    --panel-header-hover-bg: #e0e0e0;
-    --panel-header-fg: #000000;
-    --textarea-bg: #ffffff;
-    --textarea-fg: #000000;
-  }
+    :root {
+        --bg: #ffffff;
+        --fg: #000000;
+        --header-bg: #333333;
+        --header-fg: #ffffff;
+        --border: #ccc;
+        --panel-header-bg: #f0f0f0;
+        --panel-header-hover-bg: #e0e0e0;
+        --panel-header-fg: #000000;
+        --textarea-bg: #ffffff;
+        --textarea-fg: #000000;
+    }
 }
-
 /* Dark theme */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121212;
-    --fg: #eeeeee;
-    --header-bg: #1f1f1f;
-    --header-fg: #ffffff;
-    --border: #444;
-    --panel-header-bg: #2a2a2a;
-    --panel-header-hover-bg: #3a3a3a;
-    --panel-header-fg: #ffffff;
-    --textarea-bg: #1e1e1e;
-    --textarea-fg: #ffffff;
-  }
+    :root {
+        --bg: #121212;
+        --fg: #eeeeee;
+        --header-bg: #1f1f1f;
+        --header-fg: #ffffff;
+        --border: #444;
+        --panel-header-bg: #2a2a2a;
+        --panel-header-hover-bg: #3a3a3a;
+        --panel-header-fg: #ffffff;
+        --textarea-bg: #1e1e1e;
+        --textarea-fg: #ffffff;
+    }
 }
