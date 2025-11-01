@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'Julia Mono';
-    src: url('font/JuliaMono-Regular.woff2') format('woff2'),
-         url('font/JuliaMono-Regular.ttf') format('truetype'); /* Fallback */
+    src: url('fonts/JuliaMono-Regular.woff2') format('woff2'),
+         url('fonts/JuliaMono-Regular.ttf') format('truetype'); /* Fallback */
 }
 
 :root {
