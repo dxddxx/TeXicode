@@ -264,9 +264,9 @@ def render_leaf(token: tuple, children: list) -> tuple:
     elif token_type == "alph":
         return util_font("mathnormal", [([token_val], 0)])
     elif token_type == "cmnd":
-        if token_val in arts.simple_leaf_commands:
-            return [token_val], horizon
-        elif token_val in arts.multi_line_leaf_commands.keys():
+        # if token_val in arts.simple_leaf_commands:
+        #     return [token_val], horizon
+        if token_val in arts.multi_line_leaf_commands.keys():
             return arts.multi_line_leaf_commands[token_val]
         elif token_val in symbols_art.symbols.keys():
             return [symbols_art.symbols[token_val]], horizon
