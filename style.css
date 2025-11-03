@@ -20,6 +20,10 @@
     --textarea-fg: #000000;
 }
 
+html {
+    font-size: 150%;
+}
+
 body {
     font-family: sans-serif;
     margin: 0;
