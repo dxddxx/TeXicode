@@ -6,7 +6,20 @@
 
 :root {
     color-scheme: light dark;
+
+    /* Default (light theme) values */
+    --bg: #ffffff;
+    --fg: #000000;
+    --header-bg: #ffffff;       /* White header in light mode */
+    --header-fg: #000000;       /* Black header text */
+    --border: #ccc;
+    --panel-header-bg: #f0f0f0;
+    --panel-header-hover-bg: #e0e0e0;
+    --panel-header-fg: #000000;
+    --textarea-bg: #ffffff;
+    --textarea-fg: #000000;
 }
+
 body {
     font-family: sans-serif;
     margin: 0;
@@ -16,27 +29,32 @@ body {
     background: var(--bg);
     color: var(--fg);
 }
+
 header {
     padding: 0.5em 1em;
     background: var(--header-bg);
 }
+
 header a {
     color: var(--header-fg);
     text-decoration: none;
     font-size: 1.4em;
     font-weight: bold;
 }
+
 main {
     flex: 1;
     display: flex;
     overflow: hidden;
 }
+
 .panel {
     flex: 1;
     display: flex;
     flex-direction: column;
     border: 1px solid var(--border);
 }
+
 .panel-header {
     text-align: center;
     padding: 0.7em;
@@ -48,15 +66,17 @@ main {
     background: var(--panel-header-bg);
     color: var(--panel-header-fg);
 }
+
 .panel-header:hover {
     background: var(--panel-header-hover-bg);
 }
+
 textarea {
     flex: 1;
     width: 100%;
     border: none;
     resize: none;
-    font-family: 'Julia Mono', monospace; /* Updated font-family */
+    font-family: 'Julia Mono', monospace;
     font-size: 14px;
     padding: 1em;
     box-sizing: border-box;
@@ -64,22 +84,8 @@ textarea {
     background: var(--textarea-bg);
     color: var(--textarea-fg);
 }
-/* Light theme (default) */
-@media (prefers-color-scheme: light) {
-    :root {
-        --bg: #ffffff;
-        --fg: #000000;
-        --header-bg: #333333;
-        --header-fg: #ffffff;
-        --border: #ccc;
-        --panel-header-bg: #f0f0f0;
-        --panel-header-hover-bg: #e0e0e0;
-        --panel-header-fg: #000000;
-        --textarea-bg: #ffffff;
-        --textarea-fg: #000000;
-    }
-}
-/* Dark theme */
+
+/* Dark theme override */
 @media (prefers-color-scheme: dark) {
     :root {
         --bg: #121212;
