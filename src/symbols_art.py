@@ -22,6 +22,7 @@ symbols = {
     "divides":  "∣",
     "because":  "∵",
     "therefore": "∴",
+    "trianglelefteq": "⊴",
     # from https://latexref.xyz/Math-symbols.html
     "|": "∥",
     "aleph": "ℵ",
