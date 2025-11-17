@@ -22,8 +22,8 @@
     --fg: #eeeeee;
   --header-bg: #1f1f1f;
   --header-fg: #ffffff;
-  --border: #444444;
-  --panel-bg: #2a2a2a;
+    --border: #444444;
+    --panel-bg: #2a2a2a;
     --panel-hover: #3a3a3a;
     --textarea-bg: #1e1e1e;
     --textarea-fg: #ffffff;
@@ -49,19 +49,13 @@ header {
   text-align: center;
 }
 
-header a {
-  color: var(--header-fg);
-  text-decoration: none;
-  font-weight: bold;
-}
-
 main {
   flex: 1;
   display: flex;
   overflow: hidden;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   main {
     flex-direction: column;
   }
