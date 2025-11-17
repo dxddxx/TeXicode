@@ -5,7 +5,7 @@ async function main() {
     "parser.py", "pipeline.py", "renderer.py", "symbols_art.py"
   ];
   for (const f of files) {
-    const resp = await fetch(`../src/${f}`);
+    const resp = await fetch(`./src/${f}`);
     const code = await resp.text();
     pyodide.FS.writeFile(f, code);
   }
