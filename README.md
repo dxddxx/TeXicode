@@ -15,8 +15,9 @@ Posting math equations in Reddit is very annoying, you either have to post a scr
 1. Paste
 ![Reddit3.png](images/Reddit3.png)
 If the output from TeXicode is a single line, can be placed inline using `Code` instead of `Code Block`
-
 </details>
+
+Also useful for quickly inserting single line equations into Word documents.
 
 # CLI
 
