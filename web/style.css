@@ -1,0 +1,102 @@
+@font-face {
+  font-family: 'Julia Mono';
+  src: url('fonts/JuliaMono-Regular.woff2') format('woff2');
+}
+
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #000000;
+  --header-bg: #ffffff;
+  --header-fg: #000000;
+  --border: #cccccc;
+  --panel-bg: #f0f0f0;
+  --panel-hover: #e0e0e0;
+  --textarea-bg: #ffffff;
+  --textarea-fg: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --fg: #eeeeee;
+  --header-bg: #1f1f1f;
+  --header-fg: #ffffff;
+    --border: #444444;
+    --panel-bg: #2a2a2a;
+    --panel-hover: #3a3a3a;
+    --textarea-bg: #1e1e1e;
+    --textarea-fg: #ffffff;
+  }
+}
+
+* {
+  font-family: 'Julia Mono', monospace;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+header {
+  padding: 0.5em;
+  background: var(--header-bg);
+  text-align: center;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+@media (max-width: 1200px) {
+  main {
+    flex-direction: column;
+  }
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+textarea {
+  flex: 1;
+  border: none;
+  resize: none;
+  font-size: 16px;
+  padding: 1em;
+  box-sizing: border-box;
+  background: var(--textarea-bg);
+  color: var(--textarea-fg);
+  outline: none;
+}
+
+.floating-btn {
+  position: absolute;
+  top: 0.6em;
+  right: 0.6em;
+  padding: 0.4em 1em;
+  border: none;
+  border-radius: 9999px;
+  background: var(--panel-bg);
+  color: var(--fg);
+  font-weight: bold;
+  font-size: 0.8em;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.floating-btn:hover {
+  opacity: 1;
+}
