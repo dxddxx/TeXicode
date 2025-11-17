@@ -1,6 +1,6 @@
 TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into Unicode art.
 
-# [Website](https://texicode.dx512.com)
+# [Webapp](https://texicode.dx512.com)
 
 Posting math equations in Reddit is very annoying, you either have to post a screenshot of rendered LaTeX, or use Reddit's limited markdown features. Using TeXicode in Reddit code blocks makes posting math in Reddit much easier.
 
