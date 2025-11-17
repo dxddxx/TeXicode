@@ -11,24 +11,16 @@
     <a href="https://github.com/dxddxx/TeXicode" target="_blank">TeXicode</a>
   </header>
   <main>
-    <div class="panel input-panel">
-      <div class="panel-header" id="copy-input">Copy Input</div>
+    <div class="panel">
       <textarea id="input" placeholder="\text{Demo:} \\
-(a+b)^n = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k
-"></textarea>
+(a+b)^n = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k"></textarea>
+      <button id="copy-input" class="floating-btn">Copy</button>
     </div>
-    <div class="panel output-panel">
-      <div class="panel-header" id="copy-output">Copy Output</div>
-      <textarea id="output" class="output" readonly placeholder="Demo:              
-                   
-        ₙ          
-       ┰─╴⎛𝑛⎞      
-(𝑎+𝑏)ⁿ=▐╸ ⎜ ⎟𝑎ⁿ⁻ᵏ𝑏ᵏ
-       ┸─╴⎝𝑘⎠      
-       ᵏ⁼⁰         
-"></textarea>
+    <div class="panel">
+      <textarea id="output" readonly placeholder="Demo output"></textarea>
+      <button id="copy-output" class="floating-btn">Copy</button>
     </div>
   </main>
-  <script type="module" src="main.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
