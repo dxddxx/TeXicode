@@ -24,9 +24,9 @@
   --header-fg: #ffffff;
   --border: #444444;
   --panel-bg: #2a2a2a;
-  --panel-hover: #3a3a3a;
-  --textarea-bg: #1e1e1e;
-  --textarea-fg: #ffffff;
+    --panel-hover: #3a3a3a;
+    --textarea-bg: #1e1e1e;
+    --textarea-fg: #ffffff;
   }
 }
 
