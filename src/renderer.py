@@ -218,9 +218,9 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
         delim_art[pos] = art[art_col]  # Single character
         
     if height == 1:
-        return [[delim_type]], 0  # Changed: wrap in list
+        return [delim_type], 0  # Changed: wrap in list
         
-    if height == 2 and delim_type in "{}":
+    if height == 2 and delim_type in ["{", "}"]:
         height = 3
         if horizon == 0:
             horizon = 1
@@ -436,14 +436,14 @@ def render_square_root(children: list) -> tuple:
     art = arts.square_root
     
     # Changed: list multiplication
-    top_bar = [art["top_bar"]] * len(radicand_sketch[0])
+    top_bar = art["top_bar"] * len(radicand_sketch[0])
     sqrt_sketch = [top_bar] + radicand_sketch
     
     for i in range(len(sqrt_sketch)):
-        sqrt_sketch[i] = [art["left_bar"]] + sqrt_sketch[i] + [arts.bg]  # Changed
+        sqrt_sketch[i] = art["left_bar"] + sqrt_sketch[i] + [arts.bg]  # Changed
     
-    sqrt_sketch[0] = [art["top_angle"]] + sqrt_sketch[0][1:-1] + [art["top_tail"]]  # Changed
-    sqrt_sketch[-1] = [art["btm_angle"]] + sqrt_sketch[-1][1:]  # Changed
+    sqrt_sketch[0] = art["top_angle"] + sqrt_sketch[0][2:-1] + art["top_tail"]  # Changed
+    sqrt_sketch[-1] = art["btm_angle"] + sqrt_sketch[-1][2:]  # Changed
     
     if len(children) == 1 or len(degree_sketch) > 1:
         return sqrt_sketch, radicand_horizon + 1
@@ -467,7 +467,6 @@ def render_square_root(children: list) -> tuple:
     return sqrt_sketch, radicand_horizon + 1
 
 def render_concat_line_align_amp(children: list) -> tuple:
-    print("aligning")
     return util_concat(children, True, True)
 
 def render_concat_line_no_align_amp(children: list) -> tuple:
@@ -475,7 +474,7 @@ def render_concat_line_no_align_amp(children: list) -> tuple:
     return line_sketch, -2
 
 def render_begin(children: list):
-    if children[0][0] in (["align*"], ["align"]):
+    if children[0][0] in ([['a', 'l', 'i', 'g', 'n']], [['a', 'l', 'i', 'g', 'n', '*']]):
         return util_concat(children[1:], True, True)
     else:
         return render_concat_line_no_align_amp(children[1:])

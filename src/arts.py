@@ -72,11 +72,11 @@ multi_line_leaf_commands = {
 
 # Keep square_root as strings, wrap when used
 square_root = {
-    "top_bar": "─",
-    "top_tail": "╴",
-    "top_angle": " ┌",
-    "left_bar":  " │",
-    "btm_angle": "╰┘",
+    "top_bar":   ["─"],
+    "top_tail":  ["╴"],
+    "top_angle": [" ", "┌"],
+    "left_bar":  [" ", "│"],
+    "btm_angle": ["╰", "┘"],
     # "top_bar": "─",
     # "top_tail": "╴",
     # "top_angle": " ┌",
