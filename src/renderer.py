@@ -417,7 +417,7 @@ def render_fraction(children: list) -> tuple:
 
 def render_accents(token: tuple, children: list) -> tuple:
     accent_val = token[1]
-    import unicodedata
+    # import unicodedata
     u_hex = {"acute": "\u0302", "bar": "\u0304", "breve": "\u0306",
              "check": "\u030C", "ddot": "\u0308", "dot": "\u0307",
              "grave": "\u0300", "hat": "\u0302", "mathring": "\u030A",
@@ -425,17 +425,40 @@ def render_accents(token: tuple, children: list) -> tuple:
              "widetilde": "\u0360"}[accent_val]
     sketch = children[0][0]
     first_char = sketch[0][0] + u_hex
-    first_char = unicodedata.normalize("NFKC", first_char)
+    # first_char = unicodedata.normalize("NFKC", first_char)
     first_row = [first_char] + sketch[0][1:]  # Changed: list concatenation
     sketch = [first_row] + sketch[1:]
     return sketch, children[0][1]
 
-def render_square_root(children: list) -> tuple:
+def util_oneline_square_root(children: list) -> tuple:
+    radicand_sketch, radicand_horizon = children[-1]
+
+    degree_sketch, degree_horizon = [[]], 0
+    if len(children) > 1:
+        degree_sketch, degree_horizon = util_script(children[0], 0)
+        print(degree_sketch)
+
+    # new_radi_row = degree_sketch[0] + ["⎷"]
+    new_radi_row = degree_sketch[0] + ["√", "("]
+    for char in radicand_sketch[0]:
+        # new_radi_row.append(char + "\u035E")
+        new_radi_row.append(char)
+    new_radi_row += [")"]
+
+    if len(radicand_sketch[0]) == 1:
+        # new_radi_row = ["√", "\u0305", radicand_sketch[0][0], "\u0305"]
+        new_radi_row = ["√", radicand_sketch[0][0], "\u0305"]
+        # new_radi_row = ["√", "\u035E", radicand_sketch[0][0]]
+
+    return [new_radi_row], radicand_horizon
+
+
+def util_multiline_square_root(children: list) -> tuple:
     degree_sketch, degree_horizon = children[0]
     radicand_sketch, radicand_horizon = children[-1]
+
     art = arts.square_root
     
-    # Changed: list multiplication
     top_bar = art["top_bar"] * len(radicand_sketch[0])
     sqrt_sketch = [top_bar] + radicand_sketch
     
@@ -465,6 +488,16 @@ def render_square_root(children: list) -> tuple:
         sqrt_sketch[i] = left_pad + sqrt_sketch[i]  # Changed
         
     return sqrt_sketch, radicand_horizon + 1
+
+
+def render_square_root(children: list) -> tuple:
+    degree_sketch, degree_horizon = children[0]
+    radicand_sketch, radicand_horizon = children[-1]
+
+    if len(radicand_sketch) == 1:
+        return util_oneline_square_root(children)
+    else:
+        return util_multiline_square_root(children)
 
 def render_concat_line_align_amp(children: list) -> tuple:
     return util_concat(children, True, True)
