@@ -16,7 +16,13 @@ def render_tex_rows(tex: str, debug: bool) -> list:
         rendered = render(parsed, debug)
     except ValueError as e:
         return [f"TeXicode: rendering error: {e}"]
-    return rendered
+
+    new_rendered = []
+    for row in rendered:
+        row_str = "".join(row)
+        new_rendered.append(row_str)
+
+    return new_rendered
 
 
 def join_rows(rendered_rows: list, color: bool) -> str:
