@@ -65,7 +65,9 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border);
+/*border: 1px solid var(--border);*/
+border: solid var(--border);
+border-width: 4px 2px;
   position: relative;
 }
 
