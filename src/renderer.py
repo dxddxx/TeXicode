@@ -308,7 +308,7 @@ def render_leaf(token: tuple, children: list) -> tuple:
         if token_val in arts.multi_line_leaf_commands.keys():
             return arts.multi_line_leaf_commands[token_val]  # Already converted
         elif token_val in symbols_art.symbols.keys():
-            return [[symbols_art.symbols[token_val]]], horizon  # Changed: wrap in list
+            return [symbols_art.symbols[token_val]], horizon  # Changed: wrap in list
         else:
             return [["?"]], 0  # Changed: wrap in list
 
