@@ -9,6 +9,8 @@ src/__pycache__/
 # pyinstall files
 main.spec
 
+# swap files
+*.swp
 
 old/
 scrap_paper.txt
