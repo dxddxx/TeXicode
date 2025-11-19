@@ -5,8 +5,8 @@ simple_symbols = """`!@#%*( )+-=[]|;:'",.<>/?"""
 
 # Change values to lists
 special_symbols = {
-    "~": [" "],
-    "&": [""],
+    "~": " ",
+    "&": "",
 }
 
 # Alphabets stay as strings for indexing, but font mapping remains

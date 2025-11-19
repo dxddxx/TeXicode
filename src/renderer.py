@@ -542,6 +542,7 @@ def render(nodes: list, debug: bool) -> list:
                 if i == horizon:
                     arrow = "<--"
                 # Changed: join list into string for display
+                print(i, sketch[i], arrow)
                 print(i, "".join(sketch[i]), arrow)
                 
     if len(canvas) == 0:
