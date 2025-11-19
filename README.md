@@ -83,6 +83,7 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 
 # TODO
 
+- toggled font/artstyle/glyph/asciimode
 - update screenshot
 - overline
 - math mode in \text
