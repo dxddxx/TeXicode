@@ -7,43 +7,45 @@ async function main() {
   output.disabled = true;
   output.value = "Loading MicroPython...";
 
-  // --- 1. Start MicroPython runner ---
-  const stdoutWriter = (line) => { console.log(line); };
-  const mp = await loadMicroPython({ stdout: stdoutWriter });
+  // --- 1. Start MicroPython environment ---
+  const mp = await loadMicroPython();
 
-  // --- 2. Load Python source files into MP’s virtual FS ---
+  // --- 2. Load your Python source files into the virtual FS ---
   const pyFiles = [
     "arts.py", "lexer.py", "main.py", "node_data.py",
     "parser.py", "pipeline.py", "renderer.py", "symbols_art.py",
   ];
-
   for (const f of pyFiles) {
-    const txt = await (await fetch(`./src/${f}`)).text();
-    mp.FS.writeFile(f, txt);
+    const resp = await fetch(`./src/${f}`);
+    const code = await resp.text();
+    mp.FS.writeFile(f, code);
   }
 
-  // --- 3. Import your pipeline & exporter function ---
+  // --- 3. Import your pipeline and expose render_tex_web ---
   await mp.runPythonAsync(`
 import sys
 sys.path.insert(0, "")
 import pipeline
 render_tex_web = pipeline.render_tex_web
-  `);
+`);
 
   input.disabled = false;
   output.disabled = false;
   output.value = "";
 
-  // --- 4. Bind update logic just like before ---
-  let updateTimer;
+  // --- 4. Update output whenever input changes ---
+  let timer;
   input.addEventListener("input", () => {
-    clearTimeout(updateTimer);
-    updateTimer = setTimeout(updateOutput, 0);
+    clearTimeout(timer);
+    timer = setTimeout(updateOutput, 0);
   });
 
   async function updateOutput() {
     try {
-      const code = `print(render_tex_web(${JSON.stringify(input.value)}))`;
+      const code = `
+from pipeline import render_tex_web
+render_tex_web(${JSON.stringify(input.value)})
+`;
       const result = await mp.runPythonAsync(code);
       output.value = result ?? "";
     } catch (err) {
@@ -63,7 +65,7 @@ render_tex_web = pipeline.render_tex_web
       await navigator.clipboard.writeText(txt.value);
       const orig = btn.textContent;
       btn.textContent = "Copied!";
-      setTimeout(() => (btn.textContent = "Copy"), 1500);
+      setTimeout(() => (btn.textContent = orig), 1500);
     });
   }
 }
