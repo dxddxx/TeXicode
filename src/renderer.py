@@ -449,7 +449,7 @@ def util_oneline_square_root(children: list) -> tuple:
         # new_radi_row = ["√", "\u0305", radicand_sketch[0][0], "\u0305"]
         new_radi_row = ["√", radicand_sketch[0][0], "\u0305"]
         # new_radi_row = ["√", "\u035E", radicand_sketch[0][0]]
-    if len(radicand_sketch[0]) <= 1:
+    if len(radicand_sketch[0]) == 0:
         new_radi_row = ["√"]
 
 
