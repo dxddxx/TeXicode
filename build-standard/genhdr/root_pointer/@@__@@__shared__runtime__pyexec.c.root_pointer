@@ -1,0 +1,1 @@
+MP_REGISTER_ROOT_POINTER(vstr_t * repl_line);
