@@ -1,51 +1,47 @@
 import { loadMicroPython } from "./build-standard/micropython.mjs";
 
 async function main() {
-  const input  = document.getElementById("input");
+  const input = document.getElementById("input");
   const output = document.getElementById("output");
   input.disabled = true;
   output.disabled = true;
   output.value = "Loading MicroPython...";
 
-  // --- 1. Start MicroPython environment ---
+  // 1. Start MicroPython (no stdout handler)
   const mp = await loadMicroPython();
 
-  // --- 2. Load your Python source files into the virtual FS ---
+  // 2. Load your Python files into the virtual FS
   const pyFiles = [
     "arts.py", "lexer.py", "main.py", "node_data.py",
     "parser.py", "pipeline.py", "renderer.py", "symbols_art.py",
   ];
   for (const f of pyFiles) {
-    const resp = await fetch(`./src/${f}`);
-    const code = await resp.text();
-    mp.FS.writeFile(f, code);
+    const txt = await (await fetch(`./src/${f}`)).text();
+    mp.FS.writeFile(f, txt);
   }
 
-  // --- 3. Import your pipeline and expose render_tex_web ---
+  // 3. Import the render function once
   await mp.runPythonAsync(`
 import sys
 sys.path.insert(0, "")
 import pipeline
 render_tex_web = pipeline.render_tex_web
-`);
+  `);
 
   input.disabled = false;
   output.disabled = false;
   output.value = "";
 
-  // --- 4. Update output whenever input changes ---
-  let timer;
+  let updateTimer;
   input.addEventListener("input", () => {
-    clearTimeout(timer);
-    timer = setTimeout(updateOutput, 0);
+    clearTimeout(updateTimer);
+    updateTimer = setTimeout(updateOutput, 0);
   });
 
   async function updateOutput() {
     try {
-      const code = `
-from pipeline import render_tex_web
-render_tex_web(${JSON.stringify(input.value)})
-`;
+      // 4. Call the function and capture its RETURN value (no print!)
+      const code = `render_tex_web(${JSON.stringify(input.value)})`;
       const result = await mp.runPythonAsync(code);
       output.value = result ?? "";
     } catch (err) {
@@ -54,7 +50,7 @@ render_tex_web(${JSON.stringify(input.value)})
     }
   }
 
-  // --- 5. Copy buttons ---
+  // 5. Copy buttons (unchanged)
   for (const [btnId, txtId] of [
     ["copy-input", "input"],
     ["copy-output", "output"],
@@ -65,7 +61,7 @@ render_tex_web(${JSON.stringify(input.value)})
       await navigator.clipboard.writeText(txt.value);
       const orig = btn.textContent;
       btn.textContent = "Copied!";
-      setTimeout(() => (btn.textContent = orig), 1500);
+      setTimeout(() => (btn.textContent = "Copy"), 1500);
     });
   }
 }
