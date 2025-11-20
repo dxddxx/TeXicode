@@ -18,12 +18,19 @@
 
     <main>
       <div class="panel">
-        <textarea id="input" placeholder="\\text{Demo:}\\n(a+b)^n = ..."></textarea>
+        <textarea id="input" placeholder="\text{Demo:} \\
+(a+b)^n = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k"></textarea>
         <button id="copy-input" class="floating-btn">Copy</button>
       </div>
 
       <div class="panel">
-        <textarea id="output" readonly placeholder="Output appears here"></textarea>
+        <textarea id="output" readonly placeholder="Demo:
+
+        ₙ
+       ┰─╴⎛𝑛⎞
+(𝑎+𝑏)ⁿ=▐╸ ⎜ ⎟𝑎ⁿ⁻ᵏ𝑏ᵏ
+       ┸─╴⎝𝑘⎠
+       ᵏ⁼⁰"></textarea>
         <button id="copy-output" class="floating-btn">Copy</button>
       </div>
     </main>
