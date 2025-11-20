@@ -1,0 +1,1 @@
+MP_REGISTER_MODULE(MP_QSTR_jsffi, mp_module_jsffi);

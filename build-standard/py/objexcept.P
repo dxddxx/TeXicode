@@ -1,0 +1,92 @@
+build-standard/py/objexcept.o: ../../py/objexcept.c \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/string.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/string.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/features.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/alltypes.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/stdarg.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdarg.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdarg.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_header_macro.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg___gnuc_va_list.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_va_list.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_va_arg.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg___va_copy.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_va_copy.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/assert.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdio.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/wasi/api.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stddef.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stddef.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_header_macro.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_ptrdiff_t.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_size_t.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_wchar_t.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_null.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_offsetof.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdint.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdint.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/stdint.h \
+  ../../py/objlist.h ../../py/obj.h ../../py/mpconfig.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/limits.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/limits.h \
+  mpconfigport.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/stdlib.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdlib.h \
+  variants/standard/mpconfigvariant.h ../../py/misc.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdbool.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdbool.h \
+  ../../py/qstr.h build-standard/genhdr/qstrdefs.generated.h \
+  ../../py/mpprint.h ../../py/runtime0.h ../../py/objstr.h \
+  ../../py/objarray.h ../../py/objtuple.h ../../py/objtype.h \
+  ../../py/runtime.h ../../py/mpstate.h ../../py/mpthread.h \
+  ../../py/nlr.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/setjmp.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/setjmp.h \
+  ../../py/objexcept.h build-standard/genhdr/root_pointers.h \
+  ../../py/pystack.h ../../py/cstack.h ../../py/gc.h ../../py/mperrno.h
+../../py/objexcept.c :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/string.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/string.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/features.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/alltypes.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/stdarg.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdarg.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdarg.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_header_macro.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg___gnuc_va_list.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_va_list.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_va_arg.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg___va_copy.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stdarg_va_copy.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/assert.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdio.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/wasi/api.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stddef.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stddef.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_header_macro.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_ptrdiff_t.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_size_t.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_wchar_t.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_null.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/__stddef_offsetof.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdint.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdint.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/stdint.h :
+  ../../py/objlist.h ../../py/obj.h ../../py/mpconfig.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/limits.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/limits.h :
+  mpconfigport.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/stdlib.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdlib.h :
+  variants/standard/mpconfigvariant.h ../../py/misc.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdbool.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdbool.h :
+  ../../py/qstr.h build-standard/genhdr/qstrdefs.generated.h :
+  ../../py/mpprint.h ../../py/runtime0.h ../../py/objstr.h :
+  ../../py/objarray.h ../../py/objtuple.h ../../py/objtype.h :
+  ../../py/runtime.h ../../py/mpstate.h ../../py/mpthread.h :
+  ../../py/nlr.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/setjmp.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/setjmp.h :
+  ../../py/objexcept.h build-standard/genhdr/root_pointers.h :
+  ../../py/pystack.h ../../py/cstack.h ../../py/gc.h ../../py/mperrno.h :

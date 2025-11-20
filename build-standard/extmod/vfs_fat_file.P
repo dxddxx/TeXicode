@@ -1,0 +1,26 @@
+build-standard/extmod/vfs_fat_file.o: ../../extmod/vfs_fat_file.c \
+  ../../py/mpconfig.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdint.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdint.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/alltypes.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/stdint.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/limits.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/limits.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/features.h \
+  mpconfigport.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/stdlib.h \
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdlib.h \
+  variants/standard/mpconfigvariant.h
+../../extmod/vfs_fat_file.c :
+  ../../py/mpconfig.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/stdint.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdint.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/alltypes.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/bits/stdint.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/llvm/lib/clang/22/include/limits.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/limits.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/features.h :
+  mpconfigport.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/compat/stdlib.h :
+  /opt/homebrew/Cellar/emscripten/4.0.20/libexec/cache/sysroot/include/stdlib.h :
+  variants/standard/mpconfigvariant.h :

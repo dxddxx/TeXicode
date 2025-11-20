@@ -1,0 +1,2 @@
+build-standard/extmod/modopenamp.o: ../../extmod/modopenamp.c
+../../extmod/modopenamp.c :
