@@ -24,10 +24,10 @@ async function main() {
 
   // --- 3. Import your pipeline & exporter function ---
   await mp.runPythonAsync(`
-import sys, runpy
+import sys
 sys.path.insert(0, "")
-mod = runpy.run_path("pipeline.py")
-render_tex_web = mod["render_tex_web"]
+import pipeline
+render_tex_web = pipeline.render_tex_web
   `);
 
   input.disabled = false;
