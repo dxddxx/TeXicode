@@ -1,25 +1,29 @@
-async function main() {
-  const input = document.getElementById("input");
-  const output = document.getElementById("output");
+import { loadMicroPython } from "./build-standard/micropython.mjs";
 
+async function main() {
+  const input  = document.getElementById("input");
+  const output = document.getElementById("output");
   input.disabled = true;
   output.disabled = true;
-  output.value = "Loading Pyodide...";
+  output.value = "Loading MicroPython...";
 
-  const pyodide = await loadPyodide();
+  // --- 1. Start MicroPython runner ---
+  const stdoutWriter = (line) => { console.log(line); };
+  const mp = await loadMicroPython({ stdout: stdoutWriter });
 
-  const files = [
+  // --- 2. Load Python source files into MP’s virtual FS ---
+  const pyFiles = [
     "arts.py", "lexer.py", "main.py", "node_data.py",
     "parser.py", "pipeline.py", "renderer.py", "symbols_art.py",
   ];
 
-  for (const f of files) {
-    const resp = await fetch(`./src/${f}`);
-    const code = await resp.text();
-    pyodide.FS.writeFile(f, code);
+  for (const f of pyFiles) {
+    const txt = await (await fetch(`./src/${f}`)).text();
+    mp.FS.writeFile(f, txt);
   }
 
-  await pyodide.runPythonAsync(`
+  // --- 3. Import your pipeline & exporter function ---
+  await mp.runPythonAsync(`
 import sys, runpy
 sys.path.insert(0, "")
 mod = runpy.run_path("pipeline.py")
@@ -30,17 +34,17 @@ render_tex_web = mod["render_tex_web"]
   output.disabled = false;
   output.value = "";
 
-  let timeoutId;
+  // --- 4. Bind update logic just like before ---
+  let updateTimer;
   input.addEventListener("input", () => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(updateOutput, 0);
+    clearTimeout(updateTimer);
+    updateTimer = setTimeout(updateOutput, 0);
   });
 
   async function updateOutput() {
     try {
-      const result = await pyodide.runPythonAsync(
-        `render_tex_web(${JSON.stringify(input.value)})`
-      );
+      const code = `print(render_tex_web(${JSON.stringify(input.value)}))`;
+      const result = await mp.runPythonAsync(code);
       output.value = result ?? "";
     } catch (err) {
       output.value = "Error: " + err;
@@ -48,6 +52,7 @@ render_tex_web = mod["render_tex_web"]
     }
   }
 
+  // --- 5. Copy buttons ---
   for (const [btnId, txtId] of [
     ["copy-input", "input"],
     ["copy-output", "output"],
