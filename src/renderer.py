@@ -4,7 +4,8 @@ import symbols_art
 
 def util_revert_font(char: str) -> str:
     """No change to logic, operates on single character strings"""
-    if char.isascii():
+    # if char.isascii():
+    if ord(char) < 128:
         return char
     for alphabet in arts.alphabets.values():
         if char not in alphabet:
