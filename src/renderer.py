@@ -434,27 +434,23 @@ def render_accents(token: tuple, children: list) -> tuple:
 def util_oneline_square_root(children: list) -> tuple:
     radicand_sketch, radicand_horizon = children[-1]
 
-    degree_sketch, degree_horizon = [[]], 0
-    if len(children) > 1:
-        degree_sketch, degree_horizon = util_script(children[0], 0)
-        print(degree_sketch)
-
-    # new_radi_row = degree_sketch[0] + ["⎷"]
-    new_radi_row = degree_sketch[0] + ["√", "("]
+    new_radi_row = ["√", "("]
     for char in radicand_sketch[0]:
-        # new_radi_row.append(char + "\u035E")
         new_radi_row.append(char)
     new_radi_row += [")"]
 
     if len(radicand_sketch[0]) == 1:
-        # new_radi_row = ["√", "\u0305", radicand_sketch[0][0], "\u0305"]
         new_radi_row = ["√", radicand_sketch[0][0] + "\u0305"]
-        # new_radi_row = ["√", "\u035E", radicand_sketch[0][0]]
     if len(radicand_sketch[0]) == 0:
         new_radi_row = ["√"]
 
+    if len(children) <= 1:
+        return [new_radi_row], radicand_horizon
 
-    return [new_radi_row], radicand_horizon
+    degree = util_script(children, 0)
+    sketch_degreed, horizon_degreed = util_concat([degree, ([new_radi_row], 0)], False, False)
+
+    return sketch_degreed, horizon_degreed
 
 
 def util_multiline_square_root(children: list) -> tuple:
