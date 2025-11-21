@@ -432,6 +432,7 @@ def render_accents(token: tuple, children: list) -> tuple:
     return sketch, children[0][1]
 
 def util_oneline_square_root(children: list) -> tuple:
+    # thanks to u/Iron_Pencil for the idea
     radicand_sketch, radicand_horizon = children[-1]
 
     new_radi_row = ["√", "("]
