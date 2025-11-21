@@ -8,6 +8,7 @@ async function main() {
 
   const pyodide = await loadPyodide();
 
+  output.value = "Loading TeXicode...";
   const files = [
     "arts.py", "lexer.py", "main.py",
     "node_data.py", "parser.py", "pipeline.py",
@@ -20,6 +21,7 @@ async function main() {
     pyodide.FS.writeFile(f, code);
   }
 
+  output.value = "Preparing TeXicode...";
   await pyodide.runPythonAsync(`
 import sys, runpy
 sys.path.insert(0, "")
