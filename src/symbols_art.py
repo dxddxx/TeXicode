@@ -55,6 +55,7 @@ symbols = {
     "qquad": [" ", " ", " ", " "],
     # my own
     "LaTeX":    ["L", "ᴬ", "T", "ₑ", "X"],
+    "TeXicode":    ["T", "ᵉ", "X", "ᵢ", "c", "ₒ", "d", "ₑ"],
     "mod":      [" ", " ", "m", "o", "d"],
     "boxtimes": ["⊠"],  # found in overleaf
     "cdots":    ["⋯"],
