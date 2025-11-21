@@ -6,9 +6,7 @@ async function main() {
   output.disabled = true;
   output.value = "Loading Pyodide...";
 
-  const pyodide = await loadPyodide({
-    indexURL: "pyodide/",
-  });
+  const pyodide = await loadPyodide();
 
   const files = [
     "arts.py", "lexer.py", "main.py",
