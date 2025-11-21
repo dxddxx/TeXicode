@@ -37,6 +37,7 @@ def join_rows(rendered_rows: list, color: bool) -> str:
 
 
 def render_tex(tex: str, debug: bool, color: bool, context: str) -> str:
+    tex_art = ""
     tex_rows = render_tex_rows(tex, debug)
     single_line = len(tex_rows) == 1
     if context == "md_inline":
