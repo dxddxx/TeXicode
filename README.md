@@ -83,9 +83,12 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 
 # TODO
 
-- toggled font/artstyle/glyph/asciimode
+- toggled font/artstyle/glyph/legacy/asciimode
+- x button in input field
 - comments
-- update pip release
+- pip release using gh action
+- displaystyle
+- better error, consistent with LaTeX
 - update screenshot
 - overline
 - math mode in \text
@@ -96,8 +99,6 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 - delimiters
     - tall angle brackets
     - `\middle`
-- displaystyle
-- better error, consistent with LaTeX
 - turn it into a vim plugin
 
 -->
