@@ -1,3 +1,0 @@
-build-standard/extmod/mbedtls/mbedtls_alt.o: \
-  ../../extmod/mbedtls/mbedtls_alt.c
-  ../../extmod/mbedtls/mbedtls_alt.c :

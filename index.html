@@ -1,40 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>TeXicode</title>
-
-    <!-- MicroPython WebAssembly runtime -->
-    <script type="module" src="build-standard/micropython.mjs"></script>
-
-    <link rel="stylesheet" href="style.css" />
-  </head>
-
-  <body>
-    <header>
-      <a href="https://github.com/dxddxx/TeXicode" target="_blank">TeXicode</a>
-    </header>
-
-    <main>
-      <div class="panel">
-        <textarea id="input" placeholder="\text{Demo:} \\
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeXicode</title>
+  <!--<script src="https://cdn.jsdelivr.net/npm/pyodide@0.29.0/pyodide.min.js"></script>-->
+  <script src="./pyodide/pyodide.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <a href="https://github.com/dxddxx/TeXicode" target="_blank">TeXicode</a>
+  </header>
+  <main>
+    <div class="panel">
+      <textarea id="input" placeholder="\text{Demo:} \\
 (a+b)^n = \sum_{k=0}^n \binom{n}{k} a^{n-k} b^k"></textarea>
-        <button id="copy-input" class="floating-btn">Copy</button>
-      </div>
-
-      <div class="panel">
-        <textarea id="output" readonly placeholder="Demo:
-
-        ₙ
-       ┰─╴⎛𝑛⎞
+      <button id="copy-input" class="floating-btn">Copy</button>
+    </div>
+    <div class="panel">
+      <textarea id="output" readonly placeholder="Demo:              
+                   
+        ₙ          
+       ┰─╴⎛𝑛⎞      
 (𝑎+𝑏)ⁿ=▐╸ ⎜ ⎟𝑎ⁿ⁻ᵏ𝑏ᵏ
-       ┸─╴⎝𝑘⎠
-       ᵏ⁼⁰"></textarea>
-        <button id="copy-output" class="floating-btn">Copy</button>
-      </div>
-    </main>
-
-    <script type="module" src="main.js"></script>
-  </body>
+       ┸─╴⎝𝑘⎠      
+       ᵏ⁼⁰         "></textarea>
+      <button id="copy-output" class="floating-btn">Copy</button>
+    </div>
+  </main>
+  <script src="main.js"></script>
+</body>
 </html>

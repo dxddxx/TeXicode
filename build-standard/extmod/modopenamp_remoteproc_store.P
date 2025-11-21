@@ -1,3 +1,0 @@
-build-standard/extmod/modopenamp_remoteproc_store.o: \
-  ../../extmod/modopenamp_remoteproc_store.c
-  ../../extmod/modopenamp_remoteproc_store.c :

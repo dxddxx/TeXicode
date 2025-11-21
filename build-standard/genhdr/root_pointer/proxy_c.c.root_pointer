@@ -1,2 +1,0 @@
-MP_REGISTER_ROOT_POINTER(mp_obj_t proxy_c_ref);
-MP_REGISTER_ROOT_POINTER(mp_obj_t proxy_c_dict);
