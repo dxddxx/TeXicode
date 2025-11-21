@@ -75,7 +75,7 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 - Horizon (center line)
     - makes long concatenated expression readable
     - vertical horizon for &= aligning
-    - space saving square roots kinda goes against this, might fix later when I find a better way to draw square roots
+    - space saving square roots kinda goes against this, might fix later when I find a better way to draw square roots (found it!)
 - Clarity over aesthetics
     - the square root tail is lengthened for clarity
     - all glyphs must connect, sums, square roots, etc
@@ -84,19 +84,20 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 # TODO
 
 - toggled font/artstyle/glyph/asciimode
+- comments
+- update pip release
 - update screenshot
 - overline
 - math mode in \text
 - \bm \boldsymbol
     - easy
 - square root with multi line degree
-    - with concat
+    - with concat and lower
 - delimiters
     - tall angle brackets
     - `\middle`
 - displaystyle
 - better error, consistent with LaTeX
 - turn it into a vim plugin
-- make a website/browser extension for reddit comments
 
 -->
