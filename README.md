@@ -92,8 +92,7 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 - update screenshot
 - overline
 - math mode in \text
-- \bm \boldsymbol
-    - easy
+- \bm \boldsymbol (easy)
 - square root with multi line degree
     - with concat and lower
 - delimiters
