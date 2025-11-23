@@ -21,6 +21,8 @@ Also useful for quickly inserting single line equations into Word documents.
 
 # CLI
 
+The cli is not very well maintained as of now, use the webapp instead
+
 ### Install
 
 with `pipx` (recommended)
