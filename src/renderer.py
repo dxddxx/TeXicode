@@ -495,7 +495,9 @@ def render_square_root(children: list) -> tuple:
     degree_sketch, degree_horizon = children[0]
     radicand_sketch, radicand_horizon = children[-1]
 
-    if len(radicand_sketch) == 1:
+    # if len(radicand_sketch) == 1:
+    # someone said parenthesis is uncleaer, agreed.
+    if len(radicand_sketch[0]) <= 1 and len(radicand_sketch) == 1:
         return util_oneline_square_root(children)
     else:
         return util_multiline_square_root(children)
