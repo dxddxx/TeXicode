@@ -427,7 +427,8 @@ def render_accents(token: tuple, children: list) -> tuple:
     sketch = children[0][0]
     first_char = sketch[0][0] + u_hex
     # first_char = unicodedata.normalize("NFKC", first_char)
-    first_row = [first_char] + sketch[0][1:]  # Changed: list concatenation
+    # finally fixed ugly ass combining char lets goooo
+    first_row = [first_char] + sketch[0][1:]
     sketch = [first_row] + sketch[1:]
     return sketch, children[0][1]
 
