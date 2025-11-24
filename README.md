@@ -21,8 +21,6 @@ Also useful for quickly inserting single line equations into Word documents.
 
 # CLI
 
-The cli is not very well maintained as of now, use the webapp instead
-
 ### Install
 
 with `pipx` (recommended)
@@ -45,6 +43,7 @@ pip install TeXicode
     - if expression contains single quotes like `f'(x)`, replace with `f\'(x)`
     - `\[ \]`, `\( \)`, `$ $`, `$$ $$`, `\begin{...} \end{...}` is optional
 - Add `-c` at the end of the command to output in color (black on white)
+- Add `-n` at the end of the command to use normal fonts instead of cursive italic
 - Unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
 
 ### Rendering Math in Markdown
