@@ -22,3 +22,5 @@ src/lgcy_arts.py
 # micropython
 micropython/
 
+# personal stuff
+nohup.out
