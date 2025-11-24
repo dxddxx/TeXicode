@@ -85,9 +85,10 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 # TODO
 
 - toggled font/artstyle/glyph/legacy/asciimode
+- fix \binom{}{} with empty args
+- vectors and matrices
 - x button in input field
-- comments
-- pip release using gh action
+- comments with %
 - displaystyle
 - better error, consistent with LaTeX
 - update screenshot
