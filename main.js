@@ -2,6 +2,7 @@ async function main() {
   const input = document.getElementById("input");
   const output = document.getElementById("output");
   const fontToggle = document.getElementById("font-toggle");
+  const demoTex = input.placeholder;
 
   // input.disabled = true;
   output.disabled = true;
@@ -33,11 +34,22 @@ render_tex_web = mod["render_tex_web"]
   input.disabled = false;
   output.disabled = false;
   output.value = "";
+  let isNormalFont = false;
 
-  // set font and listen for font toggle
-  let isNormalFont = false;  // default serif
-  fontToggle.addEventListener("change", () => {
+  async function updatePlaceholder() {
+    const placeholder = await pyodide.runPythonAsync(
+      `render_tex_web(${JSON.stringify(demoTex)}, ${isNormalFont ? "True" : "False"})`
+    );
+    output.placeholder = placeholder ?? "";
+  }
+
+  // NEW: call once after load
+  await updatePlaceholder();
+
+  // listen for font toggle
+  fontToggle.addEventListener("change", async () => {
     isNormalFont = fontToggle.checked;
+    await updatePlaceholder();
     updateOutput();  // re-render immediately
   });
 
