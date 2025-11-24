@@ -25,7 +25,7 @@ alphabets = {
     "double":     "𝔸𝔹ℂ𝔻𝔼𝔽𝔾ℍ𝕀𝕁𝕂𝕃𝕄ℕ𝕆ℙℚℝ𝕊𝕋𝕌𝕍𝕎𝕏𝕐ℤ𝕒𝕓𝕔𝕕𝕖𝕗𝕘𝕙𝕚𝕛𝕜𝕝𝕞𝕟𝕠𝕡𝕢𝕣𝕤𝕥𝕦𝕧𝕨𝕩𝕪𝕫"
 }
 
-font = {
+font_serif = {
     "mathrm":     alphabets["normal"],
     "mathbf":     alphabets["serif_bld"],
     "mathsf":     alphabets["sans"],
@@ -38,6 +38,22 @@ font = {
     "mathscr":    alphabets["cali_bld"],
     "text":       alphabets["normal"]
 }
+
+font_normal = {
+    "mathrm":     alphabets["normal"],
+    "mathbf":     alphabets["serif_bld"],
+    "mathsf":     alphabets["sans"],
+    "mathtt":     alphabets["mono"],
+    "mathit":     alphabets["serif_it"],
+    "mathnormal": alphabets["normal"],
+    "mathcal":    alphabets["cali_bld"],
+    "mathfrak":   alphabets["frak_bld"],
+    "mathbb":     alphabets["double"],
+    "mathscr":    alphabets["cali_bld"],
+    "text":       alphabets["normal"]
+}
+
+font = font_serif
 
 # Convert to list-of-lists format
 multi_line_leaf_commands = {

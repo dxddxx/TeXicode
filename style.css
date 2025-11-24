@@ -45,8 +45,10 @@ body {
 
 header {
   padding: 0.5em;
+  padding-bottom: 1.5em;
   background: var(--header-bg);
   text-align: center;
+  position: relative;
 }
 
 main {
@@ -101,4 +103,22 @@ textarea {
 
 .floating-btn:hover {
   opacity: 1;
+}
+
+#header-toggle {
+  position: absolute;
+  right: 1em;
+  bottom: 0.2em;
+}
+
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  cursor: pointer;
+}
+
+#font-toggle {
+  transform: scale(1.2);
+  cursor: pointer;
 }

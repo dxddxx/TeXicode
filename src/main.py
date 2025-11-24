@@ -8,7 +8,7 @@ import re
 from pipeline import render_tex
 
 
-def process_markdown(content, debug, color):
+def process_markdown(content, debug, color, options):
 
     # Regex to find LaTeX blocks: $$...$$ or $...$ or \[...\] or \(...\)
     latex_regex = r'\$\$.*?\$\$|\$.*?\$|\\\[.*?\\\]|\\\(.*?\\\)|\\begin\{.*?\}.*?\\end\{.*?\}'
@@ -20,7 +20,7 @@ def process_markdown(content, debug, color):
         if tex_block.startswith('$$') or tex_block.startswith(r'\[') \
                 or tex_block.startswith(r'\begin'):
             context = "md_block"
-        return render_tex(clean_tex_block, debug, color, context)
+        return render_tex(clean_tex_block, debug, color, context, options)
 
     new_content = re.sub(latex_regex, replace_latex, content, flags=re.DOTALL)
     print(new_content)
@@ -32,18 +32,19 @@ def main():
     input_parser.add_argument('-f', '--file', help='input Markdown file')
     input_parser.add_argument('-c', '--color', action='store_true', help='enable color')
     input_parser.add_argument('latex_string', nargs='?', help='raw TeX string (if not using -f)')
+    input_parser.add_argument('-n', '--normal-font', action='store_true', help='use normal font instead of serif')
     args = input_parser.parse_args()
     debug = args.debug
     color = args.color
+    options = {}
+    options["fonts"] = "normal" if args.normal_font else "serif"
 
     if args.file:
         with open(args.file, 'r') as file:
             content = file.read()
         process_markdown(content, debug, color)
     elif args.latex_string:
-        # tex_rows = render_tex(args.latex_string, debug)
-        # tex_art = join_rows(tex_rows, color)
-        tex_art = render_tex(args.latex_string, debug, color, "raw")
+        tex_art = render_tex(args.latex_string, debug, color, "raw", options)
         print(tex_art)
     else:
         print("Error: no input. provide TeX string or -f <markdown_file>")

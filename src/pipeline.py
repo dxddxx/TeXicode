@@ -1,3 +1,4 @@
+import arts
 from lexer import lexer
 from parser import parse
 from renderer import render
@@ -36,7 +37,20 @@ def join_rows(rendered_rows: list, color: bool) -> str:
     return joined
 
 
-def render_tex(tex: str, debug: bool, color: bool, context: str) -> str:
+def init_arts(options: dict) -> None:
+    if options["fonts"] == "serif":
+        arts.font = arts.font_serif
+    elif options["fonts"] == "normal":
+        arts.font = arts.font_normal
+    else:
+        pass
+
+
+def render_tex(tex: str, debug: bool, color: bool,
+               context: str, options: dict) -> str:
+
+    init_arts(options)
+
     tex_art = ""
     tex_rows = render_tex_rows(tex, debug)
     single_line = len(tex_rows) == 1
@@ -56,5 +70,7 @@ def render_tex(tex: str, debug: bool, color: bool, context: str) -> str:
         raise ValueError(f"TeXicode: pipeline error: unknown context {context}")
 
 
-def render_tex_web(tex: str) -> str:
-    return render_tex(tex, False, False, "raw")
+def render_tex_web(tex: str, is_normal_font: bool) -> str:
+    options = {}
+    options["fonts"] = "normal" if is_normal_font else "serif"
+    return render_tex(tex, False, False, "raw", options)

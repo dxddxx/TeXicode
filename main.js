@@ -1,6 +1,7 @@
 async function main() {
   const input = document.getElementById("input");
   const output = document.getElementById("output");
+  const fontToggle = document.getElementById("font-toggle");
 
   // input.disabled = true;
   output.disabled = true;
@@ -33,6 +34,14 @@ render_tex_web = mod["render_tex_web"]
   output.disabled = false;
   output.value = "";
 
+  // set font and listen for font toggle
+  let isNormalFont = false;  // default serif
+  fontToggle.addEventListener("change", () => {
+    isNormalFont = fontToggle.checked;
+    updateOutput();  // re-render immediately
+  });
+
+  // listen for input change
   let timeoutId;
   input.addEventListener("input", () => {
     clearTimeout(timeoutId);
@@ -41,9 +50,15 @@ render_tex_web = mod["render_tex_web"]
 
   async function updateOutput() {
     try {
+      // const result = await pyodide.runPythonAsync(
+      //   `render_tex_web(${JSON.stringify(input.value)})`
+      // );
+      const texString = JSON.stringify(input.value);
+
       const result = await pyodide.runPythonAsync(
-        `render_tex_web(${JSON.stringify(input.value)})`
-      );
+        `render_tex_web(${texString}, ${isNormalFont ? "True" : "False"})`
+        );
+
       output.value = result ?? "";
     } catch (err) {
       output.value = "Error: " + err;
