@@ -24,3 +24,6 @@ micropython/
 
 # personal stuff
 nohup.out
+
+# apple
+.DS_Store
