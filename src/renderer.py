@@ -124,6 +124,9 @@ def util_vert_pile(top, ctr, ctr_horizon, btm, align) -> tuple:
         
         for row in sketch:
             piled_sketch.append(left_pad + row + right_pad)
+
+    if piled_sketch == []:
+        piled_sketch = [[]]
             
     return piled_sketch, piled_horizon
 
@@ -435,16 +438,12 @@ def render_accents(token: tuple, children: list) -> tuple:
 def util_oneline_square_root(children: list) -> tuple:
     # thanks to u/Iron_Pencil for the idea
     radicand_sketch, radicand_horizon = children[-1]
-
-    new_radi_row = ["√", "("]
-    for char in radicand_sketch[0]:
-        new_radi_row.append(char)
-    new_radi_row += [")"]
+    surd_art = symbols_art.symbols["surd"]
 
     if len(radicand_sketch[0]) == 1:
-        new_radi_row = ["√", radicand_sketch[0][0] + "\u0305"]
+        new_radi_row = surd_art + [radicand_sketch[0][0] + "\u0305"]
     if len(radicand_sketch[0]) == 0:
-        new_radi_row = ["√"]
+        new_radi_row = surd_art
 
     if len(children) <= 1:
         return [new_radi_row], radicand_horizon
