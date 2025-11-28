@@ -85,8 +85,9 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 # TODO
 
 - toggled font/artstyle/glyph/legacy/asciimode
-- fix \binom{}{} with empty args
-- vectors and matrices
+- properly impliment ampersand
+    - better align
+    - vectors and matrices
 - x button in input field
 - comments with %
 - displaystyle

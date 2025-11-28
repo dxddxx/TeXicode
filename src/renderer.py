@@ -435,7 +435,7 @@ def render_accents(token: tuple, children: list) -> tuple:
     sketch = [first_row] + sketch[1:]
     return sketch, children[0][1]
 
-def util_oneline_square_root(children: list) -> tuple:
+def util_onechar_square_root(children: list) -> tuple:
     # thanks to u/Iron_Pencil for the idea
     radicand_sketch, radicand_horizon = children[-1]
     surd_art = symbols_art.symbols["surd"]
@@ -454,7 +454,7 @@ def util_oneline_square_root(children: list) -> tuple:
     return sketch_degreed, horizon_degreed
 
 
-def util_multiline_square_root(children: list) -> tuple:
+def util_multichar_square_root(children: list) -> tuple:
     degree_sketch, degree_horizon = children[0]
     radicand_sketch, radicand_horizon = children[-1]
 
@@ -498,9 +498,9 @@ def render_square_root(children: list) -> tuple:
     # if len(radicand_sketch) == 1:
     # someone said parenthesis is uncleaer, agreed.
     if len(radicand_sketch[0]) <= 1 and len(radicand_sketch) == 1:
-        return util_oneline_square_root(children)
+        return util_onechar_square_root(children)
     else:
-        return util_multiline_square_root(children)
+        return util_multichar_square_root(children)
 
 def render_concat_line_align_amp(children: list) -> tuple:
     return util_concat(children, True, True)
