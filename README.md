@@ -86,6 +86,7 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 
 - toggled font/artstyle/glyph/legacy/asciimode
 - properly impliment ampersand
+    - change parsing structure, make ampersand and linebreak into parents
     - better align
     - vectors and matrices
 - x button in input field
