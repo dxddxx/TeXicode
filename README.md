@@ -85,17 +85,18 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 # TODO
 
 - toggled font/artstyle/glyph/legacy/asciimode
-- properly impliment ampersand
+- properly implement ampersand
     - change parsing structure, make ampersand and linebreak into parents
-    - or or just do list of vert horizons (amps)
-    - better align
+    - or just do list of vert horizons (amps), linebreak concats, and \begin splits the lines at the ampersands to insert new paddings before stacking the lines together
+    - better align, multi amp, works
     - vectors and matrices
-- x button in input field
+- x button in web input field
 - comments with %
 - displaystyle
 - better error, consistent with LaTeX
 - update screenshot
 - overline
+    - like sqrt, use accent if single char, box drawing if not
 - math mode in \text
 - \bm \boldsymbol (easy)
 - square root with multi line degree
