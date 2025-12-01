@@ -1,7 +1,6 @@
 symbols = {
     # self replacemtn commands:
     # from https://latexref.xyz/Math-functions.html
-    " ":      [" "],
     "_":      ["_"],
     "$":      ["$"],
     "{":      ["{"],
@@ -35,7 +34,6 @@ symbols = {
     "max":  ["m", "a", "x"],
     "min":  ["m", "i", "n"],
     "pmod": ["p", "m", "o", "d"],
-    "mod":  ["m", "o", "d"],
     "Pr":   ["P", "r"],
     "sec":  ["s", "e", "c"],
     "sin":  ["s", "i", "n"],
@@ -150,8 +148,8 @@ symbols = {
     "lambda":         ["λ"],
     "land":           ["∧"],
     "langle":         ["⟨"],
-    "lbrace":         ["{"], "{": "{",
-    "lbrack":         ["["], "[": "[",
+    "lbrace":         ["{"],
+    "lbrack":         ["["],
     "lceil":          ["⌈"],
     "le":             ["≤"],
     "leadsto":        ["⇝"],
