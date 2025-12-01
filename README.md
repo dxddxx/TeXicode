@@ -23,8 +23,6 @@ Also useful for quickly inserting single line equations into Word documents.
 
 ### Install
 
-with `pipx`
-
 ```bash
 pipx install TeXicode
 ```
