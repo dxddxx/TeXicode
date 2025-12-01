@@ -373,7 +373,7 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
         return util_vert_pile(top, base_sketch, base_horizon, btm, "center")
 
     ctr, ctr_horizon = util_get_pile_center(len(base_sketch), base_horizon)
-    if ctr != []:
+    if ctr != [[]]:
         piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
         return util_concat([base, piled_scripts], False, False)
 
@@ -603,7 +603,6 @@ def render(nodes: list, debug: bool) -> list:
                 arrow = ""
                 if i == horizon:
                     arrow = "<--"
-                print(i, sketch[i], arrow)
                 print(i, "".join(sketch[i]), arrow)
 
     if len(canvas) == 0:
