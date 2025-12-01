@@ -1,5 +1,6 @@
 # bg = "░"
 bg = " "
+# fraction = " – "
 fraction = "╶─╴"
 simple_symbols = """`!@#%*( )+-=[]|;:'",.<>/?"""
 
