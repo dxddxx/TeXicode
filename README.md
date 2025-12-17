@@ -82,7 +82,9 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
     - or just do list of vert horizons (amps), linebreak concats, and \begin splits the lines at the ampersands to insert new paddings before stacking the lines together
     - better align, multi amp, works
     - vectors and matrices
-- x button in web input field
+- Better web input field
+    - x button
+    - code mirror
 - comments with %
 - displaystyle
 - better error, consistent with LaTeX
