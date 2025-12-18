@@ -86,6 +86,7 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
     - x button
     - code mirror
 - comments with %
+- macro expansion
 - displaystyle
 - better error, consistent with LaTeX
 - update screenshot
