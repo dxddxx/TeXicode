@@ -608,4 +608,4 @@ def render(nodes: list, debug: bool) -> list:
     if len(canvas) == 0:
         return [[]]
 
-    return canvas[0][0]  # Now returns list[list[str]]
+    return canvas[0][0]
