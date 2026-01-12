@@ -17,7 +17,7 @@ def util_revert_font(char: str) -> str:
 
 
 def util_font(font_val: str, children: list) -> tuple:
-    sketch, horizon = children[0]
+    sketch, horizon, _ = children[0]
     new_sketch = []
     for row in sketch:
         new_row = []
@@ -32,7 +32,7 @@ def util_font(font_val: str, children: list) -> tuple:
                 alpha_id = ord(char) - ord('a') + 26
             new_row.append(arts.font[font_val][alpha_id])
         new_sketch.append(new_row)
-    return new_sketch, horizon
+    return new_sketch, horizon, -1
 
 
 def util_unshrink(small_char: str) -> str:
@@ -44,33 +44,36 @@ def util_unshrink(small_char: str) -> str:
 
 
 def util_concat(children: list, concat_line: bool, align_amp: bool) -> tuple:
+    if not children:
+        return [[]], 0, -1
+
     concated_sketch = []
     maxh_sky = 0
     maxh_ocn = 0
     contain_amp = False
+    concated_amp = -1
 
-    for sketch, horizon in children:
-        if horizon == -1:
-            contain_amp = True
+    for sketch, horizon, amp in children:
+        # if horizon == -1:
+        if amp >= 0:
             if not align_amp:
-                raise ValueError(f"Unexpected {sketch}")
+                raise ValueError(f"Unexpected & at amp = {amp}")
+            contain_amp = True
             continue
         h_sky = horizon
         h_ocn = len(sketch) - h_sky - 1
-        if h_sky > maxh_sky:
-            maxh_sky = h_sky
-        if h_ocn > maxh_ocn:
-            maxh_ocn = h_ocn
+        maxh_sky = max(maxh_sky, h_sky)
+        maxh_ocn = max(maxh_ocn, h_ocn)
 
     concated_horizon = maxh_sky
-    for i in range(maxh_sky + 1 + maxh_ocn):
+    for _ in range(maxh_sky + 1 + maxh_ocn):
         concated_sketch.append([])
 
-    for sketch, horizon in children:
-        if horizon == -1:
-            if not align_amp:
-                raise ValueError(f"Unexpected {sketch}")
-            concated_horizon = len(concated_sketch[0])
+    for sketch, horizon, amp in children:
+        # if horizon == -1:
+        if amp >= 0:
+            # concated_horizon = len(concated_sketch[0])
+            concated_amp = len(concated_sketch[0])
             continue
 
         h_sky = horizon
@@ -87,7 +90,7 @@ def util_concat(children: list, concat_line: bool, align_amp: bool) -> tuple:
 
     if concat_line and not contain_amp:
         concated_horizon = len(concated_sketch[0])
-    return concated_sketch, concated_horizon
+    return concated_sketch, concated_horizon, concated_amp
 
 
 def util_vert_pile(top, ctr, ctr_horizon, btm, align) -> tuple:
@@ -129,14 +132,14 @@ def util_vert_pile(top, ctr, ctr_horizon, btm, align) -> tuple:
     if piled_sketch == []:
         piled_sketch = [[]]
 
-    return piled_sketch, piled_horizon
+    return piled_sketch, piled_horizon, -1
 
 
 def util_script(children: list, script_type_id: int) -> tuple:
-    sketch, horizon = children[0]
+    sketch, _, _ = children[0]
     shrunk = util_shrink(sketch, script_type_id, False, False)
     if shrunk != []:
-        return shrunk, 0
+        return shrunk, 0, -1
 
     smart_shrunk = util_shrink(sketch, 1 - script_type_id, True, False)
     if smart_shrunk != []:
@@ -194,24 +197,24 @@ def util_shrink(sketch: list, script_type_id: int,
 def util_get_pile_center(base_height, base_horizon) -> tuple:
     if base_height == 2:
         if base_horizon == 0:
-            return [[]], 0
+            return [[]], 0, -1
         if base_horizon == 1:
-            return [[]], 1
+            return [[]], 1, -1
 
     if base_height == 1:
-        return [[]], 0
+        return [[]], 0, -1
 
     pile_center_sketch = []
     for _ in range(base_height - 2):
         pile_center_sketch.append([arts.bg])
 
     pile_center_horizon = base_horizon - 1
-    return pile_center_sketch, pile_center_horizon
+    return pile_center_sketch, pile_center_horizon, -1
 
 
 def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
     if delim_type == ".":
-        return [[]], 0
+        return [[]], 0, -1
 
     art_col = arts.delimiter["sgl"].find(delim_type[0])
     if art_col == -1:
@@ -223,7 +226,7 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
         delim_art[pos] = art[art_col]
 
     if height == 1:
-        return [delim_type], 0
+        return [delim_type], 0, -1
 
     if height == 2 and delim_type in ["{", "}"]:
         height = 3
@@ -244,32 +247,29 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
     sketch[0] = [delim_art["top"]]
     sketch[-1] = [delim_art["btm"]]
 
-    return sketch, horizon
+    return sketch, horizon, -1
 
 
 def util_add_ampersand_padding(children: list) -> tuple:
+    max_amp = 0
+    for sketch, horizon, amp in children:
+        max_amp = max(max_amp, amp)
+
     padded_children = []
-    max_amp_pos = 0
-
-    for sketch, amp_pos in children:
-        if amp_pos > max_amp_pos:
-            max_amp_pos = amp_pos
-
-    for sketch, amp_pos in children:
-        padded_sketch = []
-        pad_len = max_amp_pos - amp_pos
+    for sketch, horizon, amp in children:
+        pad_len = max_amp - amp
         padding = [arts.bg] * pad_len
 
+        padded_sketch = []
         for row in sketch:
             padded_sketch.append(padding + row)
-
-        padded_children.append((padded_sketch, amp_pos))
+        padded_children.append((padded_sketch, horizon, amp))
 
     return padded_children
 
 
 def util_vert_concat(children: list, sep: list, align: str) -> tuple:
-    if children[0][1] != -2:
+    if children[0][2] != -1:
         children = util_add_ampersand_padding(children)
 
     sketch = children.pop(0)[0]
@@ -278,9 +278,9 @@ def util_vert_concat(children: list, sep: list, align: str) -> tuple:
     for child in children:
         top = sketch
         btm = child[0]
-        sketch, horizon = util_vert_pile(top, sep, 0, btm, align)
+        sketch, horizon, _ = util_vert_pile(top, sep, 0, btm, align)
 
-    return sketch, horizon
+    return sketch, horizon, -1
 
 # Rendering Functions
 
@@ -290,7 +290,7 @@ def render_font(token: str, children: list) -> tuple:
 
 
 def render_text_info(token: tuple, children: list) -> tuple:
-    return [[token[1]]], 0
+    return [[token[1]]], 0, -1
 
 
 def render_text(token: str, children: list) -> tuple:
@@ -300,29 +300,33 @@ def render_text(token: str, children: list) -> tuple:
 def render_leaf(token: tuple, children: list) -> tuple:
     token_type = token[0]
     token_val = token[1]
+    sketch = [[token_val]]
     horizon = 0
+    amp = -1
 
     if token_type == "numb":
-        return [[token_val]], horizon
+        return sketch, horizon, amp
 
     elif token_type == "symb":
         if token_val == "&":
-            return [["&"]], -1
-        if token_val in arts.simple_symbols:
-            return [[token_val]], horizon
+            amp = 0
+        # if token_val in arts.simple_symbols:
+        #     sketch = [[token_val]]
         elif token_val in arts.special_symbols.keys():
-            return arts.special_symbols[token_val], horizon
+            sketch = arts.special_symbols[token_val]
+        return sketch, horizon, amp
 
     elif token_type == "alph":
-        return util_font("mathnormal", [([[token_val]], 0)])
+        return util_font("mathnormal", [(sketch, 0, -1)])
 
     elif token_type == "cmnd":
         if token_val in arts.multi_line_leaf_commands.keys():
-            return arts.multi_line_leaf_commands[token_val]
+            sketch, horizon, amp = arts.multi_line_leaf_commands[token_val]
         elif token_val in symbols_art.symbols.keys():
-            return [symbols_art.symbols[token_val]], horizon
+            sketch = [symbols_art.symbols[token_val]]
         else:
-            return [["?"]], 0
+            sketch = [["?"]]
+        return sketch, horizon, amp
 
 
 def render_concat(children: list) -> tuple:
@@ -341,17 +345,18 @@ def render_top_script(children: list) -> tuple:
     shrunk = util_shrink(children[0][0], 1, True, False)
     if shrunk == []:
         return children[0]
-    return shrunk, 0
+    return shrunk, 0, -1
 
 
 def render_bottom_script(children: list) -> tuple:
     shrunk = util_shrink(children[0][0], 0, True, False)
     if shrunk == []:
         return children[0]
-    return shrunk, 0
+    return shrunk, 0, -1
 
 
-def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
+def render_apply_scripts(base: list, scripts: list) -> tuple:
+    base_sketch, base_horizon, _ = base
     sorted_scripts = [[[]], [[]]]
     base_position = "left"
 
@@ -367,20 +372,20 @@ def render_apply_scripts(base_sketch, base_horizon, scripts: list) -> tuple:
         sorted_scripts[script_position] = script_sketch
 
     top, btm = sorted_scripts
-    base = (base_sketch, base_horizon)
+    # base = (base_sketch, base_horizon)
 
     if base_position == "center":
         return util_vert_pile(top, base_sketch, base_horizon, btm, "center")
 
-    ctr, ctr_horizon = util_get_pile_center(len(base_sketch), base_horizon)
+    ctr, ctr_horizon, _ = util_get_pile_center(len(base_sketch), base_horizon)
     if ctr != [[]]:
         piled_scripts = util_vert_pile(top, ctr, ctr_horizon, btm, "left")
         return util_concat([base, piled_scripts], False, False)
 
     if top == [[]]:
-        return util_concat([base, (btm, 0)], False, False)
+        return util_concat([base, (btm, 0, -1)], False, False)
     if btm == [[]]:
-        return util_concat([base, (top, len(top)-1)], False, False)
+        return util_concat([base, (top, len(top)-1, -1)], False, False)
 
     if len(top) > 1:
         top.pop()
@@ -411,8 +416,8 @@ def render_big_delimiter(token: tuple, children: list) -> tuple:
 
 def render_open_delimiter(children: list) -> tuple:
     inside = util_concat(children[1:-1], False, False)
-    left_delim_type = children[0][0][0]
-    right_delim_type = children[-1][0][0]
+    left_delim_type = children[0][0][0][0]
+    right_delim_type = children[-1][0][0][0]
     height = len(inside[0])
     horizon = inside[1]
     left = util_delimiter(left_delim_type, height, horizon)
@@ -428,7 +433,7 @@ def render_binomial(children: list) -> tuple:
     n, r = children[0][0], children[1][0]
     sep_space = [arts.bg] * max(len(n[0]), len(r[0]))
     piled = util_vert_pile(n, [sep_space], 0, r, "center")
-    return render_open_delimiter([(["("], 0), piled, ([")"], 0)])
+    return render_open_delimiter([([["("]], 0, -1), piled, ([[")"]], 0, -1)])
 
 
 def render_fraction(children: list) -> tuple:
@@ -451,19 +456,19 @@ def render_accents(token: tuple, children: list) -> tuple:
     # finally fixed ugly ass combining char lets goooo
     first_row = [first_char] + sketch[0][1:]
     sketch = [first_row] + sketch[1:]
-    return sketch, children[0][1]
+    return sketch, children[0][1], children[0][2]
 
 
 def util_onechar_square_root(children: list) -> tuple:
     # thanks to u/Iron_Pencil for the idea
-    radicand_sketch, radicand_horizon = children[-1]
+    radicand_sketch, radicand_horizon, _ = children[-1]
     surd_art = symbols_art.symbols["surd"]
 
     if len(radicand_sketch[0]) == 1:
         new_radi_row = surd_art + [radicand_sketch[0][0] + "\u0305"]
     if len(radicand_sketch[0]) == 0:
         new_radi_row = surd_art
-    new_radi = ([new_radi_row], radicand_horizon)
+    new_radi = ([new_radi_row], radicand_horizon, -1)
 
     if len(children) <= 1:
         return new_radi
@@ -473,8 +478,8 @@ def util_onechar_square_root(children: list) -> tuple:
 
 
 def util_multichar_square_root(children: list) -> tuple:
-    degree_sketch, degree_horizon = children[0]
-    radicand_sketch, radicand_horizon = children[-1]
+    degree_sketch, _, _ = children[0]
+    radicand_sketch, radicand_horizon, _ = children[-1]
 
     art = arts.square_root
 
@@ -488,7 +493,7 @@ def util_multichar_square_root(children: list) -> tuple:
     sqrt_sketch[-1] = art["btm_angle"] + sqrt_sketch[-1][2:]
 
     if len(children) == 1 or len(degree_sketch) > 1:
-        return sqrt_sketch, radicand_horizon + 1
+        return sqrt_sketch, radicand_horizon + 1, -1
 
     shrinked_degree = util_shrink(degree_sketch, 1, False, False)
     if shrinked_degree == []:
@@ -506,12 +511,12 @@ def util_multichar_square_root(children: list) -> tuple:
             continue
         sqrt_sketch[i] = left_pad + sqrt_sketch[i]
 
-    return sqrt_sketch, radicand_horizon + 1
+    return sqrt_sketch, radicand_horizon + 1, -1
 
 
 def render_square_root(children: list) -> tuple:
-    degree_sketch, degree_horizon = children[0]
-    radicand_sketch, radicand_horizon = children[-1]
+    # _, _, _ = children[0]
+    radicand_sketch, _, _ = children[-1]
 
     # if len(radicand_sketch) == 1:
     # someone said parenthesis is uncleaer, agreed.
@@ -526,8 +531,9 @@ def render_concat_line_align_amp(children: list) -> tuple:
 
 
 def render_concat_line_no_align_amp(children: list) -> tuple:
-    line_sketch = util_concat(children, True, False)[0]
-    return line_sketch, -2
+    # line_sketch, line_horizon, _ = util_concat(children, True, False)[0]
+    line_sketch, line_horizon, _ = util_concat(children, True, False)
+    return line_sketch, line_horizon, -1
 
 
 def render_begin(children: list):
@@ -590,20 +596,23 @@ def render(nodes: list, debug: bool) -> list:
         for j in scripts_ids:
             scripts.append((nodes[j][0], canvas[j][0]))
 
-        sketch, horizon = render_node(node_type, node_token, children)
+        sketch, horizon, amp = render_node(node_type, node_token, children)
+        child = (sketch, horizon, amp)
 
         if scripts:
-            sketch, horizon = render_apply_scripts(sketch, horizon, scripts)
+            child = render_apply_scripts(child, scripts)
 
-        canvas[i] = (sketch, horizon)
+        canvas[i] = child
 
         if debug:
-            print(f"{node_type}, horizon at {horizon}")
+            print(f"{node_type}, horizon at {horizon}, amp at {amp}")
             for i in range(len(sketch)):
                 arrow = ""
                 if i == horizon:
                     arrow = "<--"
                 print(i, "".join(sketch[i]), arrow)
+            if amp != -1:
+                print(" " * amp + "^ amp")
 
     if len(canvas) == 0:
         return [[]]
