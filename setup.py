@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name='TeXicode',
-    version='1.0.0',
+    version='1.0.1',
     py_modules=[
         'main',
         'lexer',
