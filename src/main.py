@@ -39,7 +39,7 @@ def main():
                               help='input Markdown file')
     input_parser.add_argument('-c', '--color',
                               action='store_true',
-                              help='enable color')
+                              help='enable color (black on white)')
     input_parser.add_argument('latex_string',
                               nargs='?',
                               help='raw TeX string (if not using -f)')

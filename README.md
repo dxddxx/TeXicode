@@ -30,12 +30,15 @@ pipx install TeXicode
 ### Basic Usage
 
 - `txc '\LaTeX'` to output Unicode art
-    - replace your own TeX equation inside quotes
-    - use single quotes
-    - if expression contains single quotes like `f'(x)`, replace with `f\'(x)`
+    - wrap TeX equation inside ***single*** quotes
+    - escape expression like `f'(x)`, with `f\'(x)`
     - `\[ \]`, `\( \)`, `$ $`, `$$ $$`, `\begin{...} \end{...}` is optional
-- Add `-c` at the end of the command to output in color (black on white)
-- Add `-n` at the end of the command to use normal fonts instead of cursive italic
+- options:
+    - `-h` show help message and exit
+    - `-d` enable debug
+    - `-f  <FILE>` input Markdown file, see more [below](#RenderingMathinMarkdown)
+    - `-c` enable color (black on white)
+    - `-n` use normal font instead of serif
 - Unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
 
 ### Rendering Math in Markdown
@@ -77,28 +80,25 @@ Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, us
 # TODO
 
 - toggled font/artstyle/glyph/legacy/asciimode
-- properly implement ampersand
-    - change parsing structure, make ampersand and linebreak into parents
-    - or just do list of vert horizons (amps), linebreak concats, and \begin splits the lines at the ampersands to insert new paddings before stacking the lines together
-    - better align, multi amp, works
-    - vectors and matrices
+- CJK
+- get vectors and matrices working
+    - better \begin parsing logic
 - Better web input field
     - x button
     - code mirror
-- comments with %
+- comment with %
 - macro expansion
-- displaystyle
+- displaystyle, small summation
 - better error, consistent with LaTeX
-- update screenshot
 - overline
     - like sqrt, use accent if single char, box drawing if not
 - math mode in \text
 - \bm \boldsymbol (easy)
-- square root with multi line degree
+- big square root with multi line degree
     - with concat and lower
 - delimiters
     - tall angle brackets
-    - `\middle`
+    - \middle
 - turn it into a vim plugin
 
 -->
