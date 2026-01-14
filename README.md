@@ -6,7 +6,6 @@ Post math in Reddit/Discord/Teams or anywhere that supports code blocks. No more
 
 <details>
 <summary>Quick tutorial for Reddit</summary>
-
 1. Visit the [TeXicode website](https://texicode.dx512.com), copy output to clipboard
 1. Make a new line in Reddit text field (check line spacing, if there is no line spacing above and below the cursor, it means Reddit does not see it as a separate line)
 ![Reddit1.png](images/Reddit1.png)
@@ -30,11 +29,11 @@ pipx install TeXicode
 
 - `txc '\LaTeX'` to output Unicode art
     - wrap TeX equation inside ***single*** quotes
-    - escape expression like `f'(x)`, with `f\'(x)`
+    - escape expression like `f'(x)` with `f\'(x)`
     - `\[ \]`, `\( \)`, `$ $`, `$$ $$`, `\begin{...} \end{...}` is optional
 - `-h` show help message and exit
 - `-d` enable debug
-- `-f  <FILE>` input Markdown file, see more [below](#Rendering-Math-in-Markdown)
+- `-f <FILE>` input Markdown file, see more [below](#Rendering-Math-in-Markdown)
 - `-c` enable color (black on white)
 - `-n` use normal font instead of serif
 - unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
