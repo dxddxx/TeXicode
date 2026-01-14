@@ -2,7 +2,7 @@ TeXicode, short for TeX to Unicode, a CLI that turns TeX math expressions into U
 
 # [Webapp](https://texicode.dx512.com)
 
-Posting math equations in Reddit is very annoying, you either have to post a screenshot of rendered LaTeX, or use Reddit's limited markdown features. Using TeXicode in Reddit code blocks makes posting math in Reddit much easier.
+Posting math equations in Reddit is very annoying, you either have to post screenshots, or use Reddit's limited markdown features. Using TeXicode in Reddit code blocks makes posting math in Reddit much easier.
 
 <details>
 <summary>Quick tutorial NOW</summary>
@@ -33,32 +33,31 @@ pipx install TeXicode
     - wrap TeX equation inside ***single*** quotes
     - escape expression like `f'(x)`, with `f\'(x)`
     - `\[ \]`, `\( \)`, `$ $`, `$$ $$`, `\begin{...} \end{...}` is optional
-- options:
-    - `-h` show help message and exit
-    - `-d` enable debug
-    - `-f  <FILE>` input Markdown file, see more [below](#Rendering-Math-in-Markdown)
-    - `-c` enable color (black on white)
-    - `-n` use normal font instead of serif
-- Unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
+- `-h` show help message and exit
+- `-d` enable debug
+- `-f  <FILE>` input Markdown file, see more [below](#Rendering-Math-in-Markdown)
+- `-c` enable color (black on white)
+- `-n` use normal font instead of serif
+- unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
 
 ### Rendering Math in Markdown
 
-- `txc -f filename.md` to replace latex expressions in markdown files with Unicode art in text blocks.
-- Pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate markdown previewing:
+- `txc -f filename.md` to replace TeX expressions in markdown files with Unicode art in text blocks.
+- pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate terminal markdown preview:
 
-Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, using the [JuliaMono](https://juliamono.netlify.app/) font.
+Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, in the [JuliaMono](https://juliamono.netlify.app/) font.
 
 ![Screenshot](images/example.png)
 
 # Features
 
-- Supports most LaTeX math commands
-- Uses Unicode
-    - Not limited to ASCII characters
+- supports most LaTeX math commands
+- uses Unicode
+    - not limited to ASCII characters
     - Unicode italic glyphs are used to differentiate functions from letters, similar to LaTeX
-- Works with any good terminal font
-    - Does not use any legacy glyphs
-    - Go to `src/arts.py`, comment/uncomment some parts if your font support legacy glyphs to get even better symbols
+- works with any good terminal font
+    - does not use any legacy glyphs
+    - go to `src/arts.py`, comment/uncomment some parts if your font support legacy glyphs to get even better symbols (actually you can't do that no more i removed the comments...)
 
 <!--
 
