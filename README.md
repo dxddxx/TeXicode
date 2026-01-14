@@ -36,7 +36,7 @@ pipx install TeXicode
 - options:
     - `-h` show help message and exit
     - `-d` enable debug
-    - `-f  <FILE>` input Markdown file, see more [below](#RenderingMathinMarkdown)
+    - `-f  <FILE>` input Markdown file, see more [below](#Rendering-Math-in-Markdown)
     - `-c` enable color (black on white)
     - `-n` use normal font instead of serif
 - Unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
