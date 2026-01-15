@@ -609,20 +609,24 @@ def render(nodes: list, debug: bool) -> list:
 
         if not debug:
             continue
-        print(f"{node_type}, horizon at {horizon}, amps at {amps}")
+        print(f"{node_type}")
         for i in range(len(sketch)):
             arrow = ""
             if i == horizon:
-                arrow = "<--"
+                arrow = f"<-- horizon at {horizon}"
             print(i, "".join(sketch[i]), arrow)
 
         if not amps:
             continue
+        print(len(str(len(sketch)))*" ", end=" ")
+        blank_arrow = " "
         for i in range(len(sketch[0])):
-            arrow = " "
+            arrow = blank_arrow
             if i in amps:
+                blank_arrow = "-"
                 arrow = "^"
             print(arrow, end="")
+        print(f"---- amps at {amps}")
 
     if len(canvas) == 0:
         return [[]]

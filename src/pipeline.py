@@ -17,6 +17,8 @@ def render_tex_rows(tex: str, debug: bool) -> list:
         rendered = render(parsed, debug)
     except ValueError as e:
         return [f"TeXicode: rendering error: {e}"]
+    if debug:
+        print("Rendering done\n")
 
     new_rendered = []
     for row in rendered:
