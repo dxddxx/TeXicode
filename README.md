@@ -6,6 +6,7 @@ Post math in Reddit/Discord/Teams or anywhere that supports code blocks. No more
 
 <details>
 <summary>Quick tutorial for Reddit</summary>
+    
 1. Visit the [TeXicode website](https://texicode.dx512.com), copy output to clipboard
 1. Make a new line in Reddit text field (check line spacing, if there is no line spacing above and below the cursor, it means Reddit does not see it as a separate line)
 ![Reddit1.png](images/Reddit1.png)
