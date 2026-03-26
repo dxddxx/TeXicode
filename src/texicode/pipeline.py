@@ -1,7 +1,7 @@
-import arts
-from lexer import lexer
-from parser import parse
-from renderer import render
+from . import arts
+from .lexer import lexer
+from .parser import parse
+from .renderer import render
 
 
 def render_tex_rows(tex: str, debug: bool) -> list:
