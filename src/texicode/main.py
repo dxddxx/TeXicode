@@ -5,7 +5,7 @@
 import sys
 import argparse
 import re
-from pipeline import render_tex
+from .pipeline import render_tex
 
 
 def process_markdown(content, debug, color, options):

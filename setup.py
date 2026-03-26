@@ -5,21 +5,12 @@ with open("README.md", "r") as f:
 
 setup(
     name='TeXicode',
-    version='1.0.1',
-    py_modules=[
-        'main',
-        'lexer',
-        'arts',
-        'parser',
-        'node_data',
-        'symbols_art',
-        'renderer',
-        'pipeline',
-    ],
+    version='1.0.2',
     package_dir={'': 'src'},
+    packages=find_packages(where='src')
     entry_points={
         'console_scripts': [
-            'txc=main:main',
+            'txc=texicode.main:main',
         ],
     },
     install_requires=[

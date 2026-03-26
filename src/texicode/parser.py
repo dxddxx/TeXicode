@@ -1,4 +1,4 @@
-import node_data
+import .node_data
 
 
 def get_node_type(token: tuple, parent_type: str) -> str:
