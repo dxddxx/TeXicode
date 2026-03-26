@@ -7,7 +7,7 @@ setup(
     name='TeXicode',
     version='1.0.2',
     package_dir={'': 'src'},
-    packages=find_packages(where='src')
+    packages=find_packages(where='src'),
     entry_points={
         'console_scripts': [
             'txc=texicode.main:main',
