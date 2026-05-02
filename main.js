@@ -78,13 +78,26 @@ render_tex_web = mod.render_tex_web
       mode: 'stex',
       theme: 'monochrome',
       keyMap: 'vim',
+      showCursorWhenSelecting: true,
       lineNumbers: false,
       viewportMargin: Infinity,
       extraKeys: { 'Ctrl-S': async () => { await updateOutput(); } }
     });
 
-    // Mirror font toggle and placeholder behavior to the CodeMirror editor
-    editor.setSize(null, 160);
+    // Make editor occupy full panel space
+    editor.setSize('100%', '100%');
+
+    // Ensure Vim is in insert mode by default after initialization
+    setTimeout(() => {
+      try {
+        if (editor.getOption('keyMap') === 'vim' && typeof CodeMirror.Vim !== 'undefined') {
+          CodeMirror.Vim.exitInsertMode(editor); // ensure clean state
+          CodeMirror.Vim.handleKey(editor, 'i');
+        }
+      } catch (e) {
+        // ignore if Vim API not ready synchronously
+      }
+    }, 50);
   }
 
   async function updatePlaceholder() {
@@ -145,7 +158,12 @@ render_tex_web = mod.render_tex_web
     const btn = document.getElementById(btnId);
     const txt = document.getElementById(txtId);
     btn.addEventListener("click", async () => {
-      await navigator.clipboard.writeText(txt.value);
+      // for copy-input, use CodeMirror content if available
+      let textToCopy = txt.value;
+      if (btnId === 'copy-input' && editor) {
+        textToCopy = editor.getValue();
+      }
+      await navigator.clipboard.writeText(textToCopy);
       const orig = btn.textContent;
       btn.textContent = "Copied!";
       setTimeout(() => (btn.textContent = "Copy"), 1500);

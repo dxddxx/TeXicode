@@ -11,24 +11,30 @@
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/lib/codemirror.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/mode/stex/stex.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/keymap/vim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/addon/display/placeholder.js"></script>
 
     <!-- Monochrome theme for LaTeX: black/white only -->
     <style>
-    .cm-s-monochrome.CodeMirror { background: #fff; color: #000; }
-    .cm-s-monochrome .cm-keyword { color: #000; font-weight: bold; }
-    .cm-s-monochrome .cm-atom { color: #000; }
-    .cm-s-monochrome .cm-number { color: #000; }
-    .cm-s-monochrome .cm-def { color: #000; }
-    .cm-s-monochrome .cm-variable { color: #000; }
-    .cm-s-monochrome .cm-variable-2 { color: #000; }
-    .cm-s-monochrome .cm-variable-3 { color: #000; }
-    .cm-s-monochrome .cm-property { color: #000; }
-    .cm-s-monochrome .cm-operator { color: #000; }
-    .cm-s-monochrome .cm-comment { color: #000; font-style: normal; opacity: 0.8; }
-    .cm-s-monochrome .cm-string { color: #000; }
-    .cm-s-monochrome .cm-meta { color: #000; }
-    .cm-s-monochrome .cm-error { color: #000; background: #fff; }
+    .cm-s-monochrome.CodeMirror { background: var(--textarea-bg); color: var(--textarea-fg); height: 100%; }
+    /* Use a few shades of light gray for token emphasis */
+    .cm-s-monochrome .cm-keyword { color: #e6e6e6; font-weight: 700; }
+    .cm-s-monochrome .cm-atom { color: #e0e0e0; }
+    .cm-s-monochrome .cm-number { color: #d8d8d8; }
+    .cm-s-monochrome .cm-def { color: #e0e0e0; font-weight: 600; }
+    .cm-s-monochrome .cm-variable { color: #d0d0d0; }
+    .cm-s-monochrome .cm-variable-2 { color: #c8c8c8; }
+    .cm-s-monochrome .cm-variable-3 { color: #c0c0c0; }
+    .cm-s-monochrome .cm-property { color: #d0d0d0; }
+    .cm-s-monochrome .cm-operator { color: #e6e6e6; }
+    .cm-s-monochrome .cm-comment { color: #bdbdbd; font-style: italic; opacity: 0.9; }
+    .cm-s-monochrome .cm-string { color: #d9d9d9; }
+    .cm-s-monochrome .cm-meta { color: #cfcfcf; }
+    .cm-s-monochrome .cm-error { color: #f8f8f8; background: transparent; }
     .CodeMirror { border-radius: 4px; }
+    /* Make editor occupy full panel space */
+    .panel .CodeMirror { height: 100% !important; }
+    /* hide original textarea when CodeMirror is active */
+    textarea#input { display: none; }
     </style>
     <link rel="stylesheet" href="style.css">
   </head>
