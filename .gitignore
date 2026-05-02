@@ -1,6 +1,31 @@
+# Ignore build artifacts
+dist/
+build/
+
+# Ignore Python bytecode
+src/__pycache__/
 __pycache__/
 *.pyc
-dist/
-.venv/
-build/
 *.egg-info/
+
+# pyinstaller files
+main.spec
+
+# swap files
+*.swp
+
+old/
+scrap_paper.txt
+test.sh
+src/oldmain.py
+src/arrays_and_dicts.py
+src/lgcy_arts.py
+
+# micropython
+micropython/
+
+# personal stuff
+nohup.out
+
+# apple
+.DS_Store
