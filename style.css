@@ -85,13 +85,16 @@ textarea {
   outline: none;
 }
 
+/* Ensure CodeMirror editor has square corners */
+.CodeMirror { border-radius: 0; }
+
 .floating-btn {
   position: absolute;
   top: 0.6em;
   right: 0.6em;
   padding: 0.4em 1em;
   border: none;
-  border-radius: 9999px;
+  border-radius: 0;
   background: var(--panel-bg);
   color: var(--fg);
   font-weight: bold;
