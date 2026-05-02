@@ -36,8 +36,8 @@ def main():
                               action='store_true',
                               help='enable debug')
     input_parser.add_argument('-f', '--file',
-                              nargs='?', const='-',
-                              help='input Markdown text. If used without an argument (eg. "cat file.md | txc -f"), reads markdown from stdin')
+                              action='store_true',
+                              help='treat input as Markdown: find math blocks and replace them (use piping or positional argument for input)')
     input_parser.add_argument('-c', '--color',
                               action='store_true',
                               help='enable color (black on white)')
@@ -53,20 +53,27 @@ def main():
     options = {}
     options["fonts"] = "normal" if args.normal_font else "serif"
 
-    if args.file is not None:
-        # args.file used to be a filename; now it represents markdown text.
-        # If the option is present without a value (const='-'), read stdin.
-        if args.file == '-':
-            content = sys.stdin.read()
-        else:
-            content = args.file
-        process_markdown(content, debug, color, options)
+    # Determine input source: prefer piped stdin when present, otherwise use positional arg
+    content = None
+    try:
+        stdin_has_data = not sys.stdin.isatty()
+    except Exception:
+        stdin_has_data = False
+
+    if stdin_has_data:
+        content = sys.stdin.read()
     elif args.latex_string:
-        tex_art = render_tex(args.latex_string, debug, color, "raw", options)
-        print(tex_art)
+        content = args.latex_string
     else:
-        print("Error: no input. provide TeX string or -f <markdown_file>")
+        print("Error: no input. provide TeX string as argument or pipe data into txc")
         sys.exit(1)
+
+    if args.file:
+        # treat input as markdown
+        process_markdown(content, debug, color, options)
+    else:
+        tex_art = render_tex(content, debug, color, "raw", options)
+        print(tex_art)
 
 
 if __name__ == "__main__":
