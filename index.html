@@ -1,13 +1,37 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TeXicode</title>
-  <!--<script src="https://cdn.jsdelivr.net/npm/pyodide@0.29.0/pyodide.min.js"></script>-->
-  <script src="./pyodide/pyodide.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeXicode</title>
+    <!--<script src="https://cdn.jsdelivr.net/npm/pyodide@0.29.0/pyodide.min.js"></script>-->
+    <script src="./pyodide/pyodide.js"></script>
+    <!-- CodeMirror (v5) for enhanced input -- loaded from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/lib/codemirror.css">
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/lib/codemirror.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/mode/stex/stex.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/keymap/vim.js"></script>
+
+    <!-- Monochrome theme for LaTeX: black/white only -->
+    <style>
+    .cm-s-monochrome.CodeMirror { background: #fff; color: #000; }
+    .cm-s-monochrome .cm-keyword { color: #000; font-weight: bold; }
+    .cm-s-monochrome .cm-atom { color: #000; }
+    .cm-s-monochrome .cm-number { color: #000; }
+    .cm-s-monochrome .cm-def { color: #000; }
+    .cm-s-monochrome .cm-variable { color: #000; }
+    .cm-s-monochrome .cm-variable-2 { color: #000; }
+    .cm-s-monochrome .cm-variable-3 { color: #000; }
+    .cm-s-monochrome .cm-property { color: #000; }
+    .cm-s-monochrome .cm-operator { color: #000; }
+    .cm-s-monochrome .cm-comment { color: #000; font-style: normal; opacity: 0.8; }
+    .cm-s-monochrome .cm-string { color: #000; }
+    .cm-s-monochrome .cm-meta { color: #000; }
+    .cm-s-monochrome .cm-error { color: #000; background: #fff; }
+    .CodeMirror { border-radius: 4px; }
+    </style>
+    <link rel="stylesheet" href="style.css">
+  </head>
 <body>
 
   <header>

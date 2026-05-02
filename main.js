@@ -1,4 +1,5 @@
 async function main() {
+  // Original textarea elements
   const input = document.getElementById("input");
   const output = document.getElementById("output");
   const fontToggle = document.getElementById("font-toggle");
@@ -70,6 +71,22 @@ render_tex_web = mod.render_tex_web
   output.value = "";
   let isNormalFont = false;
 
+  // Initialize CodeMirror on the input textarea with Vim keymap and monochrome theme
+  let editor;
+  if (typeof CodeMirror !== 'undefined') {
+    editor = CodeMirror.fromTextArea(input, {
+      mode: 'stex',
+      theme: 'monochrome',
+      keyMap: 'vim',
+      lineNumbers: false,
+      viewportMargin: Infinity,
+      extraKeys: { 'Ctrl-S': async () => { await updateOutput(); } }
+    });
+
+    // Mirror font toggle and placeholder behavior to the CodeMirror editor
+    editor.setSize(null, 160);
+  }
+
   async function updatePlaceholder() {
     const placeholder = await pyodide.runPythonAsync(
       `render_tex_web(${JSON.stringify(demoTex)}, ${isNormalFont ? "True" : "False"})`
@@ -89,21 +106,30 @@ render_tex_web = mod.render_tex_web
 
   // listen for input change
   let timeoutId;
-  input.addEventListener("input", () => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(updateOutput, 0);
-  });
+  // Use CodeMirror change event when available; fall back to textarea input
+  if (editor) {
+    editor.on('change', () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(updateOutput, 0);
+    });
+  } else {
+    input.addEventListener("input", () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(updateOutput, 0);
+    });
+  }
 
   async function updateOutput() {
     try {
       // const result = await pyodide.runPythonAsync(
       //   `render_tex_web(${JSON.stringify(input.value)})`
       // );
-      const texString = JSON.stringify(input.value);
+      const currentText = editor ? editor.getValue() : input.value;
+      const texString = JSON.stringify(currentText);
 
       const result = await pyodide.runPythonAsync(
         `render_tex_web(${texString}, ${isNormalFont ? "True" : "False"})`
-        );
+      );
 
       output.value = result ?? "";
     } catch (err) {
