@@ -36,7 +36,8 @@ def main():
                               action='store_true',
                               help='enable debug')
     input_parser.add_argument('-f', '--file',
-                              help='input Markdown file')
+                              nargs='?', const='-',
+                              help='input Markdown text. If used without an argument (eg. "cat file.md | txc -f"), reads markdown from stdin')
     input_parser.add_argument('-c', '--color',
                               action='store_true',
                               help='enable color (black on white)')
@@ -52,9 +53,13 @@ def main():
     options = {}
     options["fonts"] = "normal" if args.normal_font else "serif"
 
-    if args.file:
-        with open(args.file, 'r') as file:
-            content = file.read()
+    if args.file is not None:
+        # args.file used to be a filename; now it represents markdown text.
+        # If the option is present without a value (const='-'), read stdin.
+        if args.file == '-':
+            content = sys.stdin.read()
+        else:
+            content = args.file
         process_markdown(content, debug, color, options)
     elif args.latex_string:
         tex_art = render_tex(args.latex_string, debug, color, "raw", options)
