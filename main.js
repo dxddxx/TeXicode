@@ -76,7 +76,7 @@ render_tex_web = mod.render_tex_web
   if (typeof CodeMirror !== 'undefined') {
     editor = CodeMirror.fromTextArea(input, {
       mode: 'stex',
-      theme: 'monochrome',
+      theme: 'dracula',
       keyMap: 'vim',
       showCursorWhenSelecting: true,
       lineNumbers: false,
