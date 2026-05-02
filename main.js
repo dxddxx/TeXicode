@@ -12,23 +12,37 @@ async function main() {
 
   output.value = "Loading TeXicode...";
   const files = [
-    "arts.py", "lexer.py", "main.py",
-    "node_data.py", "parser.py", "pipeline.py",
-    "renderer.py", "symbols_art.py",
+    "texicode/__init__.py",
+    "texicode/arts.py",
+    "texicode/lexer.py",
+    "texicode/main.py",
+    "texicode/node_data.py",
+    "texicode/parser.py",
+    "texicode/pipeline.py",
+    "texicode/renderer.py",
+    "texicode/symbols_art.py",
   ];
+
+  // ensure package directory exists in Pyodide FS
+  try {
+    pyodide.FS.mkdir('texicode');
+  } catch (e) {
+    // ignore if already exists
+  }
 
   for (const f of files) {
     const resp = await fetch(`./src/${f}`);
     const code = await resp.text();
+    // write into the same path inside the virtual FS so package-relative imports work
     pyodide.FS.writeFile(f, code);
   }
 
   output.value = "Preparing TeXicode...";
   await pyodide.runPythonAsync(`
-import sys, runpy
+import sys, importlib
 sys.path.insert(0, "")
-mod = runpy.run_path("pipeline.py")
-render_tex_web = mod["render_tex_web"]
+mod = importlib.import_module("texicode.pipeline")
+render_tex_web = mod.render_tex_web
   `);
 
   input.disabled = false;
