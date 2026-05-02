@@ -37,6 +37,26 @@ async function main() {
     pyodide.FS.writeFile(f, code);
   }
 
+  // Ensure __init__.py is available to Python package import. Many static hosts
+  // occasionally omit directory index files; attempt to fetch the real file,
+  // otherwise write a small shim into the Pyodide FS so package-relative
+  // imports work.
+  try {
+    const respInit = await fetch('./src/texicode/__init__.py');
+    if (respInit.ok) {
+      const initCode = await respInit.text();
+      pyodide.FS.writeFile('texicode/__init__.py', initCode);
+      console.log('TeXicode: wrote __init__.py from server');
+    } else {
+      // fallback shim
+      pyodide.FS.writeFile('texicode/__init__.py', 'from .main import main\n');
+      console.warn('TeXicode: __init__.py missing on server — wrote shim fallback');
+    }
+  } catch (e) {
+    pyodide.FS.writeFile('texicode/__init__.py', 'from .main import main\n');
+    console.warn('TeXicode: error fetching __init__.py — wrote shim fallback', e);
+  }
+
   output.value = "Preparing TeXicode...";
   await pyodide.runPythonAsync(`
 import sys, importlib
