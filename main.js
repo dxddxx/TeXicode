@@ -38,24 +38,16 @@ async function main() {
     pyodide.FS.writeFile(f, code);
   }
 
-  // Ensure __init__.py is available to Python package import. Many static hosts
-  // occasionally omit directory index files; attempt to fetch the real file,
-  // otherwise write a small shim into the Pyodide FS so package-relative
-  // imports work.
   try {
     const respInit = await fetch('./src/texicode/__init__.py');
     if (respInit.ok) {
       const initCode = await respInit.text();
       pyodide.FS.writeFile('texicode/__init__.py', initCode);
-      console.log('TeXicode: wrote __init__.py from server');
     } else {
-      // fallback shim
       pyodide.FS.writeFile('texicode/__init__.py', 'from .main import main\n');
-      console.warn('TeXicode: __init__.py missing on server — wrote shim fallback');
     }
   } catch (e) {
     pyodide.FS.writeFile('texicode/__init__.py', 'from .main import main\n');
-    console.warn('TeXicode: error fetching __init__.py — wrote shim fallback', e);
   }
 
   output.value = "Preparing TeXicode...";
@@ -71,7 +63,6 @@ render_tex_web = mod.render_tex_web
   output.value = "";
   let isNormalFont = false;
 
-  // Initialize CodeMirror on the input textarea with Vim keymap and monochrome theme
   let editor;
   if (typeof CodeMirror !== 'undefined') {
     editor = CodeMirror.fromTextArea(input, {
@@ -84,19 +75,21 @@ render_tex_web = mod.render_tex_web
       extraKeys: { 'Ctrl-S': async () => { await updateOutput(); } }
     });
 
-    // Make editor occupy full panel space
     editor.setSize('100%', '100%');
+    // Ensure theme class is present and refresh the editor
+    try {
+      editor.getWrapperElement().classList.add('cm-s-dracula');
+      editor.setOption('theme', 'dracula');
+      editor.refresh();
+    } catch (e) {}
 
-    // Ensure Vim is in insert mode by default after initialization
+    // Enter insert mode by default
     setTimeout(() => {
       try {
         if (editor.getOption('keyMap') === 'vim' && typeof CodeMirror.Vim !== 'undefined') {
-          CodeMirror.Vim.exitInsertMode(editor); // ensure clean state
           CodeMirror.Vim.handleKey(editor, 'i');
         }
-      } catch (e) {
-        // ignore if Vim API not ready synchronously
-      }
+      } catch (e) {}
     }, 50);
   }
 
