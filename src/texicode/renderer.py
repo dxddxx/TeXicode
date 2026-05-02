@@ -1,6 +1,4 @@
-import node_data
-import arts
-import symbols_art
+from . import node_data, arts, symbols_art
 
 
 def util_revert_font(char: str) -> str:
