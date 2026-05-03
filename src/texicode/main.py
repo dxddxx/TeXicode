@@ -53,20 +53,22 @@ def main():
     options = {}
     options["fonts"] = "normal" if args.normal_font else "serif"
 
-    # Determine input source: prefer piped stdin when present, otherwise use positional arg
+    # Determine input source: prefer positional argument if provided; otherwise
+    # read piped stdin when present. This avoids accidentally treating stdin as
+    # having data in environments where isatty() can be unreliable.
     content = None
-    try:
-        stdin_has_data = not sys.stdin.isatty()
-    except Exception:
-        stdin_has_data = False
-
-    if stdin_has_data:
-        content = sys.stdin.read()
-    elif args.latex_string:
+    if args.latex_string:
         content = args.latex_string
     else:
-        print("Error: no input. provide TeX string as argument or pipe data into txc")
-        sys.exit(1)
+        try:
+            stdin_has_data = not sys.stdin.isatty()
+        except Exception:
+            stdin_has_data = False
+        if stdin_has_data:
+            content = sys.stdin.read()
+        else:
+            print("Error: no input. provide TeX string as argument or pipe data into txc")
+            sys.exit(1)
 
     if args.file:
         # treat input as markdown
