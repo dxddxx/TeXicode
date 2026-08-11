@@ -45,9 +45,9 @@ pipx install TeXicode
 
 - `txc -mf foo.md` to input a markdown file and replace math blocks with Unicode art.
 
-- pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate terminal markdown preview:
+- pipe into a markdown renderer like [mdflow](https://github.com/cjccjj/mdflow) for complete terminal markdown preview:
 
-Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, in the [JuliaMono](https://juliamono.netlify.app/) font.
+Here is [example.md](example.md) rendered with `txc -f example.md -c | mdflow`, in the [JuliaMono](https://juliamono.netlify.app/) font.
 
 ![Screenshot](images/example.png)
 
