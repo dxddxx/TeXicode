@@ -65,16 +65,12 @@ def main():
                 content = input_file.read()
         except OSError as error:
             input_parser.error(f"could not read {args.latex_string!r}: {error}")
-    elif args.latex_string:
+    elif args.latex_string is not None:
         content = args.latex_string
     else:
-        try:
-            stdin_has_data = not sys.stdin.isatty()
-        except Exception:
-            stdin_has_data = False
-        if stdin_has_data:
-            content = sys.stdin.read()
-        else:
+        # Read piped input until EOF.
+        content = sys.stdin.read()
+        if not content:
             input_parser.error(
                 "no input; provide a TeX string, use -f with a filename, "
                 "or pipe data into txc"

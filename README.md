@@ -32,16 +32,19 @@ pipx install TeXicode
     - wrap TeX equation inside ***single*** quotes
     - escape expression like `f'(x)` with `f\'(x)`
     - `\[ \]`, `\( \)`, `$ $`, `$$ $$`, `\begin{...} \end{...}` is optional
-- `-h` show help message and exit
-- `-d` enable debug
-- `-f <FILE>` input Markdown file, see more [below](#Rendering-Math-in-Markdown)
-- `-c` enable color (black on white)
-- `-n` use normal font instead of serif
+- options:                                                                  
+    - `-h`, `--help` show help message and exit                      
+    - `-d`, `--debug` enable debug                                         
+    - `-m`, `--markdown` treat input as Markdown: find and replace math blocks
+    - `-f`, `--file` treat input filename                                 
+    - `-c`, `--color` enable color (black on white)                        
+    - `-n`, `--normal-font` use normal font instead of serif                     
 - unsupported commands will be rendered as `?`, or raise an error. If you see these or other rendering flaws, please post an issue, most can be easily fixed.
 
 ### Rendering Math in Markdown
 
-- `txc -f filename.md` to replace TeX expressions in markdown files with Unicode art in text blocks.
+- `txc -mf foo.md` to input a markdown file and replace math blocks with Unicode art.
+
 - pipe into a markdown renderer like [glow](https://github.com/charmbracelet/glow) for ultimate terminal markdown preview:
 
 Here is [example.md](example.md) rendered with `txc -f example.md -c | glow`, in the [JuliaMono](https://juliamono.netlify.app/) font.
