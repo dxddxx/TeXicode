@@ -47,7 +47,7 @@ pipx install TeXicode
 
 - pipe into a markdown renderer like [mdflow](https://github.com/cjccjj/mdflow) for complete terminal markdown preview:
 
-Here is [example.md](example.md) rendered with `txc -f example.md -c | mdflow`, in the [JuliaMono](https://juliamono.netlify.app/) font.
+Here is [example.md](example.md) rendered with `txc -mfc example.md | mdflow`, in the [JuliaMono](https://juliamono.netlify.app/) font.
 
 ![Screenshot](images/example.png)
 
