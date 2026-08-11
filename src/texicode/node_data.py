@@ -73,6 +73,8 @@ type_dict = {
     ("cmnd", "mathcal"): "cmd_font", ("cmnd",   "mathfrak"): "cmd_font",
     ("cmnd",  "mathbb"): "cmd_font", ("cmnd",    "mathscr"): "cmd_font",
 
+    ("cmnd", "operatorname"): "cmd_font",  # issue #7
+
     ("cmnd", "text"): "cmd_text",
 
     ("cmnd", "substack"): "cmd_sbstk",

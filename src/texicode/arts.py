@@ -28,6 +28,7 @@ alphabets = {
 
 font_serif = {
     "mathrm":     alphabets["normal"],
+    "operatorname":     alphabets["normal"],  # issue #7
     "mathbf":     alphabets["serif_bld"],
     "mathsf":     alphabets["sans"],
     "mathtt":     alphabets["mono"],
