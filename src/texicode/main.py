@@ -35,15 +35,18 @@ def main():
     input_parser.add_argument('-d', '--debug',
                               action='store_true',
                               help='enable debug')
+    input_parser.add_argument('-m', '--markdown',
+                              action='store_true',
+                              help='treat input as Markdown: find and replace math blocks')
     input_parser.add_argument('-f', '--file',
                               action='store_true',
-                              help='treat input as Markdown: find math blocks and replace them (use piping or positional argument for input)')
+                              help='treat input filename')
     input_parser.add_argument('-c', '--color',
                               action='store_true',
                               help='enable color (black on white)')
     input_parser.add_argument('latex_string',
                               nargs='?',
-                              help='raw TeX string (if not using -f)')
+                              help='input text string, or filename when using -f')
     input_parser.add_argument('-n', '--normal-font',
                               action='store_true',
                               help='use normal font instead of serif')
@@ -53,11 +56,16 @@ def main():
     options = {}
     options["fonts"] = "normal" if args.normal_font else "serif"
 
-    # Determine input source: prefer positional argument if provided; otherwise
-    # read piped stdin when present. This avoids accidentally treating stdin as
-    # having data in environments where isatty() can be unreliable.
     content = None
-    if args.latex_string:
+    if args.file:
+        if not args.latex_string:
+            input_parser.error("-f/--file requires a filename")
+        try:
+            with open(args.latex_string, "r", encoding="utf-8") as input_file:
+                content = input_file.read()
+        except OSError as error:
+            input_parser.error(f"could not read {args.latex_string!r}: {error}")
+    elif args.latex_string:
         content = args.latex_string
     else:
         try:
@@ -67,11 +75,12 @@ def main():
         if stdin_has_data:
             content = sys.stdin.read()
         else:
-            print("Error: no input. provide TeX string as argument or pipe data into txc")
-            sys.exit(1)
+            input_parser.error(
+                "no input; provide a TeX string, use -f with a filename, "
+                "or pipe data into txc"
+            )
 
-    if args.file:
-        # treat input as markdown
+    if args.markdown:
         process_markdown(content, debug, color, options)
     else:
         tex_art = render_tex(content, debug, color, "raw", options)
