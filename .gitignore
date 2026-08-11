@@ -15,14 +15,7 @@ main.spec
 *.swp
 
 old/
-scrap_paper.txt
 test.sh
-src/oldmain.py
-src/arrays_and_dicts.py
-src/lgcy_arts.py
-
-# micropython
-micropython/
 
 # personal stuff
 nohup.out
