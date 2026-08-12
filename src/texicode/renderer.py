@@ -536,46 +536,46 @@ def render_concat_line_no_align_amp(children: list) -> tuple:
     return line_sketch, line_horizon, []
 
 
-def util_env_rows(child_nodes: list, children: list,
-                  nodes: list, canvas: list) -> list:
-    """Split an environment's children into rows.
+def util_env_rows(child_nodes: list, children: list) -> list:
+    """Split an environment's flat children into rows.
 
-    The leading children form the first row; each cmd_lbrk child owns
-    the next row. Returns a list of rows, where every row is a list of
-    (child_node, canvas) pairs. & leaves stay in the rows so cells can
-    be split where they appear.
+    Environment children are flat: & and \\\\ leaves sit directly under
+    the environment and mark cell boundaries. row_sep children mark the
+    end of a row. Returns a list of rows, where every row is a list of
+    (child_node, canvas) pairs including & leaves, so cells can be
+    split where they appear.
     """
     rows = []
     current = []
     for child_node, child_canvas in zip(child_nodes, children):
-        if child_node[0] == "cmd_lbrk":
+        if child_node[0] == "row_sep":
             rows.append(current)
-            current = [(nodes[cid], canvas[cid]) for cid in child_node[2]]
+            current = []
         else:
             current.append((child_node, child_canvas))
     rows.append(current)
     return rows
 
 
-def render_begin(token: tuple, children: list, child_nodes: list,
-                 nodes: list, canvas: list) -> tuple:
+def render_empty(children: list) -> tuple:
+    return [[]], 0, []
+
+
+def render_begin(token: tuple, children: list, child_nodes: list) -> tuple:
     """Render an environment by stacking its rows.
 
     Returns amps=-1 so the root does not re-pad the assembled block.
     """
     env = token[1]
-    rows = util_env_rows(child_nodes, children, nodes, canvas)
+    rows = util_env_rows(child_nodes, children)
     row_sketches = []
-    for i, row in enumerate(rows):
+    for row in rows:
         row_canvases = [child_canvas for _, child_canvas in row]
-        if i == 0:
-            if env in ("align", "align*"):
-                row_sketches.append(util_concat(row_canvases, True, True))
-            else:
-                row_sketches.append(
-                    render_concat_line_no_align_amp(row_canvases))
-        else:
+        if env in ("align", "align*"):
             row_sketches.append(util_concat(row_canvases, True, True))
+        else:
+            row_sketches.append(
+                render_concat_line_no_align_amp(row_canvases))
 
     sketch, horizon, _ = util_vert_concat(row_sketches, [[arts.bg]], "left")
     return sketch, horizon, -1
@@ -594,8 +594,7 @@ def render_end(token: tuple, children: list) -> tuple:
 
 
 def render_node(node_type: str, token: tuple, children: list,
-                child_nodes: list = None, nodes: list = None,
-                canvas: list = None) -> tuple:
+                child_nodes: list = None) -> tuple:
     if node_type not in node_data.type_info_dict.keys():
         raise ValueError(f"Undefined control sequence {token[1]}")
 
@@ -608,7 +607,7 @@ def render_node(node_type: str, token: tuple, children: list,
         raise ValueError(f"Unknown Function {function_name} (internal error)")
 
     if function_name == "render_begin":
-        return render_begin(token, children, child_nodes, nodes, canvas)
+        return render_begin(token, children, child_nodes)
     if require_token:
         return rendering_function(token, children)
     return rendering_function(children)
@@ -640,7 +639,7 @@ def render(nodes: list, debug: bool) -> list:
             scripts.append((nodes[j][0], canvas[j][0]))
 
         sketch, horizon, amps = render_node(
-            node_type, node_token, children, child_nodes, nodes, canvas)
+            node_type, node_token, children, child_nodes)
         child = (sketch, horizon, amps)
 
         if scripts:

@@ -19,6 +19,9 @@ parent_dependent_type_dict = {
     ("opn_ddlr",  ("symb", "$$")): "cls_ddlr",
     ("cmd_lbrk",  ("symb", "$")):  "cls_dllr",
     ("cmd_lbrk",  ("symb", "$$")): "cls_ddlr",
+
+    ("cmd_bgin",  ("cmnd", "\\")): "row_sep",
+    ("cmd_bgin",  ("cmnd", "newline")): "row_sep",
 }
 
 type_dependent_type_dict = {}
@@ -247,7 +250,7 @@ type_info_dict = {
     "cmd_end":   ((False, []),
                   (0,),
                   (True, False, ["cmd_bgin", "cmd_lbrk",]),
-                  (False, True, True),
+                  (False, True, False),
                   (True, "render_end")),
     "cls_stkln": ((True, []),
                   (0,),
@@ -314,6 +317,11 @@ type_info_dict = {
                   (True, True, []),
                   (True, False, False),
                   (False, "render_substack")),
+    "row_sep":   ((True, []),
+                  (0,),
+                  (True, True, []),
+                  (True, False, False),
+                  (False, "render_empty")),
     "cmd_lbrk":  ((True, ["cmd_lbrk", "cls_line", "cls_brak", "cls_pren",
                           "cls_dllr", "cls_ddlr", "cmd_end",]),
                   (1,),
