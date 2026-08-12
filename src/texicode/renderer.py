@@ -226,9 +226,7 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
         return [delim_type], 0, []
 
     if height == 2 and delim_type in ["{", "}"]:
-        height = 3
-        if horizon == 0:
-            horizon = 1
+        return [delim_art["top"], delim_art["btm"]], horizon, []
 
     center = horizon
     if center == 0:
@@ -536,24 +534,29 @@ def render_concat_line_no_align_amp(children: list) -> tuple:
     return line_sketch, line_horizon, []
 
 
-def util_env_rows(child_nodes: list, children: list) -> list:
-    """Split an environment's flat children into rows.
+def util_env_cells(child_nodes: list, children: list) -> list:
+    """Split an environment's flat children into rows of cells.
 
-    Environment children are flat: & and \\\\ leaves sit directly under
-    the environment and mark cell boundaries. row_sep children mark the
-    end of a row. Returns a list of rows, where every row is a list of
-    (child_node, canvas) pairs including & leaves, so cells can be
-    split where they appear.
+    & leaves and row_sep children are pure separators: they are not
+    included in any cell. Returns a list of rows, each row being a list
+    of cells, each cell being a list of (child_node, canvas) pairs.
     """
     rows = []
-    current = []
+    row = []
+    cell = []
     for child_node, child_canvas in zip(child_nodes, children):
         if child_node[0] == "row_sep":
-            rows.append(current)
-            current = []
+            row.append(cell)
+            cell = []
+            rows.append(row)
+            row = []
+        elif child_node[1] == ("symb", "&"):
+            row.append(cell)
+            cell = []
         else:
-            current.append((child_node, child_canvas))
-    rows.append(current)
+            cell.append((child_node, child_canvas))
+    row.append(cell)
+    rows.append(row)
     return rows
 
 
@@ -561,23 +564,154 @@ def render_empty(children: list) -> tuple:
     return [[]], 0, []
 
 
-def render_begin(token: tuple, children: list, child_nodes: list) -> tuple:
-    """Render an environment by stacking its rows.
+def util_pad_cell(cell: tuple, width: int, align: str) -> tuple:
+    sketch, horizon, amps = cell
+    pad = width - len(sketch[0])
+    if pad <= 0:
+        return cell
+    if align == "l":
+        left, right = 0, pad
+    elif align == "r":
+        left, right = pad, 0
+    else:
+        left = pad // 2
+        right = pad - left
+    padded = [[arts.bg] * left + row + [arts.bg] * right
+              for row in sketch]
+    return padded, horizon, amps
+
+
+def util_grid(rows_of_cells: list, aligns: list, gap: int,
+              blank_rows: bool, pad_left: bool) -> tuple:
+    """Assemble rows of cells into a padded grid.
+
+    Cells in a row are joined at their horizon; cells in a column are
+    padded to the column width according to their alignment (l/r/c).
+    """
+    cell_rows = []
+    for row in rows_of_cells:
+        cell_rows.append(
+            [util_concat([cv for _, cv in cell], False, False)
+             for cell in row])
+
+    num_cols = max((len(row) for row in cell_rows), default=0)
+    if num_cols == 0:
+        return [[]], 0
+
+    aligns = (aligns + ["c"] * num_cols)[:num_cols]
+    col_widths = []
+    for c in range(num_cols):
+        col_widths.append(max(
+            (len(row[c][0][0]) for row in cell_rows if c < len(row)),
+            default=0))
+
+    row_sketches = []
+    for row in cell_rows:
+        padded = [util_pad_cell(cell, col_widths[c], aligns[c])
+                  for c, cell in enumerate(row)]
+        if gap:
+            sep = ([[arts.bg] * gap], 0, [])
+            concat_children = []
+            for i, cell in enumerate(padded):
+                if i:
+                    concat_children.append(sep)
+                concat_children.append(cell)
+        else:
+            concat_children = padded
+        row_sketches.append(util_concat(concat_children, False, False))
+
+    sketch = None
+    horizon = 0
+    for row_sketch in row_sketches:
+        if pad_left:
+            row_sketch = ([[arts.bg] + row for row in row_sketch[0]],
+                          row_sketch[1], row_sketch[2])
+        if sketch is None:
+            sketch, horizon = row_sketch[0], row_sketch[1]
+            continue
+        sep = [[arts.bg]] if blank_rows else [[]]
+        sketch, horizon, _ = util_vert_pile(
+            sketch, sep, 0, row_sketch[0], "left")
+
+    if not blank_rows:
+        horizon = len(sketch) // 2
+    return sketch, horizon
+
+
+AMP_ENVS = {
+    "align", "align*", "aligned", "split",
+    "matrix", "pmatrix", "bmatrix", "Bmatrix",
+    "vmatrix", "Vmatrix", "smallmatrix",
+    "cases", "array",
+}
+
+
+def util_env_layout(env: str, num_cols: int) -> tuple:
+    """Per-environment grid layout: (aligns, gap, blank_rows, pad_left,
+    left_delim, right_delim)."""
+    if env in ("align", "align*", "aligned", "split"):
+        aligns = (["r", "l"] * ((num_cols + 1) // 2))[:num_cols]
+        return aligns, 0, True, False, None, None
+    if env == "gathered":
+        return ["c"] * num_cols, 0, False, False, None, None
+    if env in ("matrix", "pmatrix", "bmatrix", "Bmatrix",
+               "vmatrix", "Vmatrix", "smallmatrix"):
+        delims = {"pmatrix": ("(", ")"), "bmatrix": ("[", "]"),
+                  "Bmatrix": ("{", "}"), "vmatrix": ("|", "|"),
+                  "Vmatrix": ("‖", "‖")}
+        left_delim, right_delim = delims.get(env, (None, None))
+        return ["c"] * num_cols, 1, False, False, left_delim, right_delim
+    if env == "cases":
+        return ["l"] * num_cols, 2, False, False, "{", None
+    return ["c"] * num_cols, 0, True, True, None, None
+
+
+def util_array_spec(rows: list, nodes: list) -> tuple:
+    """Read the {spec} argument of \\begin{array} from the first cell."""
+    if not rows or not rows[0] or not rows[0][0] or \
+            rows[0][0][0][0][0] != "opn_brac":
+        raise ValueError("array requires a column spec")
+    first_cell = rows[0][0]
+    spec_node = first_cell[0][0]
+    spec = "".join(nodes[cid][1][1] for cid in spec_node[2])
+    aligns = []
+    for char in spec:
+        if char in "clr":
+            aligns.append(char)
+        else:
+            raise ValueError(f"Unsupported column spec {spec!r}")
+    rest_cell = first_cell[1:]
+    first_row = ([rest_cell] if rest_cell else []) + rows[0][1:]
+    return aligns, [first_row] + rows[1:]
+
+
+def render_begin(token: tuple, children: list, child_nodes: list,
+                 nodes: list) -> tuple:
+    """Render an environment by gridding its flat cells.
 
     Returns amps=-1 so the root does not re-pad the assembled block.
     """
     env = token[1]
-    rows = util_env_rows(child_nodes, children)
-    row_sketches = []
-    for row in rows:
-        row_canvases = [child_canvas for _, child_canvas in row]
-        if env in ("align", "align*"):
-            row_sketches.append(util_concat(row_canvases, True, True))
-        else:
-            row_sketches.append(
-                render_concat_line_no_align_amp(row_canvases))
+    rows = util_env_cells(child_nodes, children)
 
-    sketch, horizon, _ = util_vert_concat(row_sketches, [[arts.bg]], "left")
+    if env == "array":
+        aligns, rows = util_array_spec(rows, nodes)
+        gap, blank_rows, pad_left = 1, False, False
+        left_delim = right_delim = None
+    else:
+        num_cols = max((len(row) for row in rows), default=0)
+        aligns, gap, blank_rows, pad_left, left_delim, right_delim = \
+            util_env_layout(env, num_cols)
+
+    if env not in AMP_ENVS and any(len(row) > 1 for row in rows):
+        raise ValueError("Unexpected &")
+
+    sketch, horizon = util_grid(rows, aligns, gap, blank_rows, pad_left)
+    if left_delim or right_delim:
+        left = util_delimiter(left_delim or ".", len(sketch), horizon)
+        right = util_delimiter(right_delim or ".", len(sketch), horizon)
+        sketch, horizon, _ = util_concat(
+            [left, (sketch, horizon, []), right], False, False)
     return sketch, horizon, -1
 
 
@@ -594,7 +728,7 @@ def render_end(token: tuple, children: list) -> tuple:
 
 
 def render_node(node_type: str, token: tuple, children: list,
-                child_nodes: list = None) -> tuple:
+                child_nodes: list = None, nodes: list = None) -> tuple:
     if node_type not in node_data.type_info_dict.keys():
         raise ValueError(f"Undefined control sequence {token[1]}")
 
@@ -607,7 +741,7 @@ def render_node(node_type: str, token: tuple, children: list,
         raise ValueError(f"Unknown Function {function_name} (internal error)")
 
     if function_name == "render_begin":
-        return render_begin(token, children, child_nodes)
+        return render_begin(token, children, child_nodes, nodes)
     if require_token:
         return rendering_function(token, children)
     return rendering_function(children)
@@ -639,7 +773,7 @@ def render(nodes: list, debug: bool) -> list:
             scripts.append((nodes[j][0], canvas[j][0]))
 
         sketch, horizon, amps = render_node(
-            node_type, node_token, children, child_nodes)
+            node_type, node_token, children, child_nodes, nodes)
         child = (sketch, horizon, amps)
 
         if scripts:
