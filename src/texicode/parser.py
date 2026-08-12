@@ -112,16 +112,23 @@ def parse(tokens: list, debug: bool) -> list:
             base_node[3].append(node_id)
             can_add_to_children_list = False
             can_pop_parent = False
+        popped_parent_type = None
         if can_pop_parent:
+            popped_parent_type = parent_type
             parent_stack.pop()
         if can_update_parent_id:
             parent_id = parent_stack[-1]
             parent_type = nodes[parent_id][0]
-        # double pop is only true for cls_sbstk
+        # double pop closes an extra frame: substack lines pop their line
+        # container, cmd_end pops the environment container after closing
+        # its current row (e.g. a trailing \\ before \end).
         if can_double_pop:
-            parent_stack.pop()
-            parent_id = parent_stack[-1]
-            parent_type = nodes[parent_id][0]
+            if node_type == "cmd_end" and popped_parent_type != "cmd_lbrk":
+                pass
+            else:
+                parent_stack.pop()
+                parent_id = parent_stack[-1]
+                parent_type = nodes[parent_id][0]
         if can_add_to_children_list:
             nodes[parent_id][2].append(node_id)
         parent_stack += parent_stack_add(node_type, node_id)
