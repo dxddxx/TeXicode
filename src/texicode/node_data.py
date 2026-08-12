@@ -89,6 +89,15 @@ self_dependent_type_dict = {
     "env_end": "cmd_end",
 }
 
+# Environments where & is a valid cell separator. The parser rejects &
+# anywhere else.
+amp_envs = {
+    "align", "align*", "aligned", "split",
+    "matrix", "pmatrix", "bmatrix", "Bmatrix",
+    "vmatrix", "Vmatrix", "smallmatrix",
+    "cases", "array",
+}
+
 
 # node_info( ("only/only_not", popable_by["node_type"])
 #            (add_amount)
@@ -266,27 +275,27 @@ type_info_dict = {
                   (1,),
                   (True, False, ["opn_root",]),
                   (True, False, False),
-                  (False, "render_concat_line_no_align_amp")),
+                  (False, "render_concat_line")),
     "opn_brak":  ((True, ["cls_brak", "cmd_lbrk",]),
                   (1,),
                   (True, False, ["opn_root",]),
                   (True, False, False),
-                  (False, "render_concat_line_no_align_amp")),
+                  (False, "render_concat_line")),
     "opn_pren":  ((True, ["cls_pren", "cmd_lbrk",]),
                   (1,),
                   (True, False, ["opn_root",]),
                   (True, False, False),
-                  (False, "render_concat_line_no_align_amp")),
+                  (False, "render_concat_line")),
     "opn_dllr":  ((True, ["cls_dllr", "cmd_lbrk",]),
                   (1,),
                   (True, False, ["opn_root",]),
                   (True, False, False),
-                  (False, "render_concat_line_no_align_amp")),
+                  (False, "render_concat_line")),
     "opn_ddlr":  ((True, ["cls_ddlr", "cmd_lbrk",]),
                   (1,),
                   (True, False, ["opn_root",]),
                   (True, False, False),
-                  (False, "render_concat_line_no_align_amp")),
+                  (False, "render_concat_line")),
     "cmd_bgin":  ((True, ["cmd_end",]),
                   (1,),
                   (True, False, ["opn_root",]),
@@ -296,12 +305,12 @@ type_info_dict = {
                   (1,),
                   (True, False, ["opn_stkln", "stk_lbrk",]),
                   (True, True, False),
-                  (False, "render_concat_line_no_align_amp")),
+                  (False, "render_concat_line")),
     "opn_stkln": ((True, ["cls_stkln", "stk_lbrk",]),
                   (1,),
                   (True, False, ["cmd_sbstk",]),
                   (True, False, False),
-                  (False, "render_concat_line_no_align_amp")),
+                  (False, "render_concat_line")),
     "opn_text":  ((True, ["cls_text",]),
                   (1,),
                   (True, False, ["cmd_text",]),
@@ -329,5 +338,5 @@ type_info_dict = {
                                  "opn_pren", "opn_dllr", "opn_ddlr",
                                  "cmd_bgin",]),
                   (True, True, False),
-                  (False, "render_concat_line_align_amp")),
+                  (False, "render_concat_line")),
 }
