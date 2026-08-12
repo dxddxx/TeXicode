@@ -5,13 +5,13 @@ symbol_chars = """`!@#$%&*()+-=|;:'",.<>/?"""
 symbols = special_chars + symbol_chars
 
 # Inputs that start with one of these tokens are already explicit display
-# math and do not get implicit startline/endline wrappers.
+# math and do not get implicit startline/endline wrappers. Environments
+# (\begin{...}) are handled separately below since their name varies.
 display_open_tokens = {
     ("cmnd", "["),
     ("cmnd", "("),
     ("symb", "$"),
     ("symb", "$$"),
-    ("cmnd", "begin"),
 }
 
 
@@ -47,6 +47,26 @@ def read_command(tex: str, i: int) -> tuple:
     return tex[start:end + 1], end + 1
 
 
+def read_env_name(tex: str, i: int, word: str) -> tuple:
+    """Read the {name} argument of \\begin or \\end starting after the word.
+
+    Skips spaces between the command and the brace, then returns
+    (name, next_index), where next_index points just past the closing
+    brace. Any name is accepted; the parser decides whether the
+    environment is known.
+    """
+    while i < len(tex) and tex[i] == " ":
+        i += 1
+    if i >= len(tex) or tex[i] != "{":
+        raise ValueError(f"Expected {{ after \\{word}")
+    start = i + 1
+    while i < len(tex) and tex[i] != "}":
+        i += 1
+    if i >= len(tex):
+        raise ValueError(f"Unclosed {{ after \\{word}")
+    return tex[start:i], i + 1
+
+
 def append_token(tokens: list, token: tuple, last_index: int,
                  debug: bool) -> None:
     tokens.append(token)
@@ -58,7 +78,7 @@ def wrap_display_math(tokens: list) -> list:
     """Add implicit display-math line wrappers when needed."""
     if not tokens:
         return tokens
-    if tokens[0] not in display_open_tokens:
+    if tokens[0] not in display_open_tokens and tokens[0][0] != "env_bgin":
         tokens.insert(0, ("meta", "startline"))
         tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))
@@ -77,7 +97,12 @@ def lexer(tex: str, debug: bool) -> list:
         char = tex[i]
         if char == "\\":
             word, i = read_command(tex, i)
-            append_token(tokens, ("cmnd", word), i - 1, debug)
+            if word in ("begin", "end"):
+                name, i = read_env_name(tex, i, word)
+                token_type = "env_bgin" if word == "begin" else "env_end"
+                append_token(tokens, (token_type, name), i - 1, debug)
+            else:
+                append_token(tokens, ("cmnd", word), i - 1, debug)
         elif char == "$":
             if i + 1 < len(tex) and tex[i + 1] == "$":
                 append_token(tokens, ("symb", "$$"), i + 1, debug)

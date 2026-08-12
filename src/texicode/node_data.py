@@ -11,10 +11,6 @@ parent_dependent_type_dict = {
     ("opn_stkln", ("cmnd", "newline")): "stk_lbrk",
     ("stk_lbrk",  ("cmnd", "newline")): "stk_lbrk",
 
-    ("cmd_bgin",  ("symb", "{")):  "opn_envn",
-    ("cmd_end",   ("symb", "{")):  "opn_envn",
-    ("opn_envn",  ("symb", "}")):  "cls_envn",
-
     ("cmd_text",  ("symb", "{")):  "opn_text",
     ("opn_text",  ("symb", "}")):  "cls_text",
     ("opn_text",  ("symb", " ")):  "txt_leaf",
@@ -25,11 +21,7 @@ parent_dependent_type_dict = {
     ("cmd_lbrk",  ("symb", "$$")): "cls_ddlr",
 }
 
-type_dependent_type_dict = {
-    ("opn_envn", "symb"): "txt_info",
-    ("opn_envn", "alph"): "txt_info",
-    ("opn_envn", "numb"): "txt_info",
-}
+type_dependent_type_dict = {}
 
 type_dict = {
     ("meta",     "start"): "opn_root", ("meta",     "end"): "cls_root",
@@ -79,8 +71,6 @@ type_dict = {
 
     ("cmnd", "substack"): "cmd_sbstk",
     ("cmnd",    "\\"): "cmd_lbrk", ("cmnd", "newline"): "cmd_lbrk",
-    ("cmnd", "begin"): "cmd_bgin", ("cmnd",     "end"): "cmd_end",
-
     ("cmnd", "textstyle"): "cmd_styl",
     ("cmnd", "displaystyle"): "cmd_styl",
     ("cmnd", "scriptstyle"): "cmd_styl",
@@ -92,6 +82,8 @@ self_dependent_type_dict = {
     "alph": "txt_leaf",
     "numb": "txt_leaf",
     "cmnd": "cmd_leaf",
+    "env_bgin": "cmd_bgin",
+    "env_end": "cmd_end",
 }
 
 
@@ -253,19 +245,14 @@ type_info_dict = {
                   (False, True, False),
                   (False, )),
     "cmd_end":   ((False, []),
-                  (1,),
+                  (0,),
                   (True, False, ["cmd_bgin", "cmd_lbrk",]),
                   (False, True, False),
-                  (False, "render_end")),
+                  (True, "render_end")),
     "cls_stkln": ((True, []),
                   (0,),
                   (False, False, ["opn_stkln", "stk_lbrk",]),
                   (False, True, True),
-                  (False, )),
-    "cls_envn":  ((True, []),
-                  (0,),
-                  (False, False, ["opn_envn",]),
-                  (False, False, False),
                   (False, )),
     "cls_text":  ((True, []),
                   (0,),
@@ -301,7 +288,7 @@ type_info_dict = {
                   (1,),
                   (True, False, ["opn_root",]),
                   (True, False, False),
-                  (False, "render_begin")),
+                  (True, "render_begin")),
     "stk_lbrk":  ((True, ["cls_stkln", "stk_lbrk",]),
                   (1,),
                   (True, False, ["opn_stkln", "stk_lbrk",]),
@@ -312,11 +299,6 @@ type_info_dict = {
                   (True, False, ["cmd_sbstk",]),
                   (True, False, False),
                   (False, "render_concat_line_no_align_amp")),
-    "opn_envn":  ((True, ["cls_envn",]),
-                  (1,),
-                  (True, False, ["cmd_bgin", "cmd_end",]),
-                  (True, False, False),
-                  (False, "render_concat")),
     "opn_text":  ((True, ["cls_text",]),
                   (1,),
                   (True, False, ["cmd_text",]),

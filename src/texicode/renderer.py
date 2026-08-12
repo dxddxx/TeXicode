@@ -536,12 +536,12 @@ def render_concat_line_no_align_amp(children: list) -> tuple:
     return line_sketch, line_horizon, []
 
 
-def render_begin(children: list):
-    if children[0][0] in ([['a', 'l', 'i', 'g', 'n']],
-                          [['a', 'l', 'i', 'g', 'n', '*']]):
-        return util_concat(children[1:], True, True)
+def render_begin(token: tuple, children: list) -> tuple:
+    env = token[1]
+    if env in ("align", "align*"):
+        return util_concat(children, True, True)
     else:
-        return render_concat_line_no_align_amp(children[1:])
+        return render_concat_line_no_align_amp(children)
 
 
 def render_root(children: list) -> tuple:
@@ -552,8 +552,8 @@ def render_substack(children: list) -> tuple:
     return util_vert_concat(children, [[]], "center")
 
 
-def render_end(children: list):
-    return children[0]
+def render_end(token: tuple, children: list) -> tuple:
+    return [[]], 0, []
 
 
 def render_node(node_type: str, token: tuple, children: list) -> tuple:

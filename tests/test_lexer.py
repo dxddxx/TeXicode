@@ -219,13 +219,48 @@ TOKEN_CASES = [
         r"\begin{align*} a &= b",
         [
             ("meta", "start"),
-            ("cmnd", "begin"), ("symb", "{"),
-            ("alph", "a"), ("alph", "l"), ("alph", "i"),
-            ("alph", "g"), ("alph", "n"), ("symb", "*"),
-            ("symb", "}"),
+            ("env_bgin", "align*"),
             ("symb", " "), ("alph", "a"),
             ("symb", " "), ("symb", "&"), ("symb", "="),
             ("symb", " "), ("alph", "b"),
+            ("meta", "end"),
+        ],
+    ),
+    (
+        r"\begin{matrix} a & b \\ c & d \end{matrix}",
+        [
+            ("meta", "start"),
+            ("env_bgin", "matrix"),
+            ("symb", " "), ("alph", "a"),
+            ("symb", " "), ("symb", "&"),
+            ("symb", " "), ("alph", "b"),
+            ("symb", " "), ("cmnd", "\\"),
+            ("symb", " "), ("alph", "c"),
+            ("symb", " "), ("symb", "&"),
+            ("symb", " "), ("alph", "d"),
+            ("symb", " "), ("env_end", "matrix"),
+            ("meta", "end"),
+        ],
+    ),
+    (
+        r"\begin{array}{cc} 1 & 2 \end{array}",
+        [
+            ("meta", "start"),
+            ("env_bgin", "array"),
+            ("symb", "{"), ("alph", "c"), ("alph", "c"),
+            ("symb", "}"),
+            ("symb", " "), ("numb", "1"),
+            ("symb", " "), ("symb", "&"),
+            ("symb", " "), ("numb", "2"),
+            ("symb", " "), ("env_end", "array"),
+            ("meta", "end"),
+        ],
+    ),
+    (
+        r"\begin {matrix}",
+        [
+            ("meta", "start"),
+            ("env_bgin", "matrix"),
             ("meta", "end"),
         ],
     ),
@@ -257,13 +292,9 @@ TOKEN_CASES = [
         r"\begin{align} x \end{align}",
         [
             ("meta", "start"),
-            ("cmnd", "begin"), ("symb", "{"),
-            ("alph", "a"), ("alph", "l"), ("alph", "i"),
-            ("alph", "g"), ("alph", "n"), ("symb", "}"),
+            ("env_bgin", "align"),
             ("symb", " "), ("alph", "x"),
-            ("symb", " "), ("cmnd", "end"), ("symb", "{"),
-            ("alph", "a"), ("alph", "l"), ("alph", "i"),
-            ("alph", "g"), ("alph", "n"), ("symb", "}"),
+            ("symb", " "), ("env_end", "align"),
             ("meta", "end"),
         ],
     ),
@@ -295,14 +326,6 @@ TOKEN_CASES = [
         ],
     ),
     (
-        r"\begin x",
-        [
-            ("meta", "start"),
-            ("cmnd", "begin"), ("symb", " "), ("alph", "x"),
-            ("meta", "end"),
-        ],
-    ),
-    (
         "©",
         [
             ("meta", "start"), ("meta", "startline"),
@@ -321,3 +344,14 @@ def test_lexer_tokens(tex, expected):
 def test_trailing_backslash_raises():
     with pytest.raises(ValueError, match=r"Unexpected character \\"):
         lexer("x\\", False)
+
+
+@pytest.mark.parametrize("tex", [r"\begin x", r"\begin", r"\end"])
+def test_begin_end_require_brace(tex):
+    with pytest.raises(ValueError, match=r"Expected \{ after \\"):
+        lexer(tex, False)
+
+
+def test_unclosed_begin_raises():
+    with pytest.raises(ValueError, match=r"Unclosed \{ after \\begin"):
+        lexer(r"\begin{matrix", False)
