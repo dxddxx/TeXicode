@@ -94,10 +94,6 @@ def parse(tokens: list, debug: bool) -> list:
         if len(parent_stack) != 0:
             parent_id = parent_stack[-1]
             parent_type = nodes[parent_id][0]
-        if token == ("symb", "&"):
-            if parent_type != "cmd_bgin" or \
-                    nodes[parent_id][1][1] not in node_data.amp_envs:
-                raise ValueError("Unexpected &")
         node_type = get_node_type(token, parent_type)
         can_add_to_nodes = can_add(parent_type, node_type)
         can_pop_parent = can_pop(parent_type, node_type)

@@ -36,6 +36,11 @@ RENDER_CASES = [
         r"\begin{align} a &= b & cc &= d \\ e &= f & g &= h \end{align}",
         "𝑎=𝑏𝑐𝑐=𝑑\n       \n𝑒=𝑓 𝑔=ℎ",
     ),
+    (
+        "equation_ampersand_columns",
+        r"\begin{equation} a & b \end{equation}",
+        " 𝑎𝑏",
+    ),
 ]
 
 
@@ -45,10 +50,10 @@ def test_render(name, tex, expected):
     assert render_tex(tex, False, False, "raw", {"fonts": "serif"}) == expected
 
 
-def test_ampersand_in_equation_raises():
-    result = render_tex(r"\begin{equation} a & b \end{equation}",
-                        False, False, "raw", {"fonts": "serif"})
-    assert "Unexpected &" in result
+def test_ampersand_outside_env_raises():
+    result = render_tex("a & b", False, False, "raw", {"fonts": "serif"})
+    assert "parsing error" in result
+    assert "got amp_sep" in result
 
 
 def test_array_requires_column_spec():

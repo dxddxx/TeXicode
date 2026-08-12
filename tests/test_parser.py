@@ -18,9 +18,9 @@ def test_align_children_are_flat():
     env = nodes[root[2][0]]
     assert env[1] == ("env_bgin", "align*")
     assert types_of(nodes, env[2]) == [
-        "txt_leaf", "txt_leaf", "txt_leaf", "txt_leaf",
+        "txt_leaf", "amp_sep", "txt_leaf", "txt_leaf",
         "row_sep",
-        "txt_leaf", "txt_leaf", "txt_leaf", "txt_leaf",
+        "txt_leaf", "amp_sep", "txt_leaf", "txt_leaf",
     ]
     assert [nodes[i][1] for i in env[2][:4]] == [
         ("alph", "a"), ("symb", "&"), ("symb", "="), ("alph", "b"),
@@ -48,8 +48,8 @@ def test_matrix_children_are_flat_with_ampersands():
     env = nodes[nodes[0][2][0]]
     assert env[1] == ("env_bgin", "matrix")
     assert types_of(nodes, env[2]) == [
-        "txt_leaf", "txt_leaf", "txt_leaf", "row_sep",
-        "txt_leaf", "txt_leaf", "txt_leaf",
+        "txt_leaf", "amp_sep", "txt_leaf", "row_sep",
+        "txt_leaf", "amp_sep", "txt_leaf",
     ]
     assert nodes[env[2][1]][1] == ("symb", "&")
     assert nodes[env[2][3]][1] == ("cmnd", "\\")

@@ -31,6 +31,7 @@ type_dict = {
     ("meta", "startline"): "opn_line", ("meta", "endline"): "cls_line",
     ("symb",         "^"): "sup_scrpt", ("symb",      "_"): "sub_scrpt",
     ("symb", "$"): "opn_dllr",  ("symb",  "$$"): "opn_ddlr",
+    ("symb", "&"): "amp_sep",
     ("cmnd", "["): "opn_brak",  ("cmnd",  "]"): "cls_brak",
     ("cmnd", "("): "opn_pren",  ("cmnd",  ")"): "cls_pren",
     ("symb", "{"): "opn_brac",  ("symb",  "}"): "cls_brac",
@@ -88,16 +89,6 @@ self_dependent_type_dict = {
     "env_bgin": "cmd_bgin",
     "env_end": "cmd_end",
 }
-
-# Environments where & is a valid cell separator. The parser rejects &
-# anywhere else.
-amp_envs = {
-    "align", "align*", "aligned", "split",
-    "matrix", "pmatrix", "bmatrix", "Bmatrix",
-    "vmatrix", "Vmatrix", "smallmatrix",
-    "cases", "array",
-}
-
 
 # node_info( ("only/only_not", popable_by["node_type"])
 #            (add_amount)
@@ -329,6 +320,11 @@ type_info_dict = {
     "row_sep":   ((True, []),
                   (0,),
                   (True, True, []),
+                  (True, False, False),
+                  (False, "render_empty")),
+    "amp_sep":   ((True, []),
+                  (0,),
+                  (True, False, ["cmd_bgin"]),
                   (True, False, False),
                   (False, "render_empty")),
     "cmd_lbrk":  ((True, ["cmd_lbrk", "cls_line", "cls_brak", "cls_pren",
