@@ -491,41 +491,62 @@ def render_concat_line(children: list) -> tuple:
     return [[arts.bg] + row for row in line_sketch], line_horizon
 
 
-def util_env_cells(child_nodes: list, children: list) -> list:
-    """Split an environment's flat children into rows of cells.
-
-    & leaves and row_sep children are pure separators: they are not
-    included in any cell. Returns a list of rows, each row being a list
-    of cells, each cell being a list of (child_node, canvas) pairs.
-    """
-    rows = []
-    row = []
-    cell = []
-    for child_node, child_canvas in zip(child_nodes, children):
-        if child_node[0] == "row_sep":
-            row.append(cell)
-            cell = []
-            rows.append(row)
-            row = []
-        elif child_node[1] == ("symb", "&"):
-            row.append(cell)
-            cell = []
-        else:
-            cell.append((child_node, child_canvas))
-    row.append(cell)
-    rows.append(row)
-    return rows
-
-
 def render_empty(children: list) -> tuple:
     return [[]], 0
 
 
-def util_pad_cell(cell: tuple, width: int, align: str) -> tuple:
+def util_cell_canvases(child_nodes: list, children: list,
+                       skip_first: int = 0) -> tuple:
+    """Build a flat list of cell canvases from an environment's children.
+
+    Iterates the children once: each cell's token canvases are concated
+    as they are collected, & and \\\\ separators end the current cell,
+    and row boundaries are stored as start indices into the flat cell
+    list. Returns (cells, row_starts, num_rows, num_cols).
+    """
+    cells = []
+    row_starts = [0]
+    current = []
+    for child_node, child_canvas in zip(child_nodes[skip_first:],
+                                        children[skip_first:]):
+        if child_node[0] == "row_sep" or child_node[1] == ("symb", "&"):
+            cells.append(util_concat(current))
+            current = []
+            if child_node[0] == "row_sep":
+                row_starts.append(len(cells))
+        else:
+            current.append(child_canvas)
+    cells.append(util_concat(current))
+    row_starts.append(len(cells))
+    num_rows = len(row_starts) - 1
+    num_cols = max((row_starts[i + 1] - row_starts[i]
+                    for i in range(num_rows)), default=0)
+    return cells, row_starts, num_rows, num_cols
+
+
+def util_cell_stats(cells: list, row_starts: list, num_rows: int,
+                    num_cols: int) -> tuple:
+    """Row sky/ocn maxima and per-column widths from the flat cells."""
+    row_skies = [0] * num_rows
+    row_ocns = [0] * num_rows
+    col_widths = [0] * num_cols
+    for r in range(num_rows):
+        for c in range(row_starts[r], row_starts[r + 1]):
+            sketch, horizon = cells[c]
+            row_skies[r] = max(row_skies[r], horizon)
+            row_ocns[r] = max(row_ocns[r], len(sketch) - horizon - 1)
+            col = c - row_starts[r]
+            col_widths[col] = max(col_widths[col], len(sketch[0]))
+    return row_skies, row_ocns, col_widths
+
+
+def util_pad_cell(cell: tuple, width: int, align: str,
+                  sky: int, ocn: int) -> tuple:
+    """Pad one cell: horizontally to its column width and vertically to
+    the row's sky/ocn maxima. Returns the padded cell with horizon=sky.
+    """
     sketch, horizon = cell
     pad = width - len(sketch[0])
-    if pad <= 0:
-        return cell
     if align == "l":
         left, right = 0, pad
     elif align == "r":
@@ -535,37 +556,30 @@ def util_pad_cell(cell: tuple, width: int, align: str) -> tuple:
         right = pad - left
     padded = [[arts.bg] * left + row + [arts.bg] * right
               for row in sketch]
-    return padded, horizon
+    top = max(0, sky - horizon)
+    bottom = max(0, ocn - (len(sketch) - horizon - 1))
+    if top:
+        padded = [[arts.bg] * width for _ in range(top)] + padded
+    if bottom:
+        padded = padded + [[arts.bg] * width for _ in range(bottom)]
+    return padded, sky
 
 
-def util_grid(rows_of_cells: list, aligns: list, gap: int,
-              blank_rows: bool, pad_left: bool) -> tuple:
-    """Assemble rows of cells into a padded grid.
-
-    Cells in a row are joined at their horizon; cells in a column are
-    padded to the column width according to their alignment (l/r/c).
-    """
-    cell_rows = []
-    for row in rows_of_cells:
-        cell_rows.append(
-            [util_concat([cv for _, cv in cell])
-             for cell in row])
-
-    num_cols = max((len(row) for row in cell_rows), default=0)
-    if num_cols == 0:
-        return [[]], 0
-
+def util_assemble_grid(cells: list, row_starts: list, num_rows: int,
+                       num_cols: int, aligns: list, gap: int,
+                       blank_rows: bool, pad_left: bool,
+                       row_skies: list, row_ocns: list,
+                       col_widths: list) -> tuple:
+    """Pad each cell once, join each row, and stack the rows."""
     aligns = (aligns + ["c"] * num_cols)[:num_cols]
-    col_widths = []
-    for c in range(num_cols):
-        col_widths.append(max(
-            (len(row[c][0][0]) for row in cell_rows if c < len(row)),
-            default=0))
-
     row_sketches = []
-    for row in cell_rows:
-        padded = [util_pad_cell(cell, col_widths[c], aligns[c])
-                  for c, cell in enumerate(row)]
+    for r in range(num_rows):
+        padded = []
+        for c in range(row_starts[r], row_starts[r + 1]):
+            col = c - row_starts[r]
+            padded.append(util_pad_cell(cells[c], col_widths[col],
+                                        aligns[col], row_skies[r],
+                                        row_ocns[r]))
         if gap:
             sep = ([[arts.bg] * gap], 0)
             concat_children = []
@@ -615,13 +629,11 @@ def util_env_layout(env: str, num_cols: int) -> tuple:
     return ["c"] * num_cols, 0, True, True, None, None
 
 
-def util_array_spec(rows: list, nodes: list) -> tuple:
-    """Read the {spec} argument of \\begin{array} from the first cell."""
-    if not rows or not rows[0] or not rows[0][0] or \
-            rows[0][0][0][0][0] != "opn_brac":
+def util_array_spec(child_nodes: list, nodes: list) -> list:
+    """Read the {spec} argument of \\begin{array} from the first child."""
+    if not child_nodes or child_nodes[0][0] != "opn_brac":
         raise ValueError("array requires a column spec")
-    first_cell = rows[0][0]
-    spec_node = first_cell[0][0]
+    spec_node = child_nodes[0]
     spec = "".join(nodes[cid][1][1] for cid in spec_node[2])
     aligns = []
     for char in spec:
@@ -629,27 +641,36 @@ def util_array_spec(rows: list, nodes: list) -> tuple:
             aligns.append(char)
         else:
             raise ValueError(f"Unsupported column spec {spec!r}")
-    rest_cell = first_cell[1:]
-    first_row = ([rest_cell] if rest_cell else []) + rows[0][1:]
-    return aligns, [first_row] + rows[1:]
+    return aligns
 
 
 def render_begin(token: tuple, children: list, child_nodes: list,
                  nodes: list) -> tuple:
     """Render an environment by gridding its flat cells."""
     env = token[1]
-    rows = util_env_cells(child_nodes, children)
-
     if env == "array":
-        aligns, rows = util_array_spec(rows, nodes)
+        aligns = util_array_spec(child_nodes, nodes)
         gap, blank_rows, pad_left = 1, False, False
         left_delim = right_delim = None
+        skip_first = 1
     else:
-        num_cols = max((len(row) for row in rows), default=0)
+        skip_first = 0
+        aligns = gap = blank_rows = pad_left = None
+        left_delim = right_delim = None
+
+    cells, row_starts, num_rows, num_cols = util_cell_canvases(
+        child_nodes, children, skip_first)
+
+    if env != "array":
         aligns, gap, blank_rows, pad_left, left_delim, right_delim = \
             util_env_layout(env, num_cols)
 
-    sketch, horizon = util_grid(rows, aligns, gap, blank_rows, pad_left)
+    row_skies, row_ocns, col_widths = util_cell_stats(
+        cells, row_starts, num_rows, num_cols)
+    sketch, horizon = util_assemble_grid(
+        cells, row_starts, num_rows, num_cols, aligns, gap, blank_rows,
+        pad_left, row_skies, row_ocns, col_widths)
+
     if left_delim or right_delim:
         left = util_delimiter(left_delim or ".", len(sketch), horizon)
         right = util_delimiter(right_delim or ".", len(sketch), horizon)
