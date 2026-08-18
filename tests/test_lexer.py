@@ -307,7 +307,8 @@ TOKEN_CASES = [
         ],
     ),
     (
-        "a\nb",
+        """a
+b""",
         [
             ("meta", "start"), ("meta", "startline"),
             ("alph", "a"), ("symb", " "), ("alph", "b"),
