@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name='TeXicode',
-    version='1.0.4',
+    version='1.0.5',
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
     entry_points={
