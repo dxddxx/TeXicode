@@ -99,7 +99,6 @@ def parse(tokens: list, debug: bool) -> list:
         can_pop_parent = can_pop(parent_type, node_type)
         can_add_to_children_list = node_data.type_info_dict[node_type][3][0]
         can_update_parent_id = node_data.type_info_dict[node_type][3][1]
-        can_double_pop = node_data.type_info_dict[node_type][3][2]
         base_id = get_script_base(node_type, nodes, parent_stack)
 
         # temporary solution to spaces
@@ -115,11 +114,6 @@ def parse(tokens: list, debug: bool) -> list:
         if can_pop_parent:
             parent_stack.pop()
         if can_update_parent_id:
-            parent_id = parent_stack[-1]
-            parent_type = nodes[parent_id][0]
-        # double pop is only true for cls_sbstk
-        if can_double_pop:
-            parent_stack.pop()
             parent_id = parent_stack[-1]
             parent_type = nodes[parent_id][0]
         if can_add_to_children_list:

@@ -9,162 +9,162 @@ TOKEN_CASES = [
     (
         "  a  b",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "a"), ("symb", " "), ("alph", "b"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "a b",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "a"), ("symb", " "), ("alph", "b"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "a  b",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "a"), ("symb", " "), ("alph", "b"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         " a",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "a"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "abc",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "a"), ("alph", "b"), ("alph", "c"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "123",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("numb", "1"), ("numb", "2"), ("numb", "3"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "+-*/",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("symb", "+"), ("symb", "-"), ("symb", "*"), ("symb", "/"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "x=1",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "x"), ("symb", "="), ("numb", "1"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "α+β",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "α"), ("symb", "+"), ("alph", "β"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\alpha",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "alpha"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\frac12",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "frac"), ("numb", "1"), ("numb", "2"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\{",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "{"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\}",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "}"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\!",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "!"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\ ",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", " "),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\\",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "\\"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\alpha\ge \beta",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "alpha"), ("cmnd", "ge"),
             ("symb", " "), ("cmnd", "beta"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\a1b",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "a"), ("numb", "1"), ("alph", "b"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\12",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "12"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\sqrt2",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "sqrt"), ("numb", "2"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
@@ -194,9 +194,9 @@ TOKEN_CASES = [
     (
         "a$b",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "a"), ("symb", "$"), ("alph", "b"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
@@ -210,9 +210,9 @@ TOKEN_CASES = [
     (
         "x%y",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "x"), ("symb", "%"), ("alph", "y"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
@@ -267,9 +267,9 @@ TOKEN_CASES = [
     (
         "x",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "x"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
@@ -301,37 +301,37 @@ TOKEN_CASES = [
     (
         "[x]",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("symb", "["), ("alph", "x"), ("symb", "]"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         """a
 b""",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("alph", "a"), ("symb", " "), ("alph", "b"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         r"\text{ a  b }",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             ("cmnd", "text"), ("symb", "{"),
             ("symb", " "), ("alph", "a"),
             ("symb", " "), ("alph", "b"),
             ("symb", " "), ("symb", "}"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
     (
         "©",
         [
-            ("meta", "start"), ("meta", "startline"),
+            ("meta", "start"),
             (None, "©"),
-            ("meta", "endline"), ("meta", "end"),
+            ("meta", "end"),
         ],
     ),
 ]

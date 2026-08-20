@@ -4,16 +4,6 @@ symbol_chars = """`!@#$%&*()+-=|;:'",.<>/?"""
 
 symbols = special_chars + symbol_chars
 
-# Inputs that start with one of these tokens are already explicit display
-# math and do not get implicit startline/endline wrappers. Environments
-# (\begin{...}) are handled separately below since their name varies.
-display_open_tokens = {
-    ("cmnd", "["),
-    ("cmnd", "("),
-    ("symb", "$"),
-    ("symb", "$$"),
-}
-
 
 def get_char_type(char: str) -> str:
     if char.isalpha():
@@ -75,12 +65,9 @@ def append_token(tokens: list, token: tuple, last_index: int,
 
 
 def wrap_display_math(tokens: list) -> list:
-    """Add implicit display-math line wrappers when needed."""
+    """Add the root start/end markers around the token stream."""
     if not tokens:
         return tokens
-    if tokens[0] not in display_open_tokens and tokens[0][0] != "env_bgin":
-        tokens.insert(0, ("meta", "startline"))
-        tokens.append(("meta", "endline"))
     tokens.insert(0, ("meta", "start"))
     tokens.append(("meta", "end"))
     return tokens

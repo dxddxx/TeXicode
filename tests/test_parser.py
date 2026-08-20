@@ -1,3 +1,5 @@
+import pytest
+
 from texicode.lexer import lexer
 from texicode.parser import parse
 
@@ -56,9 +58,35 @@ def test_matrix_children_are_flat_with_ampersands():
     assert nodes[env[2][5]][1] == ("symb", "&")
 
 
-def test_standalone_linebreak_still_uses_cmd_lbrk():
+def test_display_wrapper_owns_its_rows():
     nodes = parsed(r"\[ a \\ b \]")
     root = nodes[0]
-    assert types_of(nodes, root[2]) == ["opn_brak", "cmd_lbrk"]
-    lbrk = nodes[root[2][1]]
-    assert types_of(nodes, lbrk[2]) == ["txt_leaf"]
+    assert types_of(nodes, root[2]) == ["opn_brak"]
+    wrapper = nodes[root[2][0]]
+    assert types_of(nodes, wrapper[2]) == [
+        "txt_leaf", "row_sep", "txt_leaf",
+    ]
+
+
+def test_raw_linebreak_rows_under_root():
+    nodes = parsed(r"a \\ b")
+    root = nodes[0]
+    assert types_of(nodes, root[2]) == [
+        "txt_leaf", "row_sep", "txt_leaf",
+    ]
+
+
+def test_substack_rows_are_flat():
+    nodes = parsed(r"\substack{a \\ b}")
+    root = nodes[0]
+    substack = nodes[root[2][0]]
+    assert substack[0] == "cmd_sbstk"
+    assert types_of(nodes, substack[2]) == [
+        "txt_leaf", "row_sep", "txt_leaf",
+    ]
+    assert all(nodes[i][0] != "stk_lbrk" for i in range(len(nodes)))
+
+
+def test_linebreak_outside_row_owner_raises():
+    with pytest.raises(ValueError, match="row_sep"):
+        parsed(r"{a \\ b}")

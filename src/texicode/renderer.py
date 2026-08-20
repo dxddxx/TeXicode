@@ -41,7 +41,7 @@ def util_unshrink(small_char: str) -> str:
     return small_char
 
 
-def util_concat(children: list, concat_line: bool = False) -> tuple:
+def util_concat(children: list) -> tuple:
     if not children:
         return [[]], 0
 
@@ -71,9 +71,6 @@ def util_concat(children: list, concat_line: bool = False) -> tuple:
         sketch = top_pad + sketch + btm_pad
         for i in range(len(concated_sketch)):
             concated_sketch[i].extend(sketch[i])
-
-    if concat_line:
-        concated_horizon = len(concated_sketch[0])
 
     return concated_sketch, concated_horizon
 
@@ -232,21 +229,6 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
 
     return sketch, horizon
 
-
-def util_vert_concat(children: list, sep: list, align: str,
-                     pad_left: bool = True) -> tuple:
-    if pad_left:
-        children = [([[arts.bg] + row for row in sketch], horizon)
-                    for sketch, horizon in children]
-    sketch = children.pop(0)[0]
-    horizon = 0
-
-    for child in children:
-        top = sketch
-        btm = child[0]
-        sketch, horizon = util_vert_pile(top, sep, 0, btm, align)
-
-    return sketch, horizon
 
 # Rendering Functions
 
@@ -486,13 +468,72 @@ def render_square_root(children: list) -> tuple:
         return util_multichar_square_root(children)
 
 
-def render_concat_line(children: list) -> tuple:
-    line_sketch, line_horizon = util_concat(children, True)
-    return [[arts.bg] + row for row in line_sketch], line_horizon
-
-
 def render_empty(children: list) -> tuple:
     return [[]], 0
+
+
+def render_rows(children: list, child_nodes: list, aligns: list,
+                gap: int, blank_rows: bool, pad_left: bool) -> tuple:
+    """Assemble flat children into rows with the shared grid helpers."""
+    cells, row_starts, num_rows, num_cols = util_cell_canvases(
+        child_nodes, children)
+    row_skies, row_ocns, col_widths = util_cell_stats(
+        cells, row_starts, num_rows, num_cols)
+    return util_assemble_grid(
+        cells, row_starts, num_rows, num_cols, aligns, gap, blank_rows,
+        pad_left, row_skies, row_ocns, col_widths)
+
+
+def render_root(children: list, child_nodes: list) -> tuple:
+    """Stack the outermost lines and add the leading pad.
+
+    Display wrappers render complete line blocks, so they start new lines;
+    everything else is inline content that joins the current line.
+    """
+    lines = [[]]
+    wrapper_tail = False
+    for child_node, canvas in zip(child_nodes, children):
+        if child_node[0] == "row_sep":
+            if lines[-1]:
+                lines.append([])
+            wrapper_tail = False
+        elif (node_data.type_info_dict[child_node[0]][4][1]
+              == "render_lines"):
+            if lines[-1]:
+                lines.append([])
+            lines[-1].append((child_node, canvas))
+            lines.append([])
+            wrapper_tail = True
+        else:
+            lines[-1].append((child_node, canvas))
+            wrapper_tail = False
+    if wrapper_tail and not lines[-1]:
+        lines.pop()
+
+    row_sketches = []
+    for line in lines:
+        if not line:
+            row_sketches.append(([[arts.bg]], 0))
+            continue
+        line_nodes = [node for node, _ in line]
+        line_canvases = [canvas for _, canvas in line]
+        row_sketches.append(
+            render_rows(line_canvases, line_nodes, ["l"], 0, False, True))
+
+    sketch = None
+    horizon = 0
+    for row_sketch in row_sketches:
+        if sketch is None:
+            sketch, horizon = row_sketch
+            continue
+        sketch, horizon = util_vert_pile(sketch, [[arts.bg]], 0,
+                                         row_sketch[0], "left")
+    return sketch, horizon
+
+
+def render_lines(children: list, child_nodes: list) -> tuple:
+    """Render a display wrapper's rows; the outer root adds the pad."""
+    return render_rows(children, child_nodes, ["l"], 0, True, False)
 
 
 def util_cell_canvases(child_nodes: list, children: list,
@@ -626,7 +667,7 @@ def util_env_layout(env: str, num_cols: int) -> tuple:
         return ["c"] * num_cols, 1, False, False, left_delim, right_delim
     if env == "cases":
         return ["l"] * num_cols, 2, False, False, "{", None
-    return ["c"] * num_cols, 0, True, True, None, None
+    return ["c"] * num_cols, 0, True, False, None, None
 
 
 def util_array_spec(child_nodes: list, nodes: list) -> list:
@@ -679,12 +720,9 @@ def render_begin(token: tuple, children: list, child_nodes: list,
     return sketch, horizon
 
 
-def render_root(children: list) -> tuple:
-    return util_vert_concat(children, [[arts.bg]], "left", pad_left=False)
-
-
-def render_substack(children: list) -> tuple:
-    return util_vert_concat(children, [[]], "center", pad_left=False)
+def render_substack(children: list, child_nodes: list) -> tuple:
+    """Render a substack's rows without blank lines; outer root adds pad."""
+    return render_rows(children, child_nodes, ["c"], 0, False, False)
 
 
 def render_end(token: tuple, children: list) -> tuple:
@@ -706,6 +744,8 @@ def render_node(node_type: str, token: tuple, children: list,
 
     if function_name == "render_begin":
         return render_begin(token, children, child_nodes, nodes)
+    if function_name in ("render_root", "render_lines", "render_substack"):
+        return rendering_function(children, child_nodes)
     if require_token:
         return rendering_function(token, children)
     return rendering_function(children)
