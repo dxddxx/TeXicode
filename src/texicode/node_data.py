@@ -55,6 +55,16 @@ type_dict = {
 
     ("cmnd",   "sum"): "ctr_base", ("cmnd", "prod"): "ctr_base",
     ("cmnd",   "lim"): "ctr_base",
+    ("cmnd", "argmax"): "ctr_base", ("cmnd", "argmin"): "ctr_base",
+    ("cmnd", "injlim"): "ctr_base", ("cmnd", "projlim"): "ctr_base",
+    ("cmnd", "varinjlim"): "ctr_base", ("cmnd", "varprojlim"): "ctr_base",
+    ("cmnd", "varliminf"): "ctr_base", ("cmnd", "varlimsup"): "ctr_base",
+    ("cmnd",    "plim"): "ctr_base",
+    ("cmnd", "liminf"): "ctr_base", ("cmnd", "limsup"): "ctr_base",
+    ("cmnd",    "det"): "ctr_base", ("cmnd",     "Pr"): "ctr_base",
+    ("cmnd",    "gcd"): "ctr_base",
+    ("cmnd",    "inf"): "ctr_base", ("cmnd",    "max"): "ctr_base",
+    ("cmnd",    "min"): "ctr_base", ("cmnd",    "sup"): "ctr_base",
 
     ("cmnd", "binom"): "cmd_binom", ("cmnd", "dbinom"): "cmd_binom",
 
@@ -276,7 +286,7 @@ type_info_dict = {
                   (False, "render_lines")),
     "cmd_bgin":  ((True, ["cmd_end",]),
                   (1,),
-                  (True, False, ["opn_root",]),
+                  (True, False, ["opn_root", "opn_dlim", "opn_brac"]),
                   (True, False),
                   (True, "render_begin")),
     "opn_text":  ((True, ["cls_text",]),

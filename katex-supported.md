@@ -60,60 +60,60 @@
 ## Delimiters
 
 - [ ] `( )`
-- [ ] `\lparen`
-- [ ] `\rparen`
+- [x] `\lparen`
+- [x] `\rparen`
 - [ ] `⌈ ⌉`
-- [ ] `\lceil`
-- [ ] `\rceil`
-- [ ] `\uparrow` → ↑
+- [x] `\lceil`
+- [x] `\rceil`
+- [x] `\uparrow` → ↑
 - [ ] `[ ]`
-- [ ] `\lbrack`
-- [ ] `\rbrack`
+- [x] `\lbrack`
+- [x] `\rbrack`
 - [ ] `⌊ ⌋`
-- [ ] `\lfloor`
-- [ ] `\rfloor`
-- [ ] `\downarrow` → ↓
-- [ ] `\{ \}`
-- [ ] `\lbrace`
-- [ ] `\rbrace`
+- [x] `\lfloor`
+- [x] `\rfloor`
+- [x] `\downarrow` → ↓
+- [x] `\{ \}`
+- [x] `\lbrace`
+- [x] `\rbrace`
 - [ ] `⎰⎱`
-- [ ] `\lmoustache`
-- [ ] `\rmoustache`
-- [ ] `\updownarrow` → ↕
+- [x] `\lmoustache`
+- [x] `\rmoustache`
+- [x] `\updownarrow` → ↕
 - [ ] `⟨ ⟩`
-- [ ] `\langle`
-- [ ] `\rangle`
+- [x] `\langle`
+- [x] `\rangle`
 - [ ] `⟮ ⟯`
-- [ ] `\lgroup`
-- [ ] `\rgroup`
-- [ ] `\Uparrow` → ⇑
+- [x] `\lgroup`
+- [x] `\rgroup`
+- [x] `\Uparrow` → ⇑
 - [ ] `|` → ∣
-- [ ] `\vert` → ∣
+- [x] `\vert` → ∣
 - [ ] `┌ ┐`
-- [ ] `\ulcorner`
-- [ ] `\urcorner`
-- [ ] `\Downarrow` → ⇓
-- [ ] `\|` → ∥
-- [ ] `\Vert` → ∥
+- [x] `\ulcorner`
+- [x] `\urcorner`
+- [x] `\Downarrow` → ⇓
+- [x] `\|` → ∥
+- [x] `\Vert` → ∥
 - [ ] `└ ┘`
-- [ ] `\llcorner`
-- [ ] `\lrcorner`
-- [ ] `\Updownarrow` → ⇕
-- [ ] `\lvert`
-- [ ] `\rvert`
-- [ ] `\lVert`
-- [ ] `\rVert`
+- [x] `\llcorner`
+- [x] `\lrcorner`
+- [x] `\Updownarrow` → ⇕
+- [x] `\lvert`
+- [x] `\rvert`
+- [x] `\lVert`
+- [x] `\rVert`
 - [ ] `\left.`
 - [ ] `\right.`
-- [ ] `\backslash` → \
-- [ ] `\lang`
-- [ ] `\rang`
-- [ ] `\lt \gt`
+- [x] `\backslash` → \
+- [x] `\lang`
+- [x] `\rang`
+- [x] `\lt \gt`
 - [ ] `⟦ ⟧`
-- [ ] `\llbracket`
-- [ ] `\rrbracket`
+- [x] `\llbracket`
+- [x] `\rrbracket`
 - [ ] `/` → /
-- [ ] `\lBrace \rBrace`
+- [x] `\lBrace \rBrace`
 
 #### Delimiter Sizing
 
@@ -212,119 +212,119 @@
 
 #### Greek Letters
 
-- [ ] `\Alpha` → A
-- [ ] `\Beta` → B
-- [ ] `\Gamma` → Γ
-- [ ] `\Delta` → Δ
-- [ ] `\Epsilon` → E
-- [ ] `\Zeta` → Z
-- [ ] `\Eta` → H
-- [ ] `\Theta` → Θ
-- [ ] `\Iota` → I
-- [ ] `\Kappa` → K
-- [ ] `\Lambda` → Λ
-- [ ] `\Mu` → M
-- [ ] `\Nu` → N
-- [ ] `\Xi` → Ξ
-- [ ] `\Omicron` → O
-- [ ] `\Pi` → Π
-- [ ] `\Rho` → P
-- [ ] `\Sigma` → Σ
-- [ ] `\Tau` → T
-- [ ] `\Upsilon` → Υ
-- [ ] `\Phi` → Φ
-- [ ] `\Chi` → X
-- [ ] `\Psi` → Ψ
-- [ ] `\Omega` → Ω
-- [ ] `\varGamma` → Γ
-- [ ] `\varDelta` → Δ
-- [ ] `\varTheta` → Θ
-- [ ] `\varLambda` → Λ
-- [ ] `\varXi` → Ξ
-- [ ] `\varPi` → Π
-- [ ] `\varSigma` → Σ
-- [ ] `\varUpsilon` → Υ
-- [ ] `\varPhi` → Φ
-- [ ] `\varPsi` → Ψ
-- [ ] `\varOmega` → Ω
-- [ ] `\alpha` → α
-- [ ] `\beta` → β
-- [ ] `\gamma` → γ
-- [ ] `\delta` → δ
-- [ ] `\epsilon` → ϵ
-- [ ] `\zeta` → ζ
-- [ ] `\eta` → η
-- [ ] `\theta` → θ
-- [ ] `\iota` → ι
-- [ ] `\kappa` → κ
-- [ ] `\lambda` → λ
-- [ ] `\mu` → μ
-- [ ] `\nu` → ν
-- [ ] `\xi` → ξ
-- [ ] `\omicron` → ο
-- [ ] `\pi` → π
-- [ ] `\rho` → ρ
-- [ ] `\sigma` → σ
-- [ ] `\tau` → τ
-- [ ] `\upsilon` → υ
-- [ ] `\phi` → ϕ
-- [ ] `\chi` → χ
-- [ ] `\psi` → ψ
-- [ ] `\omega` → ω
-- [ ] `\varepsilon` → ε
-- [ ] `\varkappa` → ϰ
-- [ ] `\vartheta` → ϑ
-- [ ] `\thetasym` → ϑ
-- [ ] `\varpi` → ϖ
-- [ ] `\varrho` → ϱ
-- [ ] `\varsigma` → ς
-- [ ] `\varphi` → φ
-- [ ] `\digamma` → ϝ
+- [x] `\Alpha` → A
+- [x] `\Beta` → B
+- [x] `\Gamma` → Γ
+- [x] `\Delta` → Δ
+- [x] `\Epsilon` → E
+- [x] `\Zeta` → Z
+- [x] `\Eta` → H
+- [x] `\Theta` → Θ
+- [x] `\Iota` → I
+- [x] `\Kappa` → K
+- [x] `\Lambda` → Λ
+- [x] `\Mu` → M
+- [x] `\Nu` → N
+- [x] `\Xi` → Ξ
+- [x] `\Omicron` → O
+- [x] `\Pi` → Π
+- [x] `\Rho` → P
+- [x] `\Sigma` → Σ
+- [x] `\Tau` → T
+- [x] `\Upsilon` → Υ
+- [x] `\Phi` → Φ
+- [x] `\Chi` → X
+- [x] `\Psi` → Ψ
+- [x] `\Omega` → Ω
+- [x] `\varGamma` → Γ
+- [x] `\varDelta` → Δ
+- [x] `\varTheta` → Θ
+- [x] `\varLambda` → Λ
+- [x] `\varXi` → Ξ
+- [x] `\varPi` → Π
+- [x] `\varSigma` → Σ
+- [x] `\varUpsilon` → Υ
+- [x] `\varPhi` → Φ
+- [x] `\varPsi` → Ψ
+- [x] `\varOmega` → Ω
+- [x] `\alpha` → α
+- [x] `\beta` → β
+- [x] `\gamma` → γ
+- [x] `\delta` → δ
+- [x] `\epsilon` → ϵ
+- [x] `\zeta` → ζ
+- [x] `\eta` → η
+- [x] `\theta` → θ
+- [x] `\iota` → ι
+- [x] `\kappa` → κ
+- [x] `\lambda` → λ
+- [x] `\mu` → μ
+- [x] `\nu` → ν
+- [x] `\xi` → ξ
+- [x] `\omicron` → ο
+- [x] `\pi` → π
+- [x] `\rho` → ρ
+- [x] `\sigma` → σ
+- [x] `\tau` → τ
+- [x] `\upsilon` → υ
+- [x] `\phi` → ϕ
+- [x] `\chi` → χ
+- [x] `\psi` → ψ
+- [x] `\omega` → ω
+- [x] `\varepsilon` → ε
+- [x] `\varkappa` → ϰ
+- [x] `\vartheta` → ϑ
+- [x] `\thetasym` → ϑ
+- [x] `\varpi` → ϖ
+- [x] `\varrho` → ϱ
+- [x] `\varsigma` → ς
+- [x] `\varphi` → φ
+- [x] `\digamma` → ϝ
 
 #### Other Letters
 
-- [ ] `\imath` → ı
-- [ ] `\nabla` → ∇
-- [ ] `\Im` → ℑ
-- [ ] `\Reals` → R
-- [ ] `\text{\OE}`
-- [ ] `\jmath` → ȷ
-- [ ] `\partial` → ∂
-- [ ] `\image` → ℑ
-- [ ] `\wp` → ℘
-- [ ] `\text{\o}`
-- [ ] `\aleph` → ℵ
-- [ ] `\Game` → ⅁
-- [ ] `\Bbbk` → k
-- [ ] `\weierp` → ℘
-- [ ] `\text{\O}`
-- [ ] `\alef` → ℵ
-- [ ] `\Finv` → Ⅎ
-- [ ] `\N` → N
-- [ ] `\Z` → Z
-- [ ] `\text{\ss}`
-- [ ] `\alefsym` → ℵ
-- [ ] `\cnums` → C
-- [ ] `\natnums` → N
-- [ ] `\text{\aa}`
-- [ ] `\text{\i}`
-- [ ] `\beth` → ℶ
-- [ ] `\Complex` → C
-- [ ] `\R` → R
-- [ ] `\text{\AA}`
-- [ ] `\text{\j}`
-- [ ] `\gimel` → ℷ
-- [ ] `\ell` → ℓ
-- [ ] `\Re` → ℜ
-- [ ] `\text{\ae}`
-- [ ] `\daleth` → ℸ
-- [ ] `\hbar` → ℏ
-- [ ] `\real` → ℜ
-- [ ] `\text{\AE}`
-- [ ] `\eth` → ð
-- [ ] `\hslash` → ℏ
-- [ ] `\reals` → R
-- [ ] `\text{\oe}`
+- [x] `\imath` → ı
+- [x] `\nabla` → ∇
+- [x] `\Im` → ℑ
+- [x] `\Reals` → R
+- [x] `\text{\OE}`
+- [x] `\jmath` → ȷ
+- [x] `\partial` → ∂
+- [x] `\image` → ℑ
+- [x] `\wp` → ℘
+- [x] `\text{\o}`
+- [x] `\aleph` → ℵ
+- [x] `\Game` → ⅁
+- [x] `\Bbbk` → k
+- [x] `\weierp` → ℘
+- [x] `\text{\O}`
+- [x] `\alef` → ℵ
+- [x] `\Finv` → Ⅎ
+- [x] `\N` → N
+- [x] `\Z` → Z
+- [x] `\text{\ss}`
+- [x] `\alefsym` → ℵ
+- [x] `\cnums` → C
+- [x] `\natnums` → N
+- [x] `\text{\aa}`
+- [x] `\text{\i}`
+- [x] `\beth` → ℶ
+- [x] `\Complex` → C
+- [x] `\R` → R
+- [x] `\text{\AA}`
+- [x] `\text{\j}`
+- [x] `\gimel` → ℷ
+- [x] `\ell` → ℓ
+- [x] `\Re` → ℜ
+- [x] `\text{\ae}`
+- [x] `\daleth` → ℸ
+- [x] `\hbar` → ℏ
+- [x] `\real` → ℜ
+- [x] `\text{\AE}`
+- [x] `\eth` → ð
+- [x] `\hslash` → ℏ
+- [x] `\reals` → R
+- [x] `\text{\oe}`
 - [ ] `A²⁺³`
 - [ ] `A^{2+3}`
 
@@ -404,33 +404,33 @@
 
 #### Spacing
 
-- [ ] `\,`
+- [x] `\,`
 - [ ] `\kern{distance}`
-- [ ] `\thinspace`
+- [x] `\thinspace`
 - [ ] `\mkern{distance}`
-- [ ] `\>`
+- [x] `\>`
 - [ ] `\mskip{distance}`
-- [ ] `\:`
+- [x] `\:`
 - [ ] `\hskip{distance}`
-- [ ] `\medspace`
+- [x] `\medspace`
 - [ ] `\hspace{distance}`
-- [ ] `\;`
+- [x] `\;`
 - [ ] `\hspace*{distance}`
-- [ ] `\thickspace`
+- [x] `\thickspace`
 - [ ] `\phantom{content}`
-- [ ] `\enspace`
+- [x] `\enspace`
 - [ ] `\hphantom{content}`
-- [ ] `\quad`
+- [x] `\quad`
 - [ ] `\vphantom{content}`
-- [ ] `\qquad`
+- [x] `\qquad`
 - [ ] `\!`
-- [ ] `~`
+- [x] `~`
 - [ ] `\negthinspace`
-- [ ] `\<space>`
+- [x] `\<space>`
 - [ ] `\negmedspace`
-- [ ] `\nobreakspace`
+- [x] `\nobreakspace`
 - [ ] `\negthickspace`
-- [ ] `\space`
+- [x] `\space`
 - [ ] `\mathstrut`
 - [ ] `\vphantom{(}`
 
@@ -446,35 +446,35 @@
 
 ## Logic and Set Theory
 
-- [ ] `\forall` → ∀
-- [ ] `\complement` → ∁
-- [ ] `\therefore` → ∴
-- [ ] `\emptyset` → ∅
-- [ ] `\exists` → ∃
-- [ ] `\subset` → ⊂
-- [ ] `\because` → ∵
-- [ ] `\empty` → ∅
-- [ ] `\exist` → ∃
-- [ ] `\supset` → ⊃
-- [ ] `\mapsto` → ↦
-- [ ] `\varnothing` → ∅
-- [ ] `\nexists` → ∄
-- [ ] `\mid` → ∣
-- [ ] `\to` → →
-- [ ] `\implies`
-- [ ] `\in` → ∈
-- [ ] `\land` → ∧
-- [ ] `\gets` → ←
-- [ ] `\impliedby`
-- [ ] `\isin` → ∈
-- [ ] `\lor` → ∨
-- [ ] `\leftrightarrow` → ↔
-- [ ] `\iff`
-- [ ] `\notin` → ∉
-- [ ] `\ni` → ∋
-- [ ] `\notni` → ∌
-- [ ] `\neg`
-- [ ] `\lnot`
+- [x] `\forall` → ∀
+- [x] `\complement` → ∁
+- [x] `\therefore` → ∴
+- [x] `\emptyset` → ∅
+- [x] `\exists` → ∃
+- [x] `\subset` → ⊂
+- [x] `\because` → ∵
+- [x] `\empty` → ∅
+- [x] `\exist` → ∃
+- [x] `\supset` → ⊃
+- [x] `\mapsto` → ↦
+- [x] `\varnothing` → ∅
+- [x] `\nexists` → ∄
+- [x] `\mid` → ∣
+- [x] `\to` → →
+- [x] `\implies`
+- [x] `\in` → ∈
+- [x] `\land` → ∧
+- [x] `\gets` → ←
+- [x] `\impliedby`
+- [x] `\isin` → ∈
+- [x] `\lor` → ∨
+- [x] `\leftrightarrow` → ↔
+- [x] `\iff`
+- [x] `\notin` → ∉
+- [x] `\ni` → ∋
+- [x] `\notni` → ∌
+- [x] `\neg`
+- [x] `\lnot`
 - [ ] `\Set{ x | x<\frac 1 2 }`
 - [ ] `\set{x|x<5}`
 
@@ -514,95 +514,95 @@
 
 ### Big Operators
 
-- [ ] `\sum` → ∑
-- [ ] `\prod` → ∏
+- [x] `\sum` → ∑
+- [x] `\prod` → ∏
 - [ ] `\bigotimes` → ⨂
 - [ ] `\bigvee` → ⋁
-- [ ] `\int` → ∫
+- [x] `\int` → ∫
 - [ ] `\coprod` → ∐
 - [ ] `\bigoplus` → ⨁
 - [ ] `\bigwedge` → ⋀
-- [ ] `\iint` → ∬
+- [x] `\iint` → ∬
 - [ ] `\intop` → ∫
 - [ ] `\bigodot` → ⨀
 - [ ] `\bigcap` → ⋂
-- [ ] `\iiint` → ∭
+- [x] `\iiint` → ∭
 - [ ] `\smallint` → ∫
 - [ ] `\biguplus` → ⨄
 - [ ] `\bigcup` → ⋃
-- [ ] `\oint` → ∮
-- [ ] `\oiint` → ∯
-- [ ] `\oiiint` → ∰
+- [x] `\oint` → ∮
+- [x] `\oiint` → ∯
+- [x] `\oiiint` → ∰
 - [ ] `\bigsqcup` → ⨆
 
 ### Binary Operators
 
 - [ ] `+` → +
-- [ ] `\cdot` → ⋅
-- [ ] `\gtrdot` → ⋗
+- [x] `\cdot` → ⋅
+- [x] `\gtrdot` → ⋗
 - [ ] `x \pmod a`
 - [ ] `-` → −
-- [ ] `\cdotp` → ⋅
-- [ ] `\intercal` → ⊺
+- [x] `\cdotp` → ⋅
+- [x] `\intercal` → ⊺
 - [ ] `x \pod a`
-- [ ] `\centerdot` → ⋅
-- [ ] `\rhd` → ⊳
+- [x] `\centerdot` → ⋅
+- [x] `\rhd` → ⊳
 - [ ] `*` → ∗
-- [ ] `\circ` → ∘
-- [ ] `\leftthreetimes` → ⋋
-- [ ] `\rightthreetimes` → ⋌
-- [ ] `\amalg` → ⨿
-- [ ] `\circledast` → ⊛
-- [ ] `\ldotp` → .
-- [ ] `\rtimes` → ⋊
-- [ ] `\And` → &
-- [ ] `\circledcirc` → ⊚
-- [ ] `\setminus` → ∖
-- [ ] `\ast` → ∗
-- [ ] `\circleddash` → ⊝
-- [ ] `\lessdot` → ⋖
-- [ ] `\smallsetminus` → ∖
-- [ ] `\barwedge` → ⊼
-- [ ] `\Cup` → ⋓
-- [ ] `\lhd` → ⊲
-- [ ] `\sqcap` → ⊓
-- [ ] `\bigcirc` → ◯
-- [ ] `\cup` → ∪
-- [ ] `\ltimes` → ⋉
-- [ ] `\sqcup` → ⊔
-- [ ] `\bmod`
-- [ ] `\curlyvee` → ⋎
+- [x] `\circ` → ∘
+- [x] `\leftthreetimes` → ⋋
+- [x] `\rightthreetimes` → ⋌
+- [x] `\amalg` → ⨿
+- [x] `\circledast` → ⊛
+- [x] `\ldotp` → .
+- [x] `\rtimes` → ⋊
+- [x] `\And` → &
+- [x] `\circledcirc` → ⊚
+- [x] `\setminus` → ∖
+- [x] `\ast` → ∗
+- [x] `\circleddash` → ⊝
+- [x] `\lessdot` → ⋖
+- [x] `\smallsetminus` → ∖
+- [x] `\barwedge` → ⊼
+- [x] `\Cup` → ⋓
+- [x] `\lhd` → ⊲
+- [x] `\sqcap` → ⊓
+- [x] `\bigcirc` → ◯
+- [x] `\cup` → ∪
+- [x] `\ltimes` → ⋉
+- [x] `\sqcup` → ⊔
+- [x] `\bmod`
+- [x] `\curlyvee` → ⋎
 - [ ] `x\mod a`
-- [ ] `\times` → ×
-- [ ] `\boxdot` → ⊡
-- [ ] `\curlywedge` → ⋏
-- [ ] `\mp` → ∓
-- [ ] `\unlhd` → ⊴
-- [ ] `\boxminus` → ⊟
-- [ ] `\div` → ÷
-- [ ] `\odot` → ⊙
-- [ ] `\unrhd` → ⊵
-- [ ] `\boxplus` → ⊞
-- [ ] `\divideontimes` → ⋇
-- [ ] `\ominus` → ⊖
-- [ ] `\uplus` → ⊎
-- [ ] `\boxtimes` → ⊠
-- [ ] `\dotplus` → ∔
-- [ ] `\oplus` → ⊕
-- [ ] `\vee` → ∨
-- [ ] `\bullet` → ∙
-- [ ] `\doublebarwedge` → ⩞
-- [ ] `\otimes` → ⊗
-- [ ] `\veebar` → ⊻
-- [ ] `\Cap` → ⋒
-- [ ] `\doublecap` → ⋒
-- [ ] `\oslash` → ⊘
-- [ ] `\wedge` → ∧
-- [ ] `\cap` → ∩
-- [ ] `\doublecup` → ⋓
-- [ ] `\pm`
-- [ ] `\plusmn`
-- [ ] `\wr` → ≀
+- [x] `\times` → ×
+- [x] `\boxdot` → ⊡
+- [x] `\curlywedge` → ⋏
+- [x] `\mp` → ∓
+- [x] `\unlhd` → ⊴
+- [x] `\boxminus` → ⊟
+- [x] `\div` → ÷
+- [x] `\odot` → ⊙
+- [x] `\unrhd` → ⊵
+- [x] `\boxplus` → ⊞
+- [x] `\divideontimes` → ⋇
+- [x] `\ominus` → ⊖
+- [x] `\uplus` → ⊎
+- [x] `\boxtimes` → ⊠
+- [x] `\dotplus` → ∔
+- [x] `\oplus` → ⊕
+- [x] `\vee` → ∨
+- [x] `\bullet` → ∙
+- [x] `\doublebarwedge` → ⩞
+- [x] `\otimes` → ⊗
+- [x] `\veebar` → ⊻
+- [x] `\Cap` → ⋒
+- [x] `\doublecap` → ⋒
+- [x] `\oslash` → ⊘
+- [x] `\wedge` → ∧
+- [x] `\cap` → ∩
+- [x] `\doublecup` → ⋓
+- [x] `\pm`
+- [x] `\plusmn`
+- [x] `\wr` → ≀
 
 ### Fractions and Binomials
 
@@ -623,58 +623,58 @@
 
 ### Math Operators
 
-- [ ] `\arcsin`
-- [ ] `\cosec`
-- [ ] `\deg`
-- [ ] `\sec`
-- [ ] `\arccos`
-- [ ] `\cosh`
-- [ ] `\dim`
-- [ ] `\sin`
-- [ ] `\arctan`
-- [ ] `\cot`
-- [ ] `\exp`
-- [ ] `\sinh`
-- [ ] `\arctg`
-- [ ] `\cotg`
-- [ ] `\hom`
-- [ ] `\sh`
-- [ ] `\arcctg`
-- [ ] `\coth`
-- [ ] `\ker`
-- [ ] `\tan`
-- [ ] `\arg`
-- [ ] `\csc`
-- [ ] `\lg`
-- [ ] `\tanh`
-- [ ] `\ch`
-- [ ] `\ctg`
-- [ ] `\ln`
-- [ ] `\tg`
-- [ ] `\cos`
-- [ ] `\cth`
-- [ ] `\log`
-- [ ] `\th`
+- [x] `\arcsin`
+- [x] `\cosec`
+- [x] `\deg`
+- [x] `\sec`
+- [x] `\arccos`
+- [x] `\cosh`
+- [x] `\dim`
+- [x] `\sin`
+- [x] `\arctan`
+- [x] `\cot`
+- [x] `\exp`
+- [x] `\sinh`
+- [x] `\arctg`
+- [x] `\cotg`
+- [x] `\hom`
+- [x] `\sh`
+- [x] `\arcctg`
+- [x] `\coth`
+- [x] `\ker`
+- [x] `\tan`
+- [x] `\arg`
+- [x] `\csc`
+- [x] `\lg`
+- [x] `\tanh`
+- [x] `\ch`
+- [x] `\ctg`
+- [x] `\ln`
+- [x] `\tg`
+- [x] `\cos`
+- [x] `\cth`
+- [x] `\log`
+- [x] `\th`
 - [ ] `\operatorname{f}`
-- [ ] `\argmax`
-- [ ] `\injlim`
-- [ ] `\min`
+- [x] `\argmax`
+- [x] `\injlim`
+- [x] `\min`
 - [ ] `\varinjlim`
-- [ ] `\argmin`
-- [ ] `\lim`
-- [ ] `\plim`
+- [x] `\argmin`
+- [x] `\lim`
+- [x] `\plim`
 - [ ] `\varliminf`
-- [ ] `\det`
-- [ ] `\liminf`
-- [ ] `\Pr`
+- [x] `\det`
+- [x] `\liminf`
+- [x] `\Pr`
 - [ ] `\varlimsup`
-- [ ] `\gcd`
-- [ ] `\limsup`
-- [ ] `\projlim`
+- [x] `\gcd`
+- [x] `\limsup`
+- [x] `\projlim`
 - [ ] `\varprojlim`
-- [ ] `\inf`
-- [ ] `\max`
-- [ ] `\sup`
+- [x] `\inf`
+- [x] `\max`
+- [x] `\sup`
 - [ ] `\operatorname*{f}`
 - [ ] `\operatornamewithlimits{f}`
 - [ ] `\limits`
@@ -687,284 +687,284 @@
 ## Relations
 
 - [ ] `=` → =
-- [ ] `\doteqdot` → ≑
-- [ ] `\lessapprox` → ⪅
-- [ ] `\smile` → ⌣
+- [x] `\doteqdot` → ≑
+- [x] `\lessapprox` → ⪅
+- [x] `\smile` → ⌣
 - [ ] `<` → <
-- [ ] `\eqcirc` → ≖
-- [ ] `\lesseqgtr` → ⋚
-- [ ] `\sqsubset` → ⊏
+- [x] `\eqcirc` → ≖
+- [x] `\lesseqgtr` → ⋚
+- [x] `\sqsubset` → ⊏
 - [ ] `>` → >
-- [ ] `\eqcolon`
-- [ ] `\minuscolon`
-- [ ] `\lesseqqgtr` → ⪋
-- [ ] `\sqsubseteq` → ⊑
-- [ ] `\Eqcolon`
-- [ ] `\minuscoloncolon`
-- [ ] `\lessgtr` → ≶
-- [ ] `\sqsupset` → ⊐
-- [ ] `\approx` → ≈
-- [ ] `\eqqcolon`
-- [ ] `\equalscolon`
-- [ ] `\lesssim` → ≲
-- [ ] `\sqsupseteq` → ⊒
-- [ ] `\approxcolon`
-- [ ] `\Eqqcolon`
-- [ ] `\equalscoloncolon`
-- [ ] `\ll` → ≪
-- [ ] `\Subset` → ⋐
-- [ ] `\approxcoloncolon`
-- [ ] `\eqsim` → ≂
-- [ ] `\lll` → ⋘
-- [ ] `\sub`
-- [ ] `\approxeq` → ≊
-- [ ] `\eqslantgtr` → ⪖
-- [ ] `\llless` → ⋘
-- [ ] `\subseteq`
-- [ ] `\sube`
-- [ ] `\asymp` → ≍
-- [ ] `\eqslantless` → ⪕
-- [ ] `\lt` → <
-- [ ] `\subseteqq` → ⫅
-- [ ] `\backepsilon` → ∍
-- [ ] `\equiv` → ≡
-- [ ] `\succ` → ≻
-- [ ] `\backsim` → ∽
-- [ ] `\fallingdotseq` → ≒
-- [ ] `\models` → ⊨
-- [ ] `\succapprox` → ⪸
-- [ ] `\backsimeq` → ⋍
-- [ ] `\frown` → ⌢
-- [ ] `\multimap` → ⊸
-- [ ] `\succcurlyeq` → ≽
-- [ ] `\between` → ≬
-- [ ] `\ge` → ≥
-- [ ] `\origof` → ⊶
-- [ ] `\succeq` → ⪰
-- [ ] `\bowtie` → ⋈
-- [ ] `\geq` → ≥
-- [ ] `\owns` → ∋
-- [ ] `\succsim` → ≿
-- [ ] `\bumpeq` → ≏
-- [ ] `\geqq` → ≧
-- [ ] `\parallel` → ∥
-- [ ] `\Supset` → ⋑
-- [ ] `\Bumpeq` → ≎
-- [ ] `\geqslant` → ⩾
-- [ ] `\perp` → ⊥
-- [ ] `\circeq` → ≗
-- [ ] `\gg` → ≫
-- [ ] `\pitchfork` → ⋔
-- [ ] `\supseteq`
-- [ ] `\supe`
-- [ ] `\colonapprox`
-- [ ] `\ggg` → ⋙
-- [ ] `\prec` → ≺
-- [ ] `\supseteqq` → ⫆
-- [ ] `\Colonapprox`
-- [ ] `\coloncolonapprox`
-- [ ] `\gggtr` → ⋙
-- [ ] `\precapprox` → ⪷
-- [ ] `\thickapprox` → ≈
-- [ ] `\coloneq`
-- [ ] `\colonminus`
-- [ ] `\gt` → >
-- [ ] `\preccurlyeq` → ≼
-- [ ] `\thicksim` → ∼
-- [ ] `\Coloneq`
-- [ ] `\coloncolonminus`
-- [ ] `\gtrapprox` → ⪆
-- [ ] `\preceq` → ⪯
-- [ ] `\trianglelefteq` → ⊴
-- [ ] `\coloneqq`
-- [ ] `\colonequals`
-- [ ] `\gtreqless` → ⋛
-- [ ] `\precsim` → ≾
-- [ ] `\triangleq` → ≜
-- [ ] `\Coloneqq`
-- [ ] `\coloncolonequals`
-- [ ] `\gtreqqless` → ⪌
-- [ ] `\propto` → ∝
-- [ ] `\trianglerighteq` → ⊵
-- [ ] `\colonsim`
-- [ ] `\gtrless` → ≷
-- [ ] `\risingdotseq` → ≓
-- [ ] `\varpropto` → ∝
-- [ ] `\Colonsim`
-- [ ] `\coloncolonsim`
-- [ ] `\gtrsim` → ≳
-- [ ] `\shortmid` → ∣
-- [ ] `\vartriangle` → △
-- [ ] `\cong` → ≅
-- [ ] `\imageof` → ⊷
-- [ ] `\shortparallel` → ∥
-- [ ] `\vartriangleleft` → ⊲
-- [ ] `\curlyeqprec` → ⋞
-- [ ] `\sim` → ∼
-- [ ] `\vartriangleright` → ⊳
-- [ ] `\curlyeqsucc` → ⋟
-- [ ] `\Join` → ⋈
-- [ ] `\simcolon`
-- [ ] `\vcentcolon`
-- [ ] `\ratio`
-- [ ] `\dashv` → ⊣
-- [ ] `\le` → ≤
-- [ ] `\simcoloncolon`
-- [ ] `\vdash` → ⊢
-- [ ] `\dblcolon`
-- [ ] `\coloncolon`
-- [ ] `\leq` → ≤
-- [ ] `\simeq` → ≃
-- [ ] `\vDash` → ⊨
-- [ ] `\doteq` → ≐
-- [ ] `\leqq` → ≦
-- [ ] `\smallfrown` → ⌢
-- [ ] `\Vdash` → ⊩
-- [ ] `\Doteq` → ≑
-- [ ] `\leqslant` → ⩽
-- [ ] `\smallsmile` → ⌣
-- [ ] `\Vvdash` → ⊪
+- [x] `\eqcolon`
+- [x] `\minuscolon`
+- [x] `\lesseqqgtr` → ⪋
+- [x] `\sqsubseteq` → ⊑
+- [x] `\Eqcolon`
+- [x] `\minuscoloncolon`
+- [x] `\lessgtr` → ≶
+- [x] `\sqsupset` → ⊐
+- [x] `\approx` → ≈
+- [x] `\eqqcolon`
+- [x] `\equalscolon`
+- [x] `\lesssim` → ≲
+- [x] `\sqsupseteq` → ⊒
+- [x] `\approxcolon`
+- [x] `\Eqqcolon`
+- [x] `\equalscoloncolon`
+- [x] `\ll` → ≪
+- [x] `\Subset` → ⋐
+- [x] `\approxcoloncolon`
+- [x] `\eqsim` → ≂
+- [x] `\lll` → ⋘
+- [x] `\sub`
+- [x] `\approxeq` → ≊
+- [x] `\eqslantgtr` → ⪖
+- [x] `\llless` → ⋘
+- [x] `\subseteq`
+- [x] `\sube`
+- [x] `\asymp` → ≍
+- [x] `\eqslantless` → ⪕
+- [x] `\lt` → <
+- [x] `\subseteqq` → ⫅
+- [x] `\backepsilon` → ∍
+- [x] `\equiv` → ≡
+- [x] `\succ` → ≻
+- [x] `\backsim` → ∽
+- [x] `\fallingdotseq` → ≒
+- [x] `\models` → ⊨
+- [x] `\succapprox` → ⪸
+- [x] `\backsimeq` → ⋍
+- [x] `\frown` → ⌢
+- [x] `\multimap` → ⊸
+- [x] `\succcurlyeq` → ≽
+- [x] `\between` → ≬
+- [x] `\ge` → ≥
+- [x] `\origof` → ⊶
+- [x] `\succeq` → ⪰
+- [x] `\bowtie` → ⋈
+- [x] `\geq` → ≥
+- [x] `\owns` → ∋
+- [x] `\succsim` → ≿
+- [x] `\bumpeq` → ≏
+- [x] `\geqq` → ≧
+- [x] `\parallel` → ∥
+- [x] `\Supset` → ⋑
+- [x] `\Bumpeq` → ≎
+- [x] `\geqslant` → ⩾
+- [x] `\perp` → ⊥
+- [x] `\circeq` → ≗
+- [x] `\gg` → ≫
+- [x] `\pitchfork` → ⋔
+- [x] `\supseteq`
+- [x] `\supe`
+- [x] `\colonapprox`
+- [x] `\ggg` → ⋙
+- [x] `\prec` → ≺
+- [x] `\supseteqq` → ⫆
+- [x] `\Colonapprox`
+- [x] `\coloncolonapprox`
+- [x] `\gggtr` → ⋙
+- [x] `\precapprox` → ⪷
+- [x] `\thickapprox` → ≈
+- [x] `\coloneq`
+- [x] `\colonminus`
+- [x] `\gt` → >
+- [x] `\preccurlyeq` → ≼
+- [x] `\thicksim` → ∼
+- [x] `\Coloneq`
+- [x] `\coloncolonminus`
+- [x] `\gtrapprox` → ⪆
+- [x] `\preceq` → ⪯
+- [x] `\trianglelefteq` → ⊴
+- [x] `\coloneqq`
+- [x] `\colonequals`
+- [x] `\gtreqless` → ⋛
+- [x] `\precsim` → ≾
+- [x] `\triangleq` → ≜
+- [x] `\Coloneqq`
+- [x] `\coloncolonequals`
+- [x] `\gtreqqless` → ⪌
+- [x] `\propto` → ∝
+- [x] `\trianglerighteq` → ⊵
+- [x] `\colonsim`
+- [x] `\gtrless` → ≷
+- [x] `\risingdotseq` → ≓
+- [x] `\varpropto` → ∝
+- [x] `\Colonsim`
+- [x] `\coloncolonsim`
+- [x] `\gtrsim` → ≳
+- [x] `\shortmid` → ∣
+- [x] `\vartriangle` → △
+- [x] `\cong` → ≅
+- [x] `\imageof` → ⊷
+- [x] `\shortparallel` → ∥
+- [x] `\vartriangleleft` → ⊲
+- [x] `\curlyeqprec` → ⋞
+- [x] `\sim` → ∼
+- [x] `\vartriangleright` → ⊳
+- [x] `\curlyeqsucc` → ⋟
+- [x] `\Join` → ⋈
+- [x] `\simcolon`
+- [x] `\vcentcolon`
+- [x] `\ratio`
+- [x] `\dashv` → ⊣
+- [x] `\le` → ≤
+- [x] `\simcoloncolon`
+- [x] `\vdash` → ⊢
+- [x] `\dblcolon`
+- [x] `\coloncolon`
+- [x] `\leq` → ≤
+- [x] `\simeq` → ≃
+- [x] `\vDash` → ⊨
+- [x] `\doteq` → ≐
+- [x] `\leqq` → ≦
+- [x] `\smallfrown` → ⌢
+- [x] `\Vdash` → ⊩
+- [x] `\Doteq` → ≑
+- [x] `\leqslant` → ⩽
+- [x] `\smallsmile` → ⌣
+- [x] `\Vvdash` → ⊪
 - [ ] `≔ ≕ ⩴`
 
 ### Negated Relations
 
-- [ ] `\gnapprox` → ⪊
-- [ ] `\ngeqslant` → ≱
-- [ ] `\nsubseteq` → ⊈
-- [ ] `\precneqq` → ⪵
-- [ ] `\gneq` → ⪈
-- [ ] `\ngtr` → ≯
-- [ ] `\nsubseteqq` → ⊈
-- [ ] `\precnsim` → ⋨
-- [ ] `\gneqq` → ≩
-- [ ] `\nleq` → ≰
-- [ ] `\nsucc` → ⊁
-- [ ] `\subsetneq` → ⊊
-- [ ] `\gnsim` → ⋧
-- [ ] `\nleqq` → ≰
-- [ ] `\nsucceq` → ⋡
-- [ ] `\subsetneqq` → ⫋
-- [ ] `\gvertneqq` → ≩
-- [ ] `\nleqslant` → ≰
-- [ ] `\nsupseteq` → ⊉
-- [ ] `\succnapprox` → ⪺
-- [ ] `\lnapprox` → ⪉
-- [ ] `\nless` → ≮
-- [ ] `\nsupseteqq` → ⊉
-- [ ] `\succneqq` → ⪶
-- [ ] `\lneq` → ⪇
-- [ ] `\nmid` → ∤
-- [ ] `\ntriangleleft` → ⋪
-- [ ] `\succnsim` → ⋩
-- [ ] `\lneqq` → ≨
-- [ ] `\ntrianglelefteq` → ⋬
-- [ ] `\supsetneq` → ⊋
-- [ ] `\lnsim` → ⋦
-- [ ] `\ntriangleright` → ⋫
-- [ ] `\supsetneqq` → ⫌
-- [ ] `\lvertneqq` → ≨
-- [ ] `\nparallel` → ∦
-- [ ] `\ntrianglerighteq` → ⋭
-- [ ] `\varsubsetneq` → ⊊
-- [ ] `\ncong` → ≆
-- [ ] `\nprec` → ⊀
-- [ ] `\nvdash` → ⊬
-- [ ] `\varsubsetneqq` → ⫋
-- [ ] `\ne` → ≠
-- [ ] `\npreceq` → ⋠
-- [ ] `\nvDash` → ⊭
-- [ ] `\varsupsetneq` → ⊋
-- [ ] `\neq` → ≠
-- [ ] `\nshortmid` → ∤
-- [ ] `\nVDash` → ⊯
-- [ ] `\varsupsetneqq` → ⫌
-- [ ] `\ngeq` → ≱
-- [ ] `\nshortparallel` → ∦
-- [ ] `\nVdash` → ⊮
-- [ ] `\ngeqq` → ≱
-- [ ] `\nsim` → ≁
-- [ ] `\precnapprox` → ⪹
+- [x] `\gnapprox` → ⪊
+- [x] `\ngeqslant` → ≱
+- [x] `\nsubseteq` → ⊈
+- [x] `\precneqq` → ⪵
+- [x] `\gneq` → ⪈
+- [x] `\ngtr` → ≯
+- [x] `\nsubseteqq` → ⊈
+- [x] `\precnsim` → ⋨
+- [x] `\gneqq` → ≩
+- [x] `\nleq` → ≰
+- [x] `\nsucc` → ⊁
+- [x] `\subsetneq` → ⊊
+- [x] `\gnsim` → ⋧
+- [x] `\nleqq` → ≰
+- [x] `\nsucceq` → ⋡
+- [x] `\subsetneqq` → ⫋
+- [x] `\gvertneqq` → ≩
+- [x] `\nleqslant` → ≰
+- [x] `\nsupseteq` → ⊉
+- [x] `\succnapprox` → ⪺
+- [x] `\lnapprox` → ⪉
+- [x] `\nless` → ≮
+- [x] `\nsupseteqq` → ⊉
+- [x] `\succneqq` → ⪶
+- [x] `\lneq` → ⪇
+- [x] `\nmid` → ∤
+- [x] `\ntriangleleft` → ⋪
+- [x] `\succnsim` → ⋩
+- [x] `\lneqq` → ≨
+- [x] `\ntrianglelefteq` → ⋬
+- [x] `\supsetneq` → ⊋
+- [x] `\lnsim` → ⋦
+- [x] `\ntriangleright` → ⋫
+- [x] `\supsetneqq` → ⫌
+- [x] `\lvertneqq` → ≨
+- [x] `\nparallel` → ∦
+- [x] `\ntrianglerighteq` → ⋭
+- [x] `\varsubsetneq` → ⊊
+- [x] `\ncong` → ≆
+- [x] `\nprec` → ⊀
+- [x] `\nvdash` → ⊬
+- [x] `\varsubsetneqq` → ⫋
+- [x] `\ne` → ≠
+- [x] `\npreceq` → ⋠
+- [x] `\nvDash` → ⊭
+- [x] `\varsupsetneq` → ⊋
+- [x] `\neq` → ≠
+- [x] `\nshortmid` → ∤
+- [x] `\nVDash` → ⊯
+- [x] `\varsupsetneqq` → ⫌
+- [x] `\ngeq` → ≱
+- [x] `\nshortparallel` → ∦
+- [x] `\nVdash` → ⊮
+- [x] `\ngeqq` → ≱
+- [x] `\nsim` → ≁
+- [x] `\precnapprox` → ⪹
 
 ### Arrows
 
-- [ ] `\circlearrowleft` → ↺
-- [ ] `\leftharpoonup` → ↼
-- [ ] `\rArr` → ⇒
-- [ ] `\circlearrowright` → ↻
-- [ ] `\leftleftarrows` → ⇇
-- [ ] `\rarr` → →
-- [ ] `\curvearrowleft` → ↶
-- [ ] `\restriction` → ↾
-- [ ] `\curvearrowright` → ↷
-- [ ] `\Leftrightarrow` → ⇔
-- [ ] `\rightarrow` → →
-- [ ] `\Darr` → ⇓
-- [ ] `\leftrightarrows` → ⇆
-- [ ] `\Rightarrow` → ⇒
-- [ ] `\dArr` → ⇓
-- [ ] `\leftrightharpoons` → ⇋
-- [ ] `\rightarrowtail` → ↣
-- [ ] `\darr` → ↓
-- [ ] `\leftrightsquigarrow` → ↭
-- [ ] `\rightharpoondown` → ⇁
-- [ ] `\dashleftarrow` → ⇠
-- [ ] `\Lleftarrow` → ⇚
-- [ ] `\rightharpoonup` → ⇀
-- [ ] `\dashrightarrow` → ⇢
-- [ ] `\longleftarrow` → ⟵
-- [ ] `\rightleftarrows` → ⇄
-- [ ] `\Longleftarrow` → ⟸
-- [ ] `\rightleftharpoons` → ⇌
-- [ ] `\longleftrightarrow` → ⟷
-- [ ] `\rightrightarrows` → ⇉
-- [ ] `\downdownarrows` → ⇊
-- [ ] `\Longleftrightarrow` → ⟺
-- [ ] `\rightsquigarrow` → ⇝
-- [ ] `\downharpoonleft` → ⇃
-- [ ] `\longmapsto` → ⟼
-- [ ] `\Rrightarrow` → ⇛
-- [ ] `\downharpoonright` → ⇂
-- [ ] `\longrightarrow` → ⟶
-- [ ] `\Rsh` → ↱
-- [ ] `\Longrightarrow` → ⟹
-- [ ] `\searrow` → ↘
-- [ ] `\Harr` → ⇔
-- [ ] `\looparrowleft` → ↫
-- [ ] `\swarrow` → ↙
-- [ ] `\hArr` → ⇔
-- [ ] `\looparrowright` → ↬
-- [ ] `\harr` → ↔
-- [ ] `\Lrarr` → ⇔
-- [ ] `\twoheadleftarrow` → ↞
-- [ ] `\hookleftarrow` → ↩
-- [ ] `\lrArr` → ⇔
-- [ ] `\twoheadrightarrow` → ↠
-- [ ] `\hookrightarrow` → ↪
-- [ ] `\lrarr` → ↔
-- [ ] `\Uarr` → ⇑
-- [ ] `\Lsh` → ↰
-- [ ] `\uArr` → ⇑
-- [ ] `\uarr` → ↑
-- [ ] `\nearrow` → ↗
-- [ ] `\Larr` → ⇐
-- [ ] `\nleftarrow` → ↚
-- [ ] `\lArr` → ⇐
-- [ ] `\nLeftarrow` → ⇍
-- [ ] `\larr` → ←
-- [ ] `\nleftrightarrow` → ↮
-- [ ] `\leadsto` → ⇝
-- [ ] `\nLeftrightarrow` → ⇎
-- [ ] `\upharpoonleft` → ↿
-- [ ] `\leftarrow` → ←
-- [ ] `\nrightarrow` → ↛
-- [ ] `\upharpoonright` → ↾
-- [ ] `\Leftarrow` → ⇐
-- [ ] `\nRightarrow` → ⇏
-- [ ] `\upuparrows` → ⇈
-- [ ] `\leftarrowtail` → ↢
-- [ ] `\nwarrow` → ↖
-- [ ] `\leftharpoondown` → ↽
-- [ ] `\Rarr` → ⇒
+- [x] `\circlearrowleft` → ↺
+- [x] `\leftharpoonup` → ↼
+- [x] `\rArr` → ⇒
+- [x] `\circlearrowright` → ↻
+- [x] `\leftleftarrows` → ⇇
+- [x] `\rarr` → →
+- [x] `\curvearrowleft` → ↶
+- [x] `\restriction` → ↾
+- [x] `\curvearrowright` → ↷
+- [x] `\Leftrightarrow` → ⇔
+- [x] `\rightarrow` → →
+- [x] `\Darr` → ⇓
+- [x] `\leftrightarrows` → ⇆
+- [x] `\Rightarrow` → ⇒
+- [x] `\dArr` → ⇓
+- [x] `\leftrightharpoons` → ⇋
+- [x] `\rightarrowtail` → ↣
+- [x] `\darr` → ↓
+- [x] `\leftrightsquigarrow` → ↭
+- [x] `\rightharpoondown` → ⇁
+- [x] `\dashleftarrow` → ⇠
+- [x] `\Lleftarrow` → ⇚
+- [x] `\rightharpoonup` → ⇀
+- [x] `\dashrightarrow` → ⇢
+- [x] `\longleftarrow` → ⟵
+- [x] `\rightleftarrows` → ⇄
+- [x] `\Longleftarrow` → ⟸
+- [x] `\rightleftharpoons` → ⇌
+- [x] `\longleftrightarrow` → ⟷
+- [x] `\rightrightarrows` → ⇉
+- [x] `\downdownarrows` → ⇊
+- [x] `\Longleftrightarrow` → ⟺
+- [x] `\rightsquigarrow` → ⇝
+- [x] `\downharpoonleft` → ⇃
+- [x] `\longmapsto` → ⟼
+- [x] `\Rrightarrow` → ⇛
+- [x] `\downharpoonright` → ⇂
+- [x] `\longrightarrow` → ⟶
+- [x] `\Rsh` → ↱
+- [x] `\Longrightarrow` → ⟹
+- [x] `\searrow` → ↘
+- [x] `\Harr` → ⇔
+- [x] `\looparrowleft` → ↫
+- [x] `\swarrow` → ↙
+- [x] `\hArr` → ⇔
+- [x] `\looparrowright` → ↬
+- [x] `\harr` → ↔
+- [x] `\Lrarr` → ⇔
+- [x] `\twoheadleftarrow` → ↞
+- [x] `\hookleftarrow` → ↩
+- [x] `\lrArr` → ⇔
+- [x] `\twoheadrightarrow` → ↠
+- [x] `\hookrightarrow` → ↪
+- [x] `\lrarr` → ↔
+- [x] `\Uarr` → ⇑
+- [x] `\Lsh` → ↰
+- [x] `\uArr` → ⇑
+- [x] `\uarr` → ↑
+- [x] `\nearrow` → ↗
+- [x] `\Larr` → ⇐
+- [x] `\nleftarrow` → ↚
+- [x] `\lArr` → ⇐
+- [x] `\nLeftarrow` → ⇍
+- [x] `\larr` → ←
+- [x] `\nleftrightarrow` → ↮
+- [x] `\leadsto` → ⇝
+- [x] `\nLeftrightarrow` → ⇎
+- [x] `\upharpoonleft` → ↿
+- [x] `\leftarrow` → ←
+- [x] `\nrightarrow` → ↛
+- [x] `\upharpoonright` → ↾
+- [x] `\Leftarrow` → ⇐
+- [x] `\nRightarrow` → ⇏
+- [x] `\upuparrows` → ⇈
+- [x] `\leftarrowtail` → ↢
+- [x] `\nwarrow` → ↖
+- [x] `\leftharpoondown` → ↽
+- [x] `\Rarr` → ⇒
 
 #### Extensible Arrows
 
@@ -1093,120 +1093,120 @@
 ## Symbols and Punctuation
 
 - [ ] `% comment`
-- [ ] `\dots` → …
+- [x] `\dots` → …
 - [ ] `\KaTeX`
-- [ ] `\%` → %
-- [ ] `\cdots` → ⋯
-- [ ] `\LaTeX`
-- [ ] `\#` → #
-- [ ] `\ddots` → ⋱
-- [ ] `\TeX`
-- [ ] `\&` → &
-- [ ] `\ldots` → …
-- [ ] `\_` → _
-- [ ] `\vdots`
-- [ ] `\infty` → ∞
-- [ ] `\text{\textunderscore}`
-- [ ] `\dotsb` → ⋯
-- [ ] `\infin` → ∞
-- [ ] `\text{--}`
-- [ ] `\dotsc` → …
-- [ ] `\checkmark` → ✓
-- [ ] `\text{\textendash}`
-- [ ] `\dotsi`
-- [ ] `\dag` → †
-- [ ] `\text{---}`
-- [ ] `\dotsm` → ⋯
-- [ ] `\dagger` → †
-- [ ] `\text{\textemdash}`
-- [ ] `\dotso` → …
-- [ ] `\text{\textdagger}`
-- [ ] `\text{\textasciitilde}`
-- [ ] `\sdot` → ⋅
-- [ ] `\ddag` → ‡
-- [ ] `\text{\textasciicircum}`
-- [ ] `\mathellipsis` → …
-- [ ] `\ddagger` → ‡
+- [x] `\%` → %
+- [x] `\cdots` → ⋯
+- [x] `\LaTeX`
+- [x] `\#` → #
+- [x] `\ddots` → ⋱
+- [x] `\TeX`
+- [x] `\&` → &
+- [x] `\ldots` → …
+- [x] `\_` → _
+- [x] `\vdots`
+- [x] `\infty` → ∞
+- [x] `\text{\textunderscore}`
+- [x] `\dotsb` → ⋯
+- [x] `\infin` → ∞
+- [x] `\text{--}`
+- [x] `\dotsc` → …
+- [x] `\checkmark` → ✓
+- [x] `\text{\textendash}`
+- [x] `\dotsi`
+- [x] `\dag` → †
+- [x] `\text{---}`
+- [x] `\dotsm` → ⋯
+- [x] `\dagger` → †
+- [x] `\text{\textemdash}`
+- [x] `\dotso` → …
+- [x] `\text{\textdagger}`
+- [x] `\text{\textasciitilde}`
+- [x] `\sdot` → ⋅
+- [x] `\ddag` → ‡
+- [x] `\text{\textasciicircum}`
+- [x] `\mathellipsis` → …
+- [x] `\ddagger` → ‡
 - [ ] `` ` `` → ‘
-- [ ] `\text{\textellipsis}` → …
-- [ ] `\text{\textdaggerdbl}`
-- [ ] `\text{\textquoteleft}`
-- [ ] `\Box` → □
-- [ ] `\Dagger` → ‡
-- [ ] `\lq` → ‘
-- [ ] `\square` → □
-- [ ] `\angle` → ∠
-- [ ] `\text{\textquoteright}`
-- [ ] `\blacksquare` → ■
-- [ ] `\measuredangle` → ∡
-- [ ] `\rq`
-- [ ] `\triangle` → △
-- [ ] `\sphericalangle` → ∢
-- [ ] `\text{\textquotedblleft}`
-- [ ] `\triangledown` → ▽
-- [ ] `\top` → ⊤
+- [x] `\text{\textellipsis}` → …
+- [x] `\text{\textdaggerdbl}`
+- [x] `\text{\textquoteleft}`
+- [x] `\Box` → □
+- [x] `\Dagger` → ‡
+- [x] `\lq` → ‘
+- [x] `\square` → □
+- [x] `\angle` → ∠
+- [x] `\text{\textquoteright}`
+- [x] `\blacksquare` → ■
+- [x] `\measuredangle` → ∡
+- [x] `\rq`
+- [x] `\triangle` → △
+- [x] `\sphericalangle` → ∢
+- [x] `\text{\textquotedblleft}`
+- [x] `\triangledown` → ▽
+- [x] `\top` → ⊤
 - [ ] `"` → "
-- [ ] `\triangleleft` → ◃
-- [ ] `\bot` → ⊥
-- [ ] `\text{\textquotedblright}`
-- [ ] `\triangleright` → ▹
-- [ ] `\$` → $
-- [ ] `\colon`
-- [ ] `\bigtriangledown` → ▽
-- [ ] `\text{\textdollar}`
-- [ ] `\backprime` → ‵
-- [ ] `\bigtriangleup` → △
-- [ ] `\pounds` → £
-- [ ] `\prime` → ′
-- [ ] `\blacktriangle` → ▲
-- [ ] `\mathsterling` → £
-- [ ] `\text{\textless}`
-- [ ] `\blacktriangledown` → ▼
-- [ ] `\text{\textsterling}`
-- [ ] `\text{\textgreater}`
-- [ ] `\blacktriangleleft` → ◀
-- [ ] `\yen` → ¥
-- [ ] `\text{\textbar}`
-- [ ] `\blacktriangleright` → ▶
-- [ ] `\surd` → √
-- [ ] `\text{\textbardbl}`
-- [ ] `\diamond` → ⋄
-- [ ] `\degree` → °
-- [ ] `\text{\textbraceleft}`
-- [ ] `\Diamond` → ◊
-- [ ] `\text{\textdegree}`
-- [ ] `\text{\textbraceright}`
-- [ ] `\lozenge` → ◊
-- [ ] `\mho` → ℧
-- [ ] `\text{\textbackslash}`
-- [ ] `\blacklozenge` → ⧫
-- [ ] `\diagdown` → ╲
-- [ ] `\text{\P}`
-- [ ] `\P`
-- [ ] `\star` → ⋆
-- [ ] `\diagup` → ╱
-- [ ] `\text{\S}`
-- [ ] `\S`
-- [ ] `\bigstar` → ★
-- [ ] `\flat` → ♭
-- [ ] `\text{\sect}`
-- [ ] `\clubsuit` → ♣
-- [ ] `\natural` → ♮
-- [ ] `\copyright`
-- [ ] `\clubs` → ♣
-- [ ] `\sharp` → ♯
-- [ ] `\circledR` → ®
-- [ ] `\diamondsuit` → ♢
-- [ ] `\heartsuit` → ♡
-- [ ] `\text{\textregistered}`
-- [ ] `\diamonds` → ♢
-- [ ] `\hearts` → ♡
-- [ ] `\circledS` → Ⓢ
-- [ ] `\spadesuit` → ♠
-- [ ] `\spades` → ♠
+- [x] `\triangleleft` → ◃
+- [x] `\bot` → ⊥
+- [x] `\text{\textquotedblright}`
+- [x] `\triangleright` → ▹
+- [x] `\$` → $
+- [x] `\colon`
+- [x] `\bigtriangledown` → ▽
+- [x] `\text{\textdollar}`
+- [x] `\backprime` → ‵
+- [x] `\bigtriangleup` → △
+- [x] `\pounds` → £
+- [x] `\prime` → ′
+- [x] `\blacktriangle` → ▲
+- [x] `\mathsterling` → £
+- [x] `\text{\textless}`
+- [x] `\blacktriangledown` → ▼
+- [x] `\text{\textsterling}`
+- [x] `\text{\textgreater}`
+- [x] `\blacktriangleleft` → ◀
+- [x] `\yen` → ¥
+- [x] `\text{\textbar}`
+- [x] `\blacktriangleright` → ▶
+- [x] `\surd` → √
+- [x] `\text{\textbardbl}`
+- [x] `\diamond` → ⋄
+- [x] `\degree` → °
+- [x] `\text{\textbraceleft}`
+- [x] `\Diamond` → ◊
+- [x] `\text{\textdegree}`
+- [x] `\text{\textbraceright}`
+- [x] `\lozenge` → ◊
+- [x] `\mho` → ℧
+- [x] `\text{\textbackslash}`
+- [x] `\blacklozenge` → ⧫
+- [x] `\diagdown` → ╲
+- [x] `\text{\P}`
+- [x] `\P`
+- [x] `\star` → ⋆
+- [x] `\diagup` → ╱
+- [x] `\text{\S}`
+- [x] `\S`
+- [x] `\bigstar` → ★
+- [x] `\flat` → ♭
+- [x] `\text{\sect}`
+- [x] `\clubsuit` → ♣
+- [x] `\natural` → ♮
+- [x] `\copyright`
+- [x] `\clubs` → ♣
+- [x] `\sharp` → ♯
+- [x] `\circledR` → ®
+- [x] `\diamondsuit` → ♢
+- [x] `\heartsuit` → ♡
+- [x] `\text{\textregistered}`
+- [x] `\diamonds` → ♢
+- [x] `\hearts` → ♡
+- [x] `\circledS` → Ⓢ
+- [x] `\spadesuit` → ♠
+- [x] `\spades` → ♠
 - [ ] `\text{\textcircled a}`
-- [ ] `\maltese` → ✠
-- [ ] `\minuso` → ⦵
+- [x] `\maltese` → ✠
+- [x] `\minuso` → ⦵
 
 ## Units
 

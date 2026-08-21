@@ -26,6 +26,20 @@ RENDER_CASES = [
          𝑐 𝑑"""),
     ),
     (
+        "matrix_in_left_right",
+        r"\left( \begin{matrix} a & b \\ c & d \end{matrix} \right)",
+        art("""\
+         ⎛𝑎 𝑏⎞
+         ⎝𝑐 𝑑⎠"""),
+    ),
+    (
+        "array_in_left_right",
+        r"\left\{ \begin{array}{cc} 1 & 2 \\ 3 & 4 \end{array} \right\}",
+        art("""\
+         ⎧1 2⎫
+         ⎩3 4⎭"""),
+    ),
+    (
         "pmatrix",
         r"\begin{pmatrix} a & b \\ c & d \end{pmatrix}",
         art("""\
