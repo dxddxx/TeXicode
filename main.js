@@ -1,11 +1,9 @@
 async function main() {
-  // Original textarea elements
   const input = document.getElementById("input");
   const output = document.getElementById("output");
   const fontToggle = document.getElementById("font-toggle");
   const demoTex = input.placeholder;
 
-  // input.disabled = true;
   output.disabled = true;
   output.value = "Loading Pyodide...";
 
@@ -13,7 +11,6 @@ async function main() {
 
   output.value = "Loading TeXicode...";
   const files = [
-    "texicode/__init__.py",
     "texicode/arts.py",
     "texicode/lexer.py",
     "texicode/main.py",
@@ -33,16 +30,14 @@ async function main() {
 
   for (const f of files) {
     const resp = await fetch(`./src/${f}`);
-    const code = await resp.text();
-    // write into the same path inside the virtual FS so package-relative imports work
-    pyodide.FS.writeFile(f, code);
+    pyodide.FS.writeFile(f, await resp.text());
   }
 
+  // Some static hosts omit __init__.py; fall back to a shim if missing.
   try {
     const respInit = await fetch('./src/texicode/__init__.py');
     if (respInit.ok) {
-      const initCode = await respInit.text();
-      pyodide.FS.writeFile('texicode/__init__.py', initCode);
+      pyodide.FS.writeFile('texicode/__init__.py', await respInit.text());
     } else {
       pyodide.FS.writeFile('texicode/__init__.py', 'from .main import main\n');
     }
@@ -69,6 +64,8 @@ render_tex_web = mod.render_tex_web
       mode: 'stex',
       theme: 'dracula',
       keyMap: 'vim',
+      placeholder: input.placeholder,
+      lineWrapping: true,
       showCursorWhenSelecting: true,
       lineNumbers: false,
       viewportMargin: Infinity,
@@ -76,14 +73,14 @@ render_tex_web = mod.render_tex_web
     });
 
     editor.setSize('100%', '100%');
-    // Ensure theme class is present and refresh the editor
+    // Keep the editor in sync with the app theme.
     try {
       editor.getWrapperElement().classList.add('cm-s-dracula');
       editor.setOption('theme', 'dracula');
       editor.refresh();
     } catch (e) {}
 
-    // Enter insert mode by default
+    // Vim mode starts in insert mode.
     setTimeout(() => {
       try {
         if (editor.getOption('keyMap') === 'vim' && typeof CodeMirror.Vim !== 'undefined') {
@@ -93,6 +90,45 @@ render_tex_web = mod.render_tex_web
     }, 50);
   }
 
+  // CodeMirror's block cursor is empty; draw the character under the cursor
+  // inside it, otherwise the letter is invisible on the white block.
+  function syncFatCursorText() {
+    if (!editor) return;
+    try {
+      const wrapper = editor.getWrapperElement();
+      if (!wrapper.classList.contains('cm-fat-cursor')) return;
+      const pos = editor.getCursor();
+      const line = editor.getLine(pos.line) || "";
+      const codePoint = line.codePointAt(pos.ch);
+      const ch = codePoint === undefined ? " " : String.fromCodePoint(codePoint);
+      for (const el of wrapper.querySelectorAll(".CodeMirror-cursor")) {
+        if (el.textContent !== ch) el.textContent = ch;
+      }
+    } catch (e) {}
+  }
+
+  if (editor) {
+    editor.on("cursorActivity", syncFatCursorText);
+    editor.on("update", syncFatCursorText);
+    editor.on("focus", syncFatCursorText);
+
+    // Escape does not always move the cursor, so sync right away.
+    editor.getInputField().addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setTimeout(syncFatCursorText, 0);
+    });
+
+    // Re-fill the cursor whenever CodeMirror redraws it as a blank box.
+    const wrapper = editor.getWrapperElement();
+    const cursorObserver = new MutationObserver(syncFatCursorText);
+    cursorObserver.observe(wrapper, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
+
+    setTimeout(syncFatCursorText, 100);
+  }
+
   async function updatePlaceholder() {
     const placeholder = await pyodide.runPythonAsync(
       `render_tex_web(${JSON.stringify(demoTex)}, ${isNormalFont ? "True" : "False"})`
@@ -100,19 +136,15 @@ render_tex_web = mod.render_tex_web
     output.placeholder = placeholder ?? "";
   }
 
-  // NEW: call once after load
   await updatePlaceholder();
 
-  // listen for font toggle
   fontToggle.addEventListener("change", async () => {
     isNormalFont = fontToggle.checked;
     await updatePlaceholder();
-    updateOutput();  // re-render immediately
+    updateOutput();
   });
 
-  // listen for input change
   let timeoutId;
-  // Use CodeMirror change event when available; fall back to textarea input
   if (editor) {
     editor.on('change', () => {
       clearTimeout(timeoutId);
@@ -127,14 +159,9 @@ render_tex_web = mod.render_tex_web
 
   async function updateOutput() {
     try {
-      // const result = await pyodide.runPythonAsync(
-      //   `render_tex_web(${JSON.stringify(input.value)})`
-      // );
       const currentText = editor ? editor.getValue() : input.value;
-      const texString = JSON.stringify(currentText);
-
       const result = await pyodide.runPythonAsync(
-        `render_tex_web(${texString}, ${isNormalFont ? "True" : "False"})`
+        `render_tex_web(${JSON.stringify(currentText)}, ${isNormalFont ? "True" : "False"})`
       );
 
       output.value = result ?? "";
@@ -151,13 +178,11 @@ render_tex_web = mod.render_tex_web
     const btn = document.getElementById(btnId);
     const txt = document.getElementById(txtId);
     btn.addEventListener("click", async () => {
-      // for copy-input, use CodeMirror content if available
       let textToCopy = txt.value;
       if (btnId === 'copy-input' && editor) {
         textToCopy = editor.getValue();
       }
       await navigator.clipboard.writeText(textToCopy);
-      const orig = btn.textContent;
       btn.textContent = "Copied!";
       setTimeout(() => (btn.textContent = "Copy"), 1500);
     });

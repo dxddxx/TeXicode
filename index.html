@@ -4,29 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TeXicode</title>
-    <!--<script src="https://cdn.jsdelivr.net/npm/pyodide@0.29.0/pyodide.min.js"></script>-->
     <script src="./pyodide/pyodide.js"></script>
-    <!-- CodeMirror (v5) for enhanced input -- loaded from CDN -->
+    <!-- CodeMirror (v5) for the input editor -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/lib/codemirror.css">
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/lib/codemirror.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/mode/stex/stex.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/keymap/vim.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/addon/display/placeholder.js"></script>
-    <!-- Dark theme for CodeMirror -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.14/theme/dracula.css">
-
-    <!-- Monochrome theme for LaTeX: black/white only -->
-    <style>
-    .CodeMirror { height: 100%; }
-    /* Use app's textarea colors for the editor background/text so it matches the site */
-    .cm-s-dracula.CodeMirror { background: var(--textarea-bg) !important; color: var(--textarea-fg) !important; }
-    .cm-s-dracula .CodeMirror-lines { color: var(--textarea-fg) !important; }
-    /* Cursor styles reverted to defaults */
-    /* Make editor occupy full panel space */
-    .panel .CodeMirror { height: 100% !important; }
-    /* hide original textarea when CodeMirror is active */
-    textarea#input { display: none; }
-    </style>
     <link rel="stylesheet" href="style.css">
   </head>
 <body>
