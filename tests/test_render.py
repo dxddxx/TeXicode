@@ -33,6 +33,44 @@ RENDER_CASES = [
          ⎝𝑐 𝑑⎠"""),
     ),
     (
+        "matrix_in_double_dollars",
+        r"$$ \begin{matrix} a & b \\ c & d \end{matrix} $$",
+        art("""\
+         𝑎 𝑏
+         𝑐 𝑑"""),
+    ),
+    (
+        "matrix_in_brackets",
+        r"\[ \begin{matrix} a & b \\ c & d \end{matrix} \]",
+        art("""\
+         𝑎 𝑏
+         𝑐 𝑑"""),
+    ),
+    (
+        "matrix_in_parens",
+        r"\( \begin{matrix} a & b \\ c & d \end{matrix} \)",
+        art("""\
+         𝑎 𝑏
+         𝑐 𝑑"""),
+    ),
+    (
+        "matrix_in_dollars",
+        r"$ \begin{matrix} a & b \\ c & d \end{matrix} $",
+        art("""\
+         𝑎 𝑏
+         𝑐 𝑑"""),
+    ),
+    (
+        "sum_limits",
+        r"\sum\limits_{i=1}^n x",
+        art("""\
+          ₙ
+         ┰─╴
+         ▐╸ 𝑥
+         ┸─╴
+         ⁱ⁼¹"""),
+    ),
+    (
         "array_in_left_right",
         r"\left\{ \begin{array}{cc} 1 & 2 \\ 3 & 4 \end{array} \right\}",
         art("""\
