@@ -3,6 +3,8 @@ from . import node_data, arts, symbols_art
 
 def util_revert_font(char: str) -> str:
     # if char.isascii():
+    if len(char) != 1:
+        return char
     if ord(char) < 128:
         return char
     for alphabet in arts.alphabets.values():
@@ -20,15 +22,16 @@ def util_font(font_val: str, children: list) -> tuple:
     for row in sketch:
         new_row = []
         for char in row:
-            char = util_revert_font(char)
-            if char not in arts.alphabets["normal"]:
+            base_char = util_revert_font(char[0]) if char else char
+            combining = char[1:]
+            if base_char not in arts.alphabets["normal"]:
                 new_row.append(char)
                 continue
-            if 'A' <= char <= 'Z':
-                alpha_id = ord(char) - ord('A')
-            elif 'a' <= char <= 'z':
-                alpha_id = ord(char) - ord('a') + 26
-            new_row.append(arts.font[font_val][alpha_id])
+            if 'A' <= base_char <= 'Z':
+                alpha_id = ord(base_char) - ord('A')
+            elif 'a' <= base_char <= 'z':
+                alpha_id = ord(base_char) - ord('a') + 26
+            new_row.append(arts.font[font_val][alpha_id] + combining)
         new_sketch.append(new_row)
     return new_sketch, horizon
 
@@ -211,7 +214,9 @@ def util_delimiter(delim_type, height: int, horizon: int) -> tuple:
         return [delim_type], 0
 
     if height == 2 and delim_type in ["{", "}"]:
-        return [delim_art["top"], delim_art["btm"]], horizon
+        # Curly braces need the middle piece, so a 2-line inside is
+        # wrapped with the full 3-line brace.
+        height = 3
 
     center = horizon
     if center == 0:
@@ -389,17 +394,42 @@ def render_fraction(children: list) -> tuple:
 
 def render_accents(token: tuple, children: list) -> tuple:
     accent_val = token[1]
-    u_hex = {"acute": "\u0302", "bar": "\u0304", "breve": "\u0306",
-             "check": "\u030C", "ddot": "\u0308", "dot": "\u0307",
-             "grave": "\u0300", "hat": "\u0302", "mathring": "\u030A",
-             "tilde": "\u0303", "vec": "\u20D7", "widehat": "\u0302",
-             "widetilde": "\u0360"}[accent_val]
     sketch = children[0][0]
-    first_char = sketch[0][0] + u_hex
-    # finally fixed ugly ass combining char lets goooo
-    first_row = [first_char] + sketch[0][1:]
-    sketch = [first_row] + sketch[1:]
-    return sketch, children[0][1]
+    width = len(sketch[0])
+    if width == 0:
+        return children[0]
+    stretchy = arts.stretchy_accents.get(accent_val)
+
+    if stretchy is None or width <= stretchy["combining_width"]:
+        if stretchy is not None and "single" in stretchy:
+            accent_row = [stretchy["single"]]
+            if stretchy["placement"] == "top":
+                return util_vert_pile([accent_row], sketch,
+                                      children[0][1], [[]], "center")
+            return util_vert_pile([[]], sketch, children[0][1],
+                                  [accent_row], "center")
+        combining = arts.accents[accent_val][1:]
+        first_row = sketch[0]
+        center_index = (width - 1) // 2
+        first_row = (first_row[:center_index]
+                     + [first_row[center_index] + combining]
+                     + first_row[center_index + 1:])
+        return [first_row] + sketch[1:], children[0][1]
+
+    if width == 1:
+        accent_row = [stretchy["single"]]
+    else:
+        accent_row = ([stretchy["left"]]
+                      + [stretchy["fill"]] * (width - 2)
+                      + [stretchy["right"]])
+        if "center" in stretchy:
+            center_index = (width - 1) // 2
+            accent_row[center_index] = stretchy["center"]
+
+    if stretchy["placement"] == "top":
+        return util_vert_pile([accent_row], sketch, children[0][1],
+                              [[]], "left")
+    return util_vert_pile([[]], sketch, children[0][1], [accent_row], "left")
 
 
 def util_onechar_square_root(children: list) -> tuple:
@@ -485,7 +515,7 @@ def render_rows(children: list, child_nodes: list, aligns: list,
 
 
 def render_root(children: list, child_nodes: list) -> tuple:
-    """Stack the outermost lines and add the leading pad.
+    """Stack the outermost lines.
 
     Display wrappers render complete line blocks, so they start new lines;
     everything else is inline content that joins the current line.
@@ -518,7 +548,7 @@ def render_root(children: list, child_nodes: list) -> tuple:
         line_nodes = [node for node, _ in line]
         line_canvases = [canvas for _, canvas in line]
         row_sketches.append(
-            render_rows(line_canvases, line_nodes, ["l"], 0, False, True))
+            render_rows(line_canvases, line_nodes, ["l"], 0, False, False))
 
     sketch = None
     horizon = 0
@@ -711,6 +741,12 @@ def render_begin(token: tuple, children: list, child_nodes: list,
     sketch, horizon = util_assemble_grid(
         cells, row_starts, num_rows, num_cols, aligns, gap, blank_rows,
         pad_left, row_skies, row_ocns, col_widths)
+
+    if (left_delim == "{" or right_delim == "}") and len(sketch) == 2:
+        # 2-row curly-braced environments get a blank row in the middle so
+        # the brace can use its full 3-piece form.
+        sketch = [sketch[0], [arts.bg] * len(sketch[0]), sketch[1]]
+        horizon = 1
 
     if left_delim or right_delim:
         left = util_delimiter(left_delim or ".", len(sketch), horizon)

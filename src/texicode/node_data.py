@@ -74,13 +74,66 @@ type_dict = {
 
     ("cmnd", "binom"): "cmd_binom", ("cmnd", "dbinom"): "cmd_binom",
 
-    ("cmnd",  "limits"): "cmd_lmts", ("cmnd",     "acute"): "cmd_acnt",
-    ("cmnd",     "bar"): "cmd_acnt", ("cmnd",     "breve"): "cmd_acnt",
-    ("cmnd",   "check"): "cmd_acnt", ("cmnd",      "ddot"): "cmd_acnt",
-    ("cmnd",     "dot"): "cmd_acnt", ("cmnd",     "grave"): "cmd_acnt",
-    ("cmnd",     "hat"): "cmd_acnt", ("cmnd",  "mathring"): "cmd_acnt",
-    ("cmnd",   "tilde"): "cmd_acnt", ("cmnd",       "vec"): "cmd_acnt",
-    ("cmnd", "widehat"): "cmd_acnt", ("cmnd", "widetilde"): "cmd_acnt",
+    ("cmnd",  "limits"): "cmd_lmts",
+
+    # Accent commands, ordered like the Accents section in katex-supported.md.
+    ("cmnd",       "tilde"): "cmd_acnt",
+    ("cmnd",    "mathring"): "cmd_acnt",
+    ("cmnd",  "widetilde"): "cmd_acnt",
+    ("cmnd",   "overgroup"): "cmd_acnt",
+    ("cmnd",      "utilde"): "cmd_acnt",
+    ("cmnd",  "undergroup"): "cmd_acnt",
+    ("cmnd",      "acute"): "cmd_acnt",
+    ("cmnd",        "vec"): "cmd_acnt",
+    ("cmnd", "Overrightarrow"): "cmd_acnt",  # big accent
+    ("cmnd",        "bar"): "cmd_acnt",
+    ("cmnd", "overleftarrow"): "cmd_acnt",
+    ("cmnd", "overrightarrow"): "cmd_acnt",
+    ("cmnd",      "breve"): "cmd_acnt",
+    ("cmnd", "underleftarrow"): "cmd_acnt",
+    ("cmnd", "underrightarrow"): "cmd_acnt",
+    ("cmnd",      "check"): "cmd_acnt",
+    ("cmnd", "overleftharpoon"): "cmd_acnt",
+    ("cmnd", "overrightharpoon"): "cmd_acnt",
+    ("cmnd",        "dot"): "cmd_acnt",
+    ("cmnd", "overleftrightarrow"): "cmd_acnt",
+    ("cmnd", "overbrace"): "cmd_acnt",  # big accent
+    ("cmnd",       "ddot"): "cmd_acnt",
+    ("cmnd", "underleftrightarrow"): "cmd_acnt",
+    ("cmnd", "underbrace"): "cmd_acnt",  # big accent
+    ("cmnd",      "dddot"): "cmd_acnt",
+    ("cmnd",    "overline"): "cmd_acnt",
+    ("cmnd", "overbracket"): "cmd_acnt",
+    ("cmnd",     "ddddot"): "cmd_acnt",
+    ("cmnd",   "underline"): "cmd_acnt",
+    ("cmnd", "underbracket"): "cmd_acnt",
+    ("cmnd",      "grave"): "cmd_acnt",
+    ("cmnd",     "underbar"): "cmd_acnt",
+    ("cmnd", "overlinesegment"): "cmd_acnt",  # big accent
+    ("cmnd",        "hat"): "cmd_acnt",
+    ("cmnd", "widecheck"): "cmd_acnt",
+    ("cmnd", "underlinesegment"): "cmd_acnt",  # big accent
+    ("cmnd",    "widehat"): "cmd_acnt",
+
+    # Accent functions inside \text{...}, in Markdown order.
+    ("cmnd",          "'"): "cmd_acnt",
+    ("cmnd",           "~"): "cmd_acnt",
+    ("cmnd",           "."): "cmd_acnt",
+    ("cmnd",           "H"): "cmd_acnt",
+    ("cmnd",           "`"): "cmd_acnt",
+    ("cmnd",           "="): "cmd_acnt",
+    ("cmnd",           '"'): "cmd_acnt",
+    ("cmnd",           "v"): "cmd_acnt",
+    ("cmnd",           "^"): "cmd_acnt",
+    ("cmnd",           "u"): "cmd_acnt",
+    ("cmnd",           "r"): "cmd_acnt",
+
+    # Commands from the Annotation section of katex-supported.md.
+    ("cmnd",      "cancel"): "cmd_acnt",
+    ("cmnd",     "bcancel"): "cmd_acnt",
+    ("cmnd",     "xcancel"): "cmd_acnt",
+    ("cmnd",        "sout"): "cmd_acnt",
+    ("cmnd",        "angl"): "cmd_acnt",
 
     ("cmnd",  "mathrm"): "cmd_font", ("cmnd",     "mathbf"): "cmd_font",
     ("cmnd",  "mathsf"): "cmd_font", ("cmnd",     "mathtt"): "cmd_font",

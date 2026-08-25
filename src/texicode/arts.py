@@ -170,6 +170,169 @@ square_root = {
 }
 
 # Change to list format for superscript/subscript pairs
+# Combining characters used by accent commands
+accents = {
+    # Ordered like the Accents section in katex-supported.md.
+    "tilde": "ã",  # U+0303 combining tilde
+    "mathring": "å",  # U+030A combining ring above
+    "widetilde": "a͠",  # U+0360 combining double tilde, 2 wide accent
+    "overgroup": "a͡",  # U+0361 combining double inverted breve, 2 wide accent
+    "utilde": "a̰",  # U+0330 combining tilde below
+    "undergroup": "a͜",  # U+0330 combining tilde below
+    "acute": "á",  # U+0301 combining acute accent
+    "vec": "a⃗",  # U+20D7 combining right arrow above
+    # "Overrightarrow": "a⃗",  # big accent; requires a separate row
+    "bar": "ā",  # U+0304 combining macron
+    "overleftarrow": "a⃖",  # U+20D6 combining left arrow above
+    "overrightarrow": "a⃗",  # U+20D7 combining right arrow above
+    "breve": "ă",  # U+0306 combining breve
+    "underleftarrow": "a⃮",  # U+20EE combining left arrow below
+    "underrightarrow": "a⃯",  # U+20EF combining right arrow below
+    "check": "ǎ",  # U+030C combining caron
+    "overleftharpoon": "a⃐",  # U+20D0 combining left harpoon above
+    "overrightharpoon": "a⃑",  # U+20D1 combining right harpoon above
+    "dot": "ȧ",  # U+0307 combining dot above
+    "overleftrightarrow": "a⃡",  # U+20E1 combining left right arrow above
+    # "overbrace": "a͡",  # big accent; requires a separate row
+    "ddot": "ä",  # U+0308 combining diaeresis
+    "underleftrightarrow": "a͍",  # U+034D combining left right arrow below
+    # "underbrace": "a͜",  # big accent; requires a separate row
+    "dddot": "a⃛",  # U+20DB combining three dots above
+    "overline": "a̅",  # U+0305 combining overline
+    "overbracket": "a⃩",  # U+20E9 combining wide bridge above
+    "ddddot": "a⃜",  # U+20DC combining four dots above
+    "underline": "a̲",  # U+0332 combining low line
+    "underbracket": "a᷹",  # U+1DF9 combining wide inverted bridge below
+    "grave": "à",  # U+0300 combining grave accent
+    "underbar": "a̲",  # U+0332 combining low line
+    # "overlinesegment": "a̅",  # big accent; requires a separate row
+    "hat": "â",  # U+0302 combining circumflex accent
+    "widecheck": "ǎ",  # U+030C combining caron
+    # "underlinesegment": "a̲",  # big accent; requires a separate row
+    "widehat": "â",  # U+0302 combining circumflex accent
+
+    # Accent functions inside \text{...}, in Markdown order.
+    "'": "á",  # U+0301 combining acute accent
+    "~": "ã",  # U+0303 combining tilde
+    ".": "ȧ",  # U+0307 combining dot above
+    "H": "a̋",  # U+030B combining double acute accent
+    "`": "à",  # U+0300 combining grave accent
+    "=": "ā",  # U+0304 combining macron
+    '"': "ä",  # U+0308 combining diaeresis
+    "v": "ǎ",  # U+030C combining caron
+    "^": "â",  # U+0302 combining circumflex accent
+    "u": "ă",  # U+0306 combining breve
+    "r": "å",  # U+030A combining ring above
+
+    # Commands from the Annotation section of katex-supported.md.
+    "cancel": "a̸",  # U+0338 combining long solidus overlay
+    "bcancel": "a⃥",  # U+20E5 combining reverse solidus overlay
+    "xcancel": "a̸⃥",  # long solidus and reverse solidus overlays
+    "sout": "a̶",  # U+0336 combining long stroke overlay
+    "angl": "a⃧",  # U+031A combining left angle above
+}
+
+# Stretchy accent rows.  Each entry stores the placement, the maximum width
+# for its combining fallback, and the optional single-cell/left/fill/right
+# art used when the accent needs its own row.
+stretchy_accents = {
+    # Ordered like the stretchy entries in the Accents section.
+    "widetilde": {
+        "placement": "top", "combining_width": 2,
+        "left": "~", "fill": "~", "right": "~",
+    },
+    "overgroup": {
+        "placement": "top", "combining_width": 2,
+        "left": "╭", "fill": "─", "right": "╮",
+    },
+    "utilde": {
+        "placement": "bottom", "combining_width": 1,
+        "left": "~", "fill": "~", "right": "~",
+    },
+    "undergroup": {
+        "placement": "bottom", "combining_width": 1,
+        "left": "╰", "fill": "─", "right": "╯",
+    },
+    "Overrightarrow": {
+        "placement": "top", "combining_width": 0,
+        "single": "⇒", "left": "═", "fill": "═", "right": "⟹",
+    },
+    "overleftarrow": {
+        "placement": "top", "combining_width": 1,
+        "left": "←", "fill": "─", "right": "─",
+    },
+    "overrightarrow": {
+        "placement": "top", "combining_width": 1,
+        "left": "─", "fill": "─", "right": "→",
+    },
+    "underleftarrow": {
+        "placement": "bottom", "combining_width": 1,
+        "left": "←", "fill": "─", "right": "─",
+    },
+    "underrightarrow": {
+        "placement": "bottom", "combining_width": 1,
+        "left": "─", "fill": "─", "right": "→",
+    },
+    "overleftharpoon": {
+        "placement": "top", "combining_width": 1,
+        "left": "↼", "fill": "─", "right": "─",
+    },
+    "overrightharpoon": {
+        "placement": "top", "combining_width": 1,
+        "left": "╶", "fill": "─", "right": "⇀",
+    },
+    "overleftrightarrow": {
+        "placement": "top", "combining_width": 1,
+        "left": "←", "fill": "─", "right": "→",
+    },
+    "overbrace": {
+        "placement": "top", "combining_width": 2,
+        "single": "⏞", "left": "╭", "fill": "─", "center": "┴",
+        "right": "╮",
+    },
+    "underleftrightarrow": {
+        "placement": "bottom", "combining_width": 1,
+        "left": "←", "fill": "─", "right": "→",
+    },
+    "underbrace": {
+        "placement": "bottom", "combining_width": 2,
+        "single": "⏟", "left": "╰", "fill": "─", "center": "┬",
+        "right": "╯",
+    },
+    "overline": {
+        "placement": "top", "combining_width": 1,
+        "left": "─", "fill": "─", "right": "─",
+    },
+    "overbracket": {
+        "placement": "top", "combining_width": 1,
+        "left": "┌", "fill": "─", "right": "┐",
+    },
+    "underline": {
+        "placement": "bottom", "combining_width": 1,
+        "left": "─", "fill": "─", "right": "─",
+    },
+    "underbracket": {
+        "placement": "bottom", "combining_width": 1,
+        "left": "└", "fill": "─", "right": "┘",
+    },
+    "overlinesegment": {
+        "placement": "top", "combining_width": 0,
+        "single": "⟝", "left": "╾", "fill": "─", "right": "╼",
+    },
+    "widecheck": {
+        "placement": "top", "combining_width": 1,
+        "left": "╭", "fill": "─", "right": "╮",
+    },
+    "underlinesegment": {
+        "placement": "bottom", "combining_width": 0,
+        "single": "⟝", "left": "╾", "fill": "─", "right": "╼",
+    },
+    "widehat": {
+        "placement": "top", "combining_width": 1,
+        "left": "╰", "fill": "─", "right": "╯",
+    },
+}
+
 unicode_scripts = {
     " ": [" ", " "], "0": ["⁰", "₀"], "1": ["¹", "₁"], "2": ["²", "₂"],
     "3": ["³", "₃"], "4": ["⁴", "₄"], "5": ["⁵", "₅"], "6": ["⁶", "₆"],
