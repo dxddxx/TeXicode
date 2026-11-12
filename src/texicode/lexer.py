@@ -1,6 +1,6 @@
 special_chars = r" ^_{}[]~"
 
-symbol_chars = """`!@#$%&*()+-=|;:'",.<>/?"""
+symbol_chars = """`!@#$%&*()+-=|;:'",.<>/?⌊⌋"""
 
 symbols = special_chars + symbol_chars
 

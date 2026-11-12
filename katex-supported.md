@@ -2,74 +2,74 @@
 
 ## Accents
 
-- [ ] `a'`
-- [ ] `\tilde{a}`
-- [ ] `\mathring{g}`
+- [x] `a'`
+- [x] `\tilde{a}`
+- [x] `\mathring{g}`
 - [ ] `a''`
-- [ ] `\widetilde{ac}`
-- [ ] `\overgroup{AB}`
-- [ ] `a^{\prime}`
-- [ ] `\utilde{AB}`
-- [ ] `\undergroup{AB}`
-- [ ] `\acute{a}`
-- [ ] `\vec{F}`
-- [ ] `\Overrightarrow{AB}`
-- [ ] `\bar{y}`
-- [ ] `\overleftarrow{AB}`
-- [ ] `\overrightarrow{AB}`
-- [ ] `\breve{a}`
-- [ ] `\underleftarrow{AB}`
-- [ ] `\underrightarrow{AB}`
-- [ ] `\check{a}`
-- [ ] `\overleftharpoon{ac}`
-- [ ] `\overrightharpoon{ac}`
-- [ ] `\dot{a}`
-- [ ] `\overleftrightarrow{AB}`
-- [ ] `\overbrace{AB}`
-- [ ] `\ddot{a}`
-- [ ] `\underleftrightarrow{AB}`
-- [ ] `\underbrace{AB}`
-- [ ] `\dddot{a}`
-- [ ] `\overline{AB}`
-- [ ] `\overbracket{AB}`
-- [ ] `\ddddot{a}`
-- [ ] `\underline{AB}`
-- [ ] `\underbracket{AB}`
-- [ ] `\grave{a}`
-- [ ] `\underbar{X}`
-- [ ] `\overlinesegment{AB}`
-- [ ] `\hat{\theta}`
-- [ ] `\widecheck{ac}`
-- [ ] `\underlinesegment{AB}`
-- [ ] `\widehat{ac}`
+- [x] `\widetilde{ac}`
+- [x] `\overgroup{AB}`
+- [x] `a^{\prime}`
+- [x] `\utilde{AB}`
+- [x] `\undergroup{AB}`
+- [x] `\acute{a}`
+- [x] `\vec{F}`
+- [x] `\Overrightarrow{AB}`
+- [x] `\bar{y}`
+- [x] `\overleftarrow{AB}`
+- [x] `\overrightarrow{AB}`
+- [x] `\breve{a}`
+- [x] `\underleftarrow{AB}`
+- [x] `\underrightarrow{AB}`
+- [x] `\check{a}`
+- [x] `\overleftharpoon{ac}`
+- [x] `\overrightharpoon{ac}`
+- [x] `\dot{a}`
+- [x] `\overleftrightarrow{AB}`
+- [x] `\overbrace{AB}`
+- [x] `\ddot{a}`
+- [x] `\underleftrightarrow{AB}`
+- [x] `\underbrace{AB}`
+- [x] `\dddot{a}`
+- [x] `\overline{AB}`
+- [x] `\overbracket{AB}`
+- [x] `\ddddot{a}`
+- [x] `\underline{AB}`
+- [x] `\underbracket{AB}`
+- [x] `\grave{a}`
+- [x] `\underbar{X}`
+- [x] `\overlinesegment{AB}`
+- [x] `\hat{\theta}`
+- [x] `\widecheck{ac}`
+- [x] `\underlinesegment{AB}`
+- [x] `\widehat{ac}`
 
 #### Accent functions inside \text{…}
 
-- [ ] `\'{a}`
-- [ ] `\~{a}`
-- [ ] `\.{a}`
-- [ ] `\H{a}`
-- [ ] ``\`{a}``
-- [ ] `\={a}`
-- [ ] `\"{a}`
-- [ ] `\v{a}`
-- [ ] `\^{a}`
-- [ ] `\u{a}`
-- [ ] `\r{a}`
+- [x] `\'{a}`
+- [x] `\~{a}`
+- [x] `\.{a}`
+- [x] `\H{a}`
+- [x] ``\`{a}``
+- [x] `\={a}`
+- [x] `\"{a}`
+- [x] `\v{a}`
+- [x] `\^{a}`
+- [x] `\u{a}`
+- [x] `\r{a}`
 
 ## Delimiters
 
-- [ ] `( )`
+- [x] `( )`
 - [x] `\lparen`
 - [x] `\rparen`
 - [ ] `⌈ ⌉`
 - [x] `\lceil`
 - [x] `\rceil`
 - [x] `\uparrow` → ↑
-- [ ] `[ ]`
+- [x] `[ ]`
 - [x] `\lbrack`
 - [x] `\rbrack`
-- [ ] `⌊ ⌋`
+- [x] `⌊ ⌋`
 - [x] `\lfloor`
 - [x] `\rfloor`
 - [x] `\downarrow` → ↓
@@ -103,8 +103,8 @@
 - [x] `\rvert`
 - [x] `\lVert`
 - [x] `\rVert`
-- [ ] `\left.`
-- [ ] `\right.`
+- [x] `\left.`
+- [x] `\right.`
 - [x] `\backslash` → \
 - [x] `\lang`
 - [x] `\rang`
@@ -112,48 +112,48 @@
 - [ ] `⟦ ⟧`
 - [x] `\llbracket`
 - [x] `\rrbracket`
-- [ ] `/` → /
+- [x] `/` → /
 - [x] `\lBrace \rBrace`
 
 #### Delimiter Sizing
 
 - [ ] `\left(\LARGE{AB}\right)`
-- [ ] `( \big( \Big( \bigg( \Bigg(`
-- [ ] `\left`
-- [ ] `\big`
-- [ ] `\bigl`
+- [x] `( \big( \Big( \bigg( \Bigg(`
+- [x] `\left`
+- [x] `\big`
+- [x] `\bigl`
 - [ ] `\bigm`
-- [ ] `\bigr`
+- [x] `\bigr`
 - [ ] `\middle`
-- [ ] `\Big`
-- [ ] `\Bigl`
+- [x] `\Big`
+- [x] `\Bigl`
 - [ ] `\Bigm`
-- [ ] `\Bigr`
-- [ ] `\right`
-- [ ] `\bigg`
-- [ ] `\biggl`
+- [x] `\Bigr`
+- [x] `\right`
+- [x] `\bigg`
+- [x] `\biggl`
 - [ ] `\biggm`
-- [ ] `\biggr`
-- [ ] `\Bigg`
-- [ ] `\Biggl`
+- [x] `\biggr`
+- [x] `\Bigg`
+- [x] `\Biggl`
 - [ ] `\Biggm`
-- [ ] `\Biggr`
+- [x] `\Biggr`
 
 ## Environments
 
-- [ ] `\begin{matrix} a & b \\ c & d \end{matrix}`
-- [ ] `\begin{array}{cc} a & b \\ c & d \end{array}`
-- [ ] `\begin{pmatrix} a & b \\ c & d \end{pmatrix}`
-- [ ] `\begin{bmatrix} a & b \\ c & d \end{bmatrix}`
-- [ ] `\begin{vmatrix} a & b \\ c & d \end{vmatrix}`
-- [ ] `\begin{Vmatrix} a & b \\ c & d \end{Vmatrix}`
-- [ ] `\begin{Bmatrix} a & b \\ c & d \end{Bmatrix}`
+- [x] `\begin{matrix} a & b \\ c & d \end{matrix}`
+- [x] `\begin{array}{cc} a & b \\ c & d \end{array}`
+- [x] `\begin{pmatrix} a & b \\ c & d \end{pmatrix}`
+- [x] `\begin{bmatrix} a & b \\ c & d \end{bmatrix}`
+- [x] `\begin{vmatrix} a & b \\ c & d \end{vmatrix}`
+- [x] `\begin{Vmatrix} a & b \\ c & d \end{Vmatrix}`
+- [x] `\begin{Bmatrix} a & b \\ c & d \end{Bmatrix}`
 - [ ] `\def\arraystretch{1.5} \begin{array}{c:c:c} a & b & c \\ \hline d & e & f \\ \hdashline g & h & i \end{array}`
-- [ ] `x = \begin{cases} a &\text{if } b \\ c &\text{if } d \end{cases}`
+- [x] `x = \begin{cases} a &\text{if } b \\ c &\text{if } d \end{cases}`
 - [ ] `\begin{rcases} a &\text{if } b \\ c &\text{if } d \end{rcases}⇒…`
-- [ ] `\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}`
+- [x] `\begin{smallmatrix} a & b \\ c & d \end{smallmatrix}`
 - [ ] `\sum_{ \begin{subarray}{l} i\in\Lambda\\ 0<j<n \end{subarray}}`
-- [ ] `$$…$$`
+- [x] `$$…$$`
 - [ ] `\begin{equation} \begin{split} a &=b+c\\ &=e+f \end{split} \end{equation}`
 - [ ] `\begin{align} a&=b+c \\ d+e&=f \end{align}`
 - [ ] `\begin{gather} a=b \\ e=b+c \end{gather}`
@@ -173,16 +173,16 @@
 - [ ] `vmatrix*`
 - [ ] `Vmatrix*`
 - [ ] `\begin{matrix*}[r]`
-- [ ] `equation*`
-- [ ] `gather*`
-- [ ] `align*`
+- [x] `equation*`
+- [x] `gather*`
+- [x] `align*`
 - [ ] `alignat*`
 - [ ] `\nonumber`
 - [ ] `\notag`
-- [ ] `gathered`
-- [ ] `aligned`
+- [x] `gathered`
+- [x] `aligned`
 - [ ] `alignedat`
-- [ ] `\\`
+- [x] `\\`
 - [ ] `\cr`
 - [ ] `\\[distance]`
 - [ ] `\cr[distance]`
@@ -326,7 +326,7 @@
 - [x] `\reals` → R
 - [x] `\text{\oe}`
 - [ ] `A²⁺³`
-- [ ] `A^{2+3}`
+- [x] `A^{2+3}`
 
 #### Unicode Mathematical Alphanumeric Symbols
 
@@ -349,18 +349,18 @@
 
 ### Annotation
 
-- [ ] `\cancel{5}`
-- [ ] `\overbrace{a+b+c}^{\text{note}}`
-- [ ] `\bcancel{5}`
-- [ ] `\underbrace{a+b+c}_{\text{note}}`
-- [ ] `\xcancel{ABC}`
+- [x] `\cancel{5}`
+- [x] `\overbrace{a+b+c}^{\text{note}}`
+- [x] `\bcancel{5}`
+- [x] `\underbrace{a+b+c}_{\text{note}}`
+- [x] `\xcancel{ABC}`
 - [ ] `\not =`
-- [ ] `\text{\sout{abc}}`
+- [x] `\text{\sout{abc}}`
 - [ ] `\boxed{\pi=\frac c d}`
 - [ ] `$a_{\angl n}`
 - [ ] `a_\angln`
-- [ ] `\overbracket{a+b+c}^{\text{note}}`
-- [ ] `\underbracket{a+b+c}_{\text{note}}`
+- [x] `\overbracket{a+b+c}^{\text{note}}`
+- [x] `\underbracket{a+b+c}_{\text{note}}`
 - [ ] `\phase{-78^\circ}`
 - [ ] `\tag{hi} x+y^{2x}`
 - [ ] `\tag*{hi} x+y^{2x}`
@@ -368,26 +368,26 @@
 ### Line Breaks
 
 - [ ] `\nobreak`
-- [ ] `{F=ma}`
+- [x] `{F=ma}`
 - [ ] `\allowbreak`
-- [ ] `\newline`
+- [x] `\newline`
 - [ ] `strict: true`
 
 ### Vertical Layout
 
-- [ ] `x_n`
+- [x] `x_n`
 - [ ] `\stackrel{!}{=}`
 - [ ] `a \atop b`
-- [ ] `e^x`
+- [x] `e^x`
 - [ ] `\overset{!}{=}`
 - [ ] `a\raisebox{0.25em}{$b$}c`
-- [ ] `_u^o`
+- [x] `_u^o`
 - [ ] `\underset{!}{=}`
 - [ ] `a+\left(\vcenter{\hbox{$\frac{\frac a b}c$}}\right)`
-- [ ] `\sum_{\substack{0<i<m\\0<j<n}}`
+- [x] `\sum_{\substack{0<i<m\\0<j<n}}`
 - [ ] `\raisebox`
 - [ ] `\hbox`
-- [ ] `$…$`
+- [x] `$…$`
 - [ ] `\vcenter`
 - [ ] `strict`
 
@@ -423,13 +423,13 @@
 - [x] `\quad`
 - [ ] `\vphantom{content}`
 - [x] `\qquad`
-- [ ] `\!`
+- [x] `\!`
 - [x] `~`
-- [ ] `\negthinspace`
+- [x] `\negthinspace`
 - [x] `\<space>`
-- [ ] `\negmedspace`
+- [x] `\negmedspace`
 - [x] `\nobreakspace`
-- [ ] `\negthickspace`
+- [x] `\negthickspace`
 - [x] `\space`
 - [ ] `\mathstrut`
 - [ ] `\vphantom{(}`
@@ -516,20 +516,20 @@
 
 - [x] `\sum` → ∑
 - [x] `\prod` → ∏
-- [ ] `\bigotimes` → ⨂
-- [ ] `\bigvee` → ⋁
+- [x] `\bigotimes` → ⨂
+- [x] `\bigvee` → ⋁
 - [x] `\int` → ∫
-- [ ] `\coprod` → ∐
-- [ ] `\bigoplus` → ⨁
-- [ ] `\bigwedge` → ⋀
+- [x] `\coprod` → ∐
+- [x] `\bigoplus` → ⨁
+- [x] `\bigwedge` → ⋀
 - [x] `\iint` → ∬
-- [ ] `\intop` → ∫
-- [ ] `\bigodot` → ⨀
-- [ ] `\bigcap` → ⋂
+- [x] `\intop` → ∫
+- [x] `\bigodot` → ⨀
+- [x] `\bigcap` → ⋂
 - [x] `\iiint` → ∭
-- [ ] `\smallint` → ∫
-- [ ] `\biguplus` → ⨄
-- [ ] `\bigcup` → ⋃
+- [x] `\smallint` → ∫
+- [x] `\biguplus` → ⨄
+- [x] `\bigcup` → ⋃
 - [x] `\oint` → ∮
 - [x] `\oiint` → ∯
 - [x] `\oiiint` → ∰
@@ -537,7 +537,7 @@
 
 ### Binary Operators
 
-- [ ] `+` → +
+- [x] `+` → +
 - [x] `\cdot` → ⋅
 - [x] `\gtrdot` → ⋗
 - [ ] `x \pmod a`
@@ -606,16 +606,16 @@
 
 ### Fractions and Binomials
 
-- [ ] `\frac{a}{b}`
-- [ ] `\tfrac{a}{b}`
+- [x] `\frac{a}{b}`
+- [x] `\tfrac{a}{b}`
 - [ ] `\genfrac ( ] {2pt}{1}a{a+1}`
 - [ ] `{a \over b}`
-- [ ] `\dfrac{a}{b}`
+- [x] `\dfrac{a}{b}`
 - [ ] `{a \above{2pt} b+1}`
-- [ ] `a/b`
-- [ ] `\cfrac{a}{1 + \cfrac{1}{b}}`
-- [ ] `\binom{n}{k}`
-- [ ] `\dbinom{n}{k}`
+- [x] `a/b`
+- [x] `\cfrac{a}{1 + \cfrac{1}{b}}`
+- [x] `\binom{n}{k}`
+- [x] `\dbinom{n}{k}`
 - [ ] `{n\brace k}`
 - [ ] `{n \choose k}`
 - [ ] `\tbinom{n}{k}`
@@ -655,7 +655,7 @@
 - [x] `\cth`
 - [x] `\log`
 - [x] `\th`
-- [ ] `\operatorname{f}`
+- [x] `\operatorname{f}`
 - [x] `\argmax`
 - [x] `\injlim`
 - [x] `\min`
@@ -677,24 +677,24 @@
 - [x] `\sup`
 - [ ] `\operatorname*{f}`
 - [ ] `\operatornamewithlimits{f}`
-- [ ] `\limits`
+- [x] `\limits`
 
 ### \sqrt
 
-- [ ] `\sqrt{x}`
-- [ ] `\sqrt[3]{x}`
+- [x] `\sqrt{x}`
+- [x] `\sqrt[3]{x}`
 
 ## Relations
 
-- [ ] `=` → =
+- [x] `=` → =
 - [x] `\doteqdot` → ≑
 - [x] `\lessapprox` → ⪅
 - [x] `\smile` → ⌣
-- [ ] `<` → <
+- [x] `<` → <
 - [x] `\eqcirc` → ≖
 - [x] `\lesseqgtr` → ⋚
 - [x] `\sqsubset` → ⊏
-- [ ] `>` → >
+- [x] `>` → >
 - [x] `\eqcolon`
 - [x] `\minuscolon`
 - [x] `\lesseqqgtr` → ⪋
@@ -1024,14 +1024,14 @@
 - [ ] `\fcolorbox{red}{aqua}{$F=ma$}`
 - [ ] `\colorbox`
 - [ ] `\fcolorbox`
-- [ ] `$`
+- [x] `$`
 
 #### Font
 
-- [ ] `\mathrm{Ab0}`
-- [ ] `\mathbf{Ab0}`
-- [ ] `\mathsf{Ab0}`
-- [ ] `\mathnormal{Ab0}`
+- [x] `\mathrm{Ab0}`
+- [x] `\mathbf{Ab0}`
+- [x] `\mathsf{Ab0}`
+- [x] `\mathnormal{Ab0}`
 - [ ] `\textbf{Ab0}`
 - [ ] `\textsf{Ab0}`
 - [ ] `\textrm{Ab0}`
@@ -1043,26 +1043,26 @@
 - [ ] `\textnormal{Ab0}`
 - [ ] `\boldsymbol{Ab0}`
 - [ ] `\Bbb{AB}`
-- [ ] `\text{Ab0}`
+- [x] `\text{Ab0}`
 - [ ] `\bm{Ab0}`
-- [ ] `\mathbb{AB}`
+- [x] `\mathbb{AB}`
 - [ ] `\textup{Ab0}`
 - [ ] `\textmd{Ab0}`
 - [ ] `\frak{Ab0}`
-- [ ] `\mathit{Ab0}`
-- [ ] `\mathtt{Ab0}`
-- [ ] `\mathfrak{Ab0}`
+- [x] `\mathit{Ab0}`
+- [x] `\mathtt{Ab0}`
+- [x] `\mathfrak{Ab0}`
 - [ ] `\textit{Ab0}`
 - [ ] `\texttt{Ab0}`
-- [ ] `\mathcal{AB0}`
+- [x] `\mathcal{AB0}`
 - [ ] `\it Ab0`
 - [ ] `\tt Ab0`
 - [ ] `\cal AB0`
 - [ ] `\emph{Ab0}`
-- [ ] `\mathscr{AB}`
+- [x] `\mathscr{AB}`
 - [ ] `\textXX`
 - [ ] `\textsf{\textbf{H}}`
-- [ ] `\mathsf{\mathbf{H}}`
+- [x] `\mathsf{\mathbf{H}}`
 - [ ] `\pmb`
 - [ ] `\pmb{\mu}`
 
@@ -1085,7 +1085,7 @@
 - [ ] `\textstyle\sum_{i=1}^n`
 - [ ] `\scriptstyle x` → x
 - [ ] `\scriptscriptstyle x` → x
-- [ ] `\lim\limits_x`
+- [x] `\lim\limits_x`
 - [ ] `\lim\nolimits_x`
 - [ ] `\verb!x^2!`
 - [ ] `\text{…}`
@@ -1145,7 +1145,7 @@
 - [x] `\text{\textquotedblleft}`
 - [x] `\triangledown` → ▽
 - [x] `\top` → ⊤
-- [ ] `"` → "
+- [x] `"` → "
 - [x] `\triangleleft` → ◃
 - [x] `\bot` → ⊥
 - [x] `\text{\textquotedblright}`
