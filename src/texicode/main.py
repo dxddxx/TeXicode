@@ -31,7 +31,8 @@ def main():
             "TeXicode - render TeX strings or process markdown math\
              (https://github.com/dxddxx/TeXicode)"
 
-    input_parser = argparse.ArgumentParser(description=help_description)
+    input_parser = argparse.ArgumentParser(prog="txc",
+                                           description=help_description)
     input_parser.add_argument('-d', '--debug',
                               action='store_true',
                               help='enable debug')
@@ -69,6 +70,11 @@ def main():
         content = args.latex_string
     else:
         # Read piped input until EOF.
+        if sys.stdin.isatty():
+            input_parser.error(
+                "no input; provide a TeX string, use -f with a filename, "
+                "or pipe data into txc"
+            )
         content = sys.stdin.read()
         if not content:
             input_parser.error(
