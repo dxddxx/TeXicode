@@ -353,6 +353,19 @@ def test_text_accents_preserve_combining_marks_through_font_conversion():
     ) == "xỹz"
 
 
+@pytest.mark.parametrize(("tex", "expected"), [
+    (r"\text{$a\text{b}$}", "ab"),
+    (r"\text{$\text{a}$}", "a"),
+    (r"\text{$$a\text{b}$$}", "ab"),
+    (r"\text{$$\text{a}\text{$b$}$$}", "ab"),
+    (r"\text{a$\text{b}$c$$d\text{e}$$}", "abcde"),
+])
+def test_nested_text_and_dollar_math(tex, expected):
+    assert render_tex(
+        tex, False, False, "raw", {"fonts": "serif"}
+    ) == expected
+
+
 def test_stretchy_accents_use_their_art_rows_at_the_required_widths():
     for accent, accent_art in arts.stretchy_accents.items():
         width_one = render_lines(

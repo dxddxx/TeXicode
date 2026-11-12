@@ -90,3 +90,21 @@ def test_substack_rows_are_flat():
 def test_linebreak_outside_row_owner_raises():
     with pytest.raises(ValueError, match="row_sep"):
         parsed(r"{a \\ b}")
+
+
+@pytest.mark.parametrize("delimiter", ["$", "$$"])
+def test_dollar_math_is_allowed_inside_text(delimiter):
+    nodes = parsed(rf"\text{{{delimiter}a{delimiter}}}")
+    text = nodes[nodes[0][2][0]]
+
+    assert text[0] == "cmd_text"
+    assert types_of(nodes, text[2]) == ["opn_text"]
+    text_group = nodes[text[2][0]]
+    assert types_of(nodes, text_group[2]) == ["opn_dllr" if delimiter == "$"
+                                             else "opn_ddlr"]
+
+
+@pytest.mark.parametrize("delimiter", ["$", "$$"])
+def test_dollar_math_remains_restricted_to_root_and_text(delimiter):
+    with pytest.raises(ValueError, match="opn_dllr|opn_ddlr"):
+        parsed(rf"\frac{{{delimiter}a{delimiter}}}{{b}}")
